@@ -7,11 +7,17 @@
 #' Optional if you want to add more detais.
 #'
 #' @param path Path to the excel spreadsheet
-#' @param skip N row to skip
+#' @param skip N row to skip. Default value is 1 as there's a warning in the original file
+#' @param specimen Name of the sheet in the Excel file containing specimen data
+#' @param group Name of the sheet in the Excel file containing group data
+#' @param tissu Name of the sheet in the Excel file containing tissue data
+#' @param extrait Name of the sheet in the Excel file containing the DNA/RNA extract data
+#' @param analyse_ext Name of the sheet in the Excel file containing external analysis info
+#' @param dloop Name of the sheet in the Excel file containing the dloop info
 #'
 #' @examples
 #' # provide some examples of how to use your function
-#' hello()
+#'
 #'
 #' @seealso List relevant other functions [littleforecast()].
 #'
@@ -19,19 +25,44 @@
 #' List references
 #' @export
 
-upload_gabarit_ADN <- function(path, skip=1){
+upload_gabarit_ADN <- function(path,
+                               skip=1,
+                               specimen = "Specimen",
+                               groupe = "Groupe",
+                               tissu = "Tissu",
+                               extrait = "ExtraitADN_ARN",
+                               analyse_ext = "Analyse_Ext.",
+                               #Sexage = "Sexage",
+                               dloop = "DLoop"
+                               ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
-  sheet.DNA <- readxl::excel_sheets(path = path)
+  `%nin%` = Negate(`%in%`)
+
+  sheet.observed <- readxl::excel_sheets(path = path)
+
+  cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
+
+  sheet.to.load <- c(specimen, groupe, tissu, extrait, analyse_ext, dloop)
+
+  if( !all(sheet.to.load %in% sheet.observed)){
+         stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file."))
+  }
 
   # Etape 2 - loader chacune des pages, et les mettre dans une liste
   # On pourrait imprimer certaines statistiques
 
-  print(sheet.DNA)
+  excel.ls <- list()
+
+  # Load specimen
+
+  Specimen.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip)
+
+  excel.ls[["Specimen"]] <- Specimen.df
 
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
 
-  return()
+  return(excel.ls)
 
 }
 

@@ -4,12 +4,33 @@
 \alias{upload_gabarit_ADN}
 \title{Upload Excel template}
 \usage{
-upload_gabarit_ADN(path, skip = 1)
+upload_gabarit_ADN(
+  path,
+  skip = 1,
+  specimen = "Specimen",
+  groupe = "Groupe",
+  tissu = "Tissu",
+  extrait = "ExtraitADN_ARN",
+  analyse_ext = "Analyse_Ext.",
+  dloop = "DLoop"
+)
 }
 \arguments{
 \item{path}{Path to the excel spreadsheet}
 
-\item{skip}{N row to skip}
+\item{skip}{N row to skip. Default value is 1 as there's a warning in the original file}
+
+\item{specimen}{Name of the sheet in the Excel file containing specimen data}
+
+\item{tissu}{Name of the sheet in the Excel file containing tissue data}
+
+\item{extrait}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
+
+\item{analyse_ext}{Name of the sheet in the Excel file containing external analysis info}
+
+\item{dloop}{Name of the sheet in the Excel file containing the dloop info}
+
+\item{group}{Name of the sheet in the Excel file containing group data}
 }
 \description{
 Function to upload an Excel file based on the predefined template
@@ -19,7 +40,7 @@ Optional if you want to add more detais.
 }
 \examples{
 # provide some examples of how to use your function
-hello()
+
 
 }
 \seealso{
