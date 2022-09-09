@@ -4,7 +4,7 @@
 #' Function to upload an Excel file based on the predefined template
 #'
 #' @details
-#' Optional if you want to add more detais.
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
 #' @param path Path to the excel spreadsheet
 #' @param skip N row to skip. Default value is 1 as there's a warning in the original file
@@ -13,6 +13,7 @@
 #' @param tissu Name of the sheet in the Excel file containing tissue data
 #' @param extrait Name of the sheet in the Excel file containing the DNA/RNA extract data
 #' @param analyse_ext Name of the sheet in the Excel file containing external analysis info
+#' @param sexage of the sheet in the Excel file containing the sex determining method
 #' @param dloop Name of the sheet in the Excel file containing the dloop info
 #'
 #' @examples
@@ -31,8 +32,8 @@ upload_gabarit_ADN <- function(path,
                                groupe = "Groupe",
                                tissu = "Tissu",
                                extrait = "ExtraitADN_ARN",
-                               analyse_ext = "Analyse_Ext.",
-                               #Sexage = "Sexage",
+                               analyse_ext = "Analyse_Externe",
+                               sexage = "Sexage",
                                dloop = "DLoop"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
@@ -43,7 +44,7 @@ upload_gabarit_ADN <- function(path,
 
   cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
 
-  sheet.to.load <- c(specimen, groupe, tissu, extrait, analyse_ext, dloop)
+  sheet.to.load <- c(specimen, groupe, tissu, extrait, analyse_ext, sexage, dloop)
 
   if( !all(sheet.to.load %in% sheet.observed)){
          stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file."))
@@ -56,11 +57,49 @@ upload_gabarit_ADN <- function(path,
 
   # Load specimen
 
-  Specimen.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip)
+  if(!is.null(specimen)){
 
-  excel.ls[["Specimen"]] <- Specimen.df
+     Specimen.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip)
+
+    if(nrow(Specimen.df)>0){
+
+       excel.ls[["Specimen"]] <- Specimen.df
+
+    }
+
+  }
+
+  # Load groupe
+
+  if(!is.null(groupe)){
+
+    Groupe.df <-  readxl::read_excel(path = path, sheet = groupe, skip = skip)
+
+    if(nrow(Groupe.df)>0){
+
+      excel.ls[["Groupe"]] <- Groupe.df
+
+    }
+
+  }
+
+  # Load tissu
+
+  if(!is.null(tissu)){
+
+    Tissu.df <-  readxl::read_excel(path = path, sheet = tissu, skip = skip)
+
+    if(nrow(Tissu.df)>0){
+
+      excel.ls[["Tissu"]] <- Tissu.df
+
+    }
+
+  }
 
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
+
+  cat("The sheets", paste(names(excel.ls), collapse = ", "), "have been uploaded")
 
   return(excel.ls)
 
