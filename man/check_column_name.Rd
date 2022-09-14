@@ -4,12 +4,12 @@
 \alias{check_column_name}
 \title{Upload Excel template}
 \usage{
-check_column_name(path, version)
+check_column_name(data, skip.col = 1)
 }
 \arguments{
 \item{data}{List containing important tables.}
 
-\item{model}{Path to csv file containing expected columns for each table}
+\item{skip.col}{= 1}
 }
 \description{
 Function to upload an Excel file based on the predefined template

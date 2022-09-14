@@ -6,7 +6,7 @@ Outils pour la gestion de la base de données en génomique
 
 ## Comment installer le package associé
 
-You can install directly the last version from github
+Lorsque le répertoire sera publique, il sera possible de le télécharger directement ainsi :
 
 ```{r}
 library(remotes)
@@ -19,6 +19,12 @@ For windows user, it is possible that you get into problems. You can try to set 
 # Change the behaviours of remotes
 Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")
 ```
+
+En attentant, il faut clone le répertoire, puis, dans R studio, sous l'onglet Build, utiliser le bouton `Install and Restart`
+
+## Comment utiliser le package 
+
+Voir [Example_script.R](/inst/Example_script.R) pour un exemple.
 
 __Main author:__  Audrey Bourret  
 __Affiliation:__  Fisheries and Oceans Canada (DFO)   

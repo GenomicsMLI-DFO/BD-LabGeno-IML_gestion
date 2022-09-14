@@ -10,7 +10,7 @@ upload_gabarit_ADN(
   specimen = "Specimen",
   groupe = "Groupe",
   tissu = "Tissu",
-  extrait = "ExtraitADN_ARN",
+  extraitADN = "ExtraitADN_ARN",
   analyse_ext = "Analyse_Externe",
   sexage = "Sexage",
   dloop = "DLoop"
@@ -25,8 +25,6 @@ upload_gabarit_ADN(
 
 \item{tissu}{Name of the sheet in the Excel file containing tissue data}
 
-\item{extrait}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
-
 \item{analyse_ext}{Name of the sheet in the Excel file containing external analysis info}
 
 \item{sexage}{of the sheet in the Excel file containing the sex determining method}
@@ -34,6 +32,8 @@ upload_gabarit_ADN(
 \item{dloop}{Name of the sheet in the Excel file containing the dloop info}
 
 \item{group}{Name of the sheet in the Excel file containing group data}
+
+\item{extrait}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
 }
 \description{
 Function to upload an Excel file based on the predefined template

@@ -25,13 +25,12 @@
 #` @references
 #' List references
 #' @export
-
 upload_gabarit_ADN <- function(path,
                                skip=1,
                                specimen = "Specimen",
                                groupe = "Groupe",
                                tissu = "Tissu",
-                               extrait = "ExtraitADN_ARN",
+                               extraitADN = "ExtraitADN_ARN",
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
                                dloop = "DLoop"
@@ -44,7 +43,7 @@ upload_gabarit_ADN <- function(path,
 
   cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
 
-  sheet.to.load <- c(specimen, groupe, tissu, extrait, analyse_ext, sexage, dloop)
+  sheet.to.load <- c(specimen, groupe, tissu, extraitADN, analyse_ext, sexage, dloop)
 
   if( !all(sheet.to.load %in% sheet.observed)){
          stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file."))
@@ -59,11 +58,21 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(specimen)){
 
-     Specimen.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip)
+    cat("\nLoading SPECIMEN\n")
 
-    if(nrow(Specimen.df)>0){
+     temp.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip,col_types = "text", .name_repair = "minimal")
 
-       excel.ls[["Specimen"]] <- Specimen.df
+     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+       excel.ls[["Specimen"]] <- temp.df
 
     }
 
@@ -73,11 +82,21 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(groupe)){
 
-    Groupe.df <-  readxl::read_excel(path = path, sheet = groupe, skip = skip)
+    cat("\nLoading GROUPE\n")
 
-    if(nrow(Groupe.df)>0){
+    temp.df <-  readxl::read_excel(path = path, sheet = groupe, skip = skip,col_types = "text", .name_repair = "minimal")
 
-      excel.ls[["Groupe"]] <- Groupe.df
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Groupe"]] <- temp.df
 
     }
 
@@ -87,21 +106,133 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(tissu)){
 
-    Tissu.df <-  readxl::read_excel(path = path, sheet = tissu, skip = skip)
+    cat("\nLoading TISSU\n")
 
-    if(nrow(Tissu.df)>0){
+    temp.df <-  readxl::read_excel(path = path, sheet = tissu, skip = skip, col_types = "text",.name_repair = "minimal")
 
-      excel.ls[["Tissu"]] <- Tissu.df
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+
+
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+
+      excel.ls[["Tissu"]] <- temp.df
 
     }
 
   }
 
+  # Load extrait
+
+  if(!is.null(extraitADN)){
+
+    cat("\nLoading EXTRAIT_ADN\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = extraitADN, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["ExtraitADN"]] <- temp.df
+
+    }
+
+  }
+
+  # Load Analyse
+
+  if(!is.null(analyse_ext)){
+
+    cat("\nLoading ANALYSE_EXT\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = analyse_ext, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Analyse_ext"]] <- temp.df
+
+    }
+
+  }
+
+
+  # Load sexage
+
+  if(!is.null(sexage)){
+
+    cat("\nLoading SEXAGE\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = sexage, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Sexage"]] <- temp.df
+
+    }
+
+  }
+
+
+  # Load dloop
+
+  if(!is.null(dloop)){
+
+    cat("\nLoading DLOOP\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = dloop, skip = skip, col_types = "text", .name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Dloop"]] <- temp.df
+
+    }
+
+  }
+
+
+
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
 
-  cat("The sheets", paste(names(excel.ls), collapse = ", "), "have been uploaded")
+  cat(crayon::green("The sheets", paste(names(excel.ls), collapse = ", "), "have been uploaded", emojifont::emoji("unicorn")  ,"\n\n"))
 
   return(excel.ls)
 
 }
-
