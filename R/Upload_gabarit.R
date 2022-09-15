@@ -147,7 +147,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["ExtraitADN"]] <- temp.df
+      excel.ls[["ExtraitADN_ARN"]] <- temp.df
 
     }
 
@@ -171,7 +171,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["Analyse_ext"]] <- temp.df
+      excel.ls[["Analyse_Externe"]] <- temp.df
 
     }
 

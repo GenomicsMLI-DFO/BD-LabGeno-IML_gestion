@@ -47,6 +47,14 @@ View(head(gabarit.ls$Extrait))
 gabarit.ls2 <- check_column_name(gabarit.ls)
 
 
+
+# Checks that will need hand correction someimes
+
+check_column_values_ID(gabarit.ls2)
+
+
+data <- gabarit.ls2
+
 dplyr::select(gabarit.ls$Extrait, "Numero_unique_specimen")
 
 

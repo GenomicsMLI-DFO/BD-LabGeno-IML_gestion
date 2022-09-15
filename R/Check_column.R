@@ -1,13 +1,12 @@
-#' @title Upload Excel template
+#' @title Check column names
 #'
 #' @description
-#' Function to upload an Excel file based on the predefined template
+#' Function to check that column name and order follow the predefined template
 #'
 #' @details
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
 #' @param data List containing important tables.
-#' @param skip.col = 1
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -19,10 +18,10 @@
 #' List references
 #' @export
 
-check_column_name  <- function(data,
-                               skip.col = 1){
+check_column_name  <- function(data
+                               ){
 
-  model <-  suppressMessages(readr::read_csv("inst/BD_columns_format.csv"))
+  model <-   suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Ordre"))
 
   new.list <- list()
 
@@ -44,13 +43,13 @@ check_column_name  <- function(data,
 
    model.vec <- model.int[1,as.vector(!is.na(model.int[1,]))]
 
-   cat(ncol(tab.int) - skip.col, "columns were uploaded (", length(model.vec), "were expected )\nNow looking column by column for the good name and order ... \n\n")
+   cat(ncol(tab.int), "columns were uploaded (", length(model.vec), "were expected )\nNow looking column by column for the good name and order ... \n\n")
 
    # Check column names one by one
 
    tab.new <- tibble::tibble(.rows = nrow(tab.int))
 
-   for(i in 1:length(model.vec)){
+   for(i in 1:length(model.vec)){ # Loop over each column
 
     new.row <- NULL
     answer <- NULL
@@ -109,20 +108,116 @@ check_column_name  <- function(data,
 
    } # END of the loop over one table
 
-
-
   }
 
-
-
   cat(crayon::green("The sheets", paste(names(new.list), collapse = ", "), "now have the right columns", emojifont::emoji("champagne")  ,"\n\n"))
-
   return(new.list)
 
   }
 
 
 
+#' @title Check column values
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+check_column_values_ID  <- function(data){
+
+  model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  #model.list <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs"))
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.ID.int <- model.ID %>% dplyr::filter(Col %in% names(tab.int))
+
+   # model.list.int <- model.list %>% dplyr::filter(Tab == x) #%>% dplyr::select(-Table)
+
+    for(i in 1:ncol(tab.int)){ # Loop over each column
+
+      col.int <-names(tab.int)[i]
 
 
+      # Si ça doit suivre un model
+      if(col.int %in% model.ID.int$Col){
+
+      cat(col.int, ": ")
+
+      # Check missing values
+      if( all(!is.na(tab.int[,col.int])) == T){
+         cat("No missing values observed, ")
+
+      } else cat(crayon::red("Missing values observed, "))
+
+
+      ## Check duplicated
+      #if( all(!duplicated(tab.int[,col.int])) == T){
+      #  cat("no duplicated values observed, ")
+      #} else cat(crayon::yellow("duplicated values observed (", paste(unique(dplyr::pull(tab.int[ duplicated(tab.int[,col.int]),  col.int])), collapse = ", ")))
+      #
+      #
+      #} # End of model check
+
+
+      # Loop over each valuesb
+
+      if(all(!is.na( unique(dplyr::pull(tab.int[ ,  col.int])))))  {  # only if there are values
+
+        bad.j <- vector()
+        for(j in  unique(dplyr::pull(tab.int[ ,  col.int]))){
+
+          model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Prefixe)
+
+          test.j <- stringr::str_split(j, pattern = model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Sep))
+
+          if(test.j[[1]][1] != model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Prefixe) |
+             nchar(test.j[[1]][2]) !=  model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(N_Annee) |
+             nchar(test.j[[1]][3]) !=  model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(N_Num) |
+             nchar(j) !=  ((model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Prefixe) %>% nchar()) + (model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(N_Annee)) + (model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(N_Num)) + (2 * ( model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Sep)) %>% nchar()))
+
+             ){
+
+            bad.j <- c( bad.j , j)
+
+            }
+
+        } # loop over each values
+
+        if(length(bad.j)>0){
+          cat(crayon::red("some values are problematics ", paste(bad.j, collapse = ", "), " )\n"))
+
+        } else cat("all in the good format\n")
+      } else { cat(crayon::red("no data within this column\n"))}
+
+    }
+
+  }# END of loop over column name
+
+#  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+#  return(new.list)
+
+  }   # END of the loop over table
+
+} # END of the function
 
