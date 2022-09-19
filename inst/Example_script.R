@@ -49,8 +49,12 @@ gabarit.ls2 <- check_column_name(gabarit.ls)
 
 
 # Checks that will need hand correction someimes
-
+# Just need to run it, and check if something must be done
 check_column_values_ID(gabarit.ls2)
+
+
+
+gabarit.ls3 <- correct_column_values_factor(gabarit.ls2)
 
 
 data <- gabarit.ls2

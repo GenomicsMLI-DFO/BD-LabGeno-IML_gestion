@@ -221,3 +221,124 @@ check_column_values_ID  <- function(data){
 
 } # END of the function
 
+
+#' @title Check column factor
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_column_values_factor  <- function(data){
+
+  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  model.list <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs"))
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.list.int <- model.list %>% dplyr::filter(Col %in% names(tab.int))
+
+    # model.list.int <- model.list %>% dplyr::filter(Tab == x) #%>% dplyr::select(-Table)
+
+    for(i in 1:nrow(model.list.int)){ # Loop over each column
+
+
+      col.int <-   model.list.int[[i,"Col"]]# %>% as.vector()
+
+      factor.vec <-  model.list.int[i,as.vector(!is.na(model.list.int[i,]))] %>% dplyr::select(-"Col")# %>% as.vector()
+
+      tab.int[, col.int] <- tab.int %>% pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
+
+      observed.vec <- tab.int %>% pull(col.int) %>% unique()
+
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+      cat("\n", col.int, ": predefined values are", crayon::green(paste(factor.vec, collapse = ", ")),
+          "\n Observed values are", crayon::inverse(paste(observed.vec, collapse = ", ")), "\n")
+
+      if(length(observed.vec) > 0)  {  # only if there are values
+
+      # Loop over unique value observed
+       for(j in observed.vec){
+
+         if((j %in% factor.vec) == F){
+
+          answer <- NULL
+          answer <- menu(title = paste("\nWhat value should", crayon::inverse(j), "be ? (0 to cancel corrections)" ),
+                          graphics = F,
+                          choice = c(crayon::red("Missing value"), factor.vec )
+          )
+
+          if(answer == 1) { # Change to a real missing value
+
+          tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+
+          cat(j, "was replaced with NA's\n")
+
+          }
+
+          if(answer %in% 2:(length( factor.vec)+1)){
+
+           new.value <- factor.vec[[answer-1]]
+
+           tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
+
+           cat(j, "was replaced with", new.value, "\n")
+
+          }
+
+          if(answer == 0){
+            cat("No replacement done. Please add this values to the gabarit. \n")
+
+          }
+
+
+          } # END of loop went something wrong is observed
+
+
+       }   # END of loop over unique value observed
+
+       } #else { cat(crayon::red("no data within this column\n"))}
+      # END of if values observed
+##
+       # Check missing values
+
+        cat( "\n", crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+             nrow(tab.int), "values)\n")
+
+    }# END of loop over column name
+
+    #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+    #  return(new.list)
+
+      data[[x]] <-  tab.int
+
+  }   # END of the loop over table
+
+
+  cat(crayon::green("\n\nColumns with predefined format were corrected", emojifont::emoji("watermelon")  ,"\n\n"))
+  return(data)
+
+} # END of the function
+
+
