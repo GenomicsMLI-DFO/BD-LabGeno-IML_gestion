@@ -57,6 +57,8 @@ check_column_values_ID(gabarit.ls2)
 gabarit.ls3 <- correct_column_values_factor(gabarit.ls2)
 
 
+gabarit.ls3  <- correct_column_values_date(gabarit.ls2)
+
 data <- gabarit.ls2
 
 dplyr::select(gabarit.ls$Extrait, "Numero_unique_specimen")

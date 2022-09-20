@@ -18,7 +18,7 @@
 #' List references
 #' @export
 
-check_column_name  <- function(data
+correct_column_name  <- function(data
                                ){
 
   model <-   suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Ordre"))
@@ -340,5 +340,131 @@ correct_column_values_factor  <- function(data){
   return(data)
 
 } # END of the function
+
+
+
+#' @title Check and correct column with Date
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_column_values_date  <- function(data){
+
+  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  model.date <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Date"))
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.date.int <- model.date %>% dplyr::filter(Col %in% names(tab.int))
+
+    for(i in 1:nrow(model.date.int)){ # Loop over each column
+
+
+      col.int <-   model.date.int[[i,"Col"]]# %>% as.vector()
+
+      date.range <-  model.date.int[i,]%>% dplyr::select(-"Col")# %>% as.vector()
+
+      observed.vec <- tab.int %>% pull(col.int) %>% unique()
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+      cat("\n", col.int, ":\n")
+
+
+      # Loop over values observed
+        for(j in observed.vec){
+
+        test.num <- as.numeric(j)
+
+          # If not numeric
+        if(is.na(test.num)){
+
+            answer <- NULL
+            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not numeric, which value should it be? Values between", date.range[1], "and", date.range[2], "are expected. "  )))
+
+            answer <- as.numeric(answer)
+
+
+            if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
+
+              tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer #  rep(NA, nrow(tab.int))
+
+              cat(j, "was replaced with", answer, "\n")
+
+            } else { cat ("Something went wrong")}
+            }
+
+
+        # If numeric
+        if(!is.na(test.num)){
+
+          # Should be in the right range
+
+          if( (test.num %in%  date.range[[1]]:date.range[[2]]) == F){
+
+          answer <- NULL
+          answer <- readline(paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). WHat value should it be? "  )))
+
+          answer <- as.numeric(answer)
+
+
+          if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
+
+            tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer #  rep(NA, nrow(tab.int))
+
+            cat(j, "was replaced with", answer, "\n")
+
+          } else { cat ("Something went wrong")}
+
+          }
+
+        }   # END of loop over unique value observed
+
+      } #else { cat(crayon::red("no data within this column\n"))}
+      # END of if values observed
+      ##
+      # Check missing values
+
+      cat( "\n", crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+           nrow(tab.int), "values)\n")
+
+    }# END of loop over column name
+
+    #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+    #  return(new.list)
+
+    data[[x]] <-  tab.int
+
+  }   # END of the loop over table
+
+
+  cat(crayon::green("\n\nColumns with date format were corrected", emojifont::emoji("apple")  ,"\n\n"))
+  return(data)
+
+} # END of the function
+
+
+
 
 
