@@ -1,32 +1,28 @@
 
-# Upload the library
+
+# Library -----------------------------------------------------------------
+
+# Upload the library (should be installed first)
 
 library(BDLG.gestion)
+library(tidyverse)
 
+# File to check -----------------------------------------------------------
+
+path.excel <- "inst/extdata/2021_CHLAMYS.xlsx"
+path.excel
+
+file.exists(path.excel)
+
+# Step 1. Load an Excel gabarit ---------------------------------------------------
 
 ?upload_gabarit_ADN
 
+gabarit.ls <- upload_gabarit_ADN(path = path.excel)
 
-# Load an Excel gabarit ---------------------------------------------------
+# Change the names of the sheet following what aws observed
 
-gabarit.ls <- upload_gabarit_ADN(path = "inst/extdata/20220901_MOBELS.xlsx")
-
-
-gabarit.ls <- upload_gabarit_ADN(path = "inst/extdata/20220901_MOBELS.xlsx",
-                                 specimen = "Specimens",
-                                 tissu = "Tissus",
-                                 extrait = "Extraits_ADN_ARN",
-                                 analyse_ext = "Analyses_externes",
-                                 sexage = "05_qPCR",
-                                 dloop = NULL,
-                                 skip = 0)
-
-# Step 1 - Upload Excel file in R
-
-gabarit.ls <- upload_gabarit_ADN(path = "inst/extdata/2021_CHLAMYS.xlsx")
-
-
-gabarit.ls <- upload_gabarit_ADN(path = "inst/extdata/2021_CHLAMYS.xlsx",
+gabarit.ls <- upload_gabarit_ADN(path = path.excel,
                                  specimen = "Specimens",
                                  tissu = "Tissus",
                                  extraitADN = "Extraits_ADN_ARN",
@@ -35,31 +31,53 @@ gabarit.ls <- upload_gabarit_ADN(path = "inst/extdata/2021_CHLAMYS.xlsx",
                                  dloop = NULL,
                                  skip = 0)
 
+# Check that the dimension make sense
 
 str(gabarit.ls)
 names(gabarit.ls)
 
-names(gabarit.ls)
-
 View(head(gabarit.ls$Extrait))
 
-# Step 2 - Check column names and order - and do the corrections
-gabarit.ls2 <- check_column_name(gabarit.ls)
+
+# Step 2 Correct column names and order ------------------------------------------
+
+#Check column names and order - and do the corrections
+
+gabarit.ls.2 <- correct_column_name(gabarit.ls)
 
 
 
-# Checks that will need hand correction someimes
+# Step 3 Check pre-defined column format ----------------------------------
+
+# Checks that will need hand correction sometimes
 # Just need to run it, and check if something must be done
-check_column_values_ID(gabarit.ls2)
+check_column_values_ID(gabarit.ls.2)
 
 
 
-gabarit.ls3 <- correct_column_values_factor(gabarit.ls2)
+# Step 4 Correct factors --------------------------------------------------
+
+gabarit.ls.3 <- correct_column_values_factor(gabarit.ls.2)
 
 
-gabarit.ls3  <- correct_column_values_date(gabarit.ls2)
+# Step 5 Correct dates ----------------------------------------------------
 
-data <- gabarit.ls2
+gabarit.ls.4  <- correct_column_values_date(gabarit.ls.3)
+
+# Check also missing values
+
+gabarit.ls.4  <- correct_column_values_numeric(gabarit.ls.2)
+
+
+
+
+sink(file = "console_output.txt", append = TRUE)
+
+gabarit.ls.4  <- correct_column_values_well(gabarit.ls.2)
+
+sink(file = NULL)
+
+data <- gabarit.ls.2
 
 dplyr::select(gabarit.ls$Extrait, "Numero_unique_specimen")
 

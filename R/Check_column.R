@@ -266,9 +266,9 @@ correct_column_values_factor  <- function(data){
 
       factor.vec <-  model.list.int[i,as.vector(!is.na(model.list.int[i,]))] %>% dplyr::select(-"Col")# %>% as.vector()
 
-      tab.int[, col.int] <- tab.int %>% pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
+      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
 
-      observed.vec <- tab.int %>% pull(col.int) %>% unique()
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
 
       observed.vec <-  observed.vec[!is.na( observed.vec )]
 
@@ -385,7 +385,7 @@ correct_column_values_date  <- function(data){
 
       date.range <-  model.date.int[i,]%>% dplyr::select(-"Col")# %>% as.vector()
 
-      observed.vec <- tab.int %>% pull(col.int) %>% unique()
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]
 
       cat("\n", col.int, ":\n")
@@ -460,6 +460,243 @@ correct_column_values_date  <- function(data){
 
 
   cat(crayon::green("\n\nColumns with date format were corrected", emojifont::emoji("apple")  ,"\n\n"))
+  return(data)
+
+} # END of the function
+
+
+
+
+
+#' @title Check and correct column with numeric values within
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_column_values_numeric  <- function(data){
+
+  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  model.num <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>%
+                dplyr::filter(Type == "numeric")
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking numeric columns for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.num.int <- model.num %>% dplyr::filter(Col %in% names(tab.int))
+
+    for(i in 1:nrow(model.num.int)){ # Loop over each column
+
+
+      col.int <-   model.num.int[[i,"Col"]]# %>% as.vector()
+
+      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim()
+
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+      cat("\n", col.int, ":\n")
+
+     # do something only if there are values
+
+      if(length(observed.vec)>0){
+
+      # Loop over values observed
+      for(j in observed.vec){
+
+        test.num <- as.numeric(j)
+
+        # If not numeric
+        if(is.na(test.num)){
+
+          answer <- NULL
+          answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not numeric, which value should it be? "  )))
+
+          answer #<- as.numeric(answer)
+
+
+          if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
+
+            tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer #  rep(NA, nrow(tab.int))
+
+            cat(j, "was replaced with", answer, "\n")
+
+          } else { cat ("Something went wrong")}
+        }
+
+      }   # END of loop over unique value observed
+      # Convert as numeric
+
+      tab.int[, col.int] <- suppressWarnings(as.numeric(as.character( tab.int %>% dplyr::pull(col.int))))
+
+      cat( "\n range of observation between", tab.int %>% dplyr::pull(col.int) %>% min(na.rm = T), "and",
+           tab.int %>% dplyr::pull(col.int) %>% max(na.rm = T), ", ")
+
+      } else { # if there is not data
+
+        cat(crayon::bgRed("no data within this column"), ", ")
+
+      tab.int[, col.int] <- suppressWarnings(as.numeric(as.character( tab.int %>% dplyr::pull(col.int))))
+
+      }
+
+      # END of if values observed
+      ##
+      # Check missing values
+
+      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+           nrow(tab.int), "values)\n")
+
+    }# END of loop over column name
+
+    #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+    #  return(new.list)
+
+    data[[x]] <-  tab.int
+
+  }   # END of the loop over table
+
+
+  cat(crayon::green("\n\nColumns with numeric format were corrected", emojifont::emoji("snake")  ,"\n\n"))
+  return(data)
+
+} # END of the function
+
+
+
+#' @title Check and correct column with a well number
+#' #'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_column_values_well  <- function(data){
+
+  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  model.well <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>%
+    dplyr::filter(Type == "puit")
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking well columns for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.well.int <- model.well %>% dplyr::filter(Col %in% names(tab.int))
+
+    if(nrow( model.well.int)>0){ # Do something only if you need too
+
+    for(i in 1:nrow(model.well.int)){ # Loop over each column
+
+
+      col.int <-   model.well.int[[i,"Col"]]# %>% as.vector()
+
+      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim()
+
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+      cat("\n", col.int, ":\n")
+
+      # do something only if there are values
+
+      if(length(observed.vec)>0){
+
+        # Loop over values observed
+        for(j in observed.vec){
+
+          Range.well <- stringr::str_sub(j, 1,1) #%>% stringr::str_to_upper()
+
+          Col.well   <- suppressWarnings( j %>% stringr::str_remove(Range.well) %>% as.numeric() )
+
+          New.well <- paste0(stringr::str_to_upper(Range.well), Col.well)
+
+          # If not numeric
+          if(is.na(Col.well)){
+
+            answer <- NULL
+            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "doesn't fit the right format (i.e., A1 to H12),which value should it be? "  )))
+
+
+            if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
+
+              tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer #  rep(NA, nrow(tab.int))
+
+              cat(j, "was replaced with", answer, "\n")
+
+            } else { cat ("Something went wrong")}
+
+          } else if(New.well != j){
+
+            cat(j, "was replaced with", New.well, "\n")
+
+            tab.int[which(tab.int[, col.int] == j) , col.int]  <- New.well #  rep(NA, nrow(tab.int))
+
+          }
+
+        }   # END of loop over unique value observed
+        # Convert as numeric
+
+      } else { # if there is not data
+
+        cat(crayon::bgRed("no data within this column"), ", ")
+
+      }
+
+      # END of if values observed
+      ##
+      # Check missing values
+
+      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+          nrow(tab.int), "values)\n")
+
+    }# END of loop over column name
+
+    data[[x]] <-  tab.int
+
+    }  else { cat("\nNo column with well format in this sheet\n")} # Do something only if you need too
+
+  }  # END of the loop over table
+
+
+  cat(crayon::green("\n\nColumns with well format were corrected", emojifont::emoji("first_quarter_moon_with_face")  ,"\n\n"))
   return(data)
 
 } # END of the function
