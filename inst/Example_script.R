@@ -70,6 +70,18 @@ gabarit.ls.4  <- correct_column_values_numeric(gabarit.ls.2)
 
 
 
+# Export the results ------------------------------------------------------
+
+export_access_csv(data = gabarit.ls.2,
+                  path = ".",
+                  prefix = "Chlamys_test")
+
+
+export_access_xlsx(data = gabarit.ls.2,
+                   path = ".",
+                   prefix = "Chlamys_test")
+
+
 
 sink(file = "console_output.txt", append = TRUE)
 
@@ -77,17 +89,8 @@ gabarit.ls.4  <- correct_column_values_well(gabarit.ls.2)
 
 sink(file = NULL)
 
+
+xlsx::write.xlsx()
+
 data <- gabarit.ls.2
 
-dplyr::select(gabarit.ls$Extrait, "Numero_unique_specimen")
-
-
- names(gabarit.ls$Extrait)
-
-
-
-col <- readxl::read_excel("inst/BD_format.xlsx")
-col
-
-
-readr::read_csv("inst/BD_columns_format.csv")
