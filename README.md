@@ -20,7 +20,7 @@ For windows user, it is possible that you get into problems. You can try to set 
 Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")
 ```
 
-En attentant, il faut clone le répertoire, puis, dans R studio, sous l'onglet Build, utiliser le bouton `Install and Restart`
+En attentant, il faut cloner le répertoire, puis, dans R studio, sous l'onglet Build, utiliser le bouton `Install and Restart`
 
 ## Comment utiliser le package 
 

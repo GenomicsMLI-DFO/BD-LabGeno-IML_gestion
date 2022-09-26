@@ -27,10 +27,10 @@
 #' @export
 upload_gabarit_ADN <- function(path,
                                skip=1,
-                               specimen = "Specimen",
-                               groupe = "Groupe",
-                               tissu = "Tissu",
-                               extraitADN = "ExtraitADN_ARN",
+                               specimen = "Specimens",
+                               groupe = "Groupes",
+                               tissu = "Tissus",
+                               extraitADN = "Extraits_ADN_ARN",
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
                                dloop = "DLoop"
@@ -72,7 +72,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-       excel.ls[["Specimen"]] <- temp.df
+       excel.ls[["Specimens"]] <- temp.df
 
     }
 
@@ -96,7 +96,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["Groupe"]] <- temp.df
+      excel.ls[["Groupes"]] <- temp.df
 
     }
 
@@ -123,7 +123,7 @@ upload_gabarit_ADN <- function(path,
       }
 
 
-      excel.ls[["Tissu"]] <- temp.df
+      excel.ls[["Tissus"]] <- temp.df
 
     }
 
@@ -147,7 +147,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["ExtraitADN_ARN"]] <- temp.df
+      excel.ls[["Extraits_ADN_ARN"]] <- temp.df
 
     }
 
