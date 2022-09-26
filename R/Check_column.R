@@ -703,5 +703,128 @@ correct_column_values_well  <- function(data){
 
 
 
+#' @title Check and correct all other columns
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [check_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_column_values_others  <- function(data){
+
+  model.valeur   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs")) %>%  dplyr::pull(Col)
+  model.ID       <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID")) %>%  dplyr::pull(Col)
+  model.date     <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Date")) %>%  dplyr::pull(Col)
+  model.type <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>% dplyr::pull(Col)
+
+  col.not.other <- c(model.valeur, model.ID, model.date, model.type)
+
+  #new.list <- list()
+
+  for(x in names(data)){
+
+    cat("\nChecking other columns for", crayon::bgMagenta(x), "\n")
+
+    tab.int <- data[[x]]
+
+    model.other <-  names(tab.int)[!(names(tab.int) %in% col.not.other) ]
+
+    for(i in model.other){ # Loop over each column
+      col.int <- i
+
+      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim() %>% as.factor()
+
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+      cat("\n", col.int, ":\n")
+
+      # do something only if there are values
+
+      if(length(observed.vec)>0){
+
+        N.max <- tab.int[, col.int] %>% table() %>% max()
+        N.min <- tab.int[, col.int] %>% table() %>% min()
+
+        N.unique <- tab.int[, col.int] %>% unique() %>% nrow()
+
+        N.na <- nrow(tab.int[which(is.na(tab.int[, col.int])), col.int])
+        cat(length(observed.vec), "values observed, repeated betwen", N.min, "and", N.max,
+            "times, with", N.unique, "unique values.\n")
+
+        answer <- NULL
+        answer <- menu(title = paste("\nDo you want to check all values observed?" ),
+                       graphics = F,
+                       choice = c("Yes", "No")
+        )
+
+        if(answer == 1) { # Change to a real missing value
+
+          print(as.character(observed.vec))
+
+        # Ask a new question <-
+
+          answer2 <- NULL
+          answer2 <- menu(title = paste("\nIs there some correction needed?" ),
+                         graphics = F,
+                         choice = c("Yes, change space to _ ",
+                                    "Yes, ask one by one",
+                                    "No")
+          )
+
+          if(answer2 == 1){
+
+            tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.factor()
+
+            cat("Change done\n")
+
+            print(tab.int %>% dplyr::pull(col.int) %>% unique() %>%  as.character())
+
+          }
+          if(answer2 == 2){
+
+            cat("This part is not yet coded\n")
+
+
+          }
+
+        } # End of first answer
+      }
+      # END of if values observed
+      ##
+      # Check missing values
+
+      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+          nrow(tab.int), "values)\n")
+
+    }# END of loop over column name
+
+    #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+    #  return(new.list)
+
+    data[[x]] <-  tab.int
+
+  }   # END of the loop over table
+
+
+  cat(crayon::green("\n\nColumns with other format were corrected", emojifont::emoji("beer")  ,"\n\n"))
+  return(data)
+
+} # END of the function
+
 
 

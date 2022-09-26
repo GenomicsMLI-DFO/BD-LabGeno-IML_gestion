@@ -54,8 +54,7 @@ gabarit.ls.2 <- correct_column_name(gabarit.ls)
 check_column_values_ID(gabarit.ls.2)
 
 
-
-# Step 4 Correct factors --------------------------------------------------
+# Step 4 Correct factors (predefined values) ------------------------------
 
 gabarit.ls.3 <- correct_column_values_factor(gabarit.ls.2)
 
@@ -64,18 +63,28 @@ gabarit.ls.3 <- correct_column_values_factor(gabarit.ls.2)
 
 gabarit.ls.4  <- correct_column_values_date(gabarit.ls.3)
 
-# Check also missing values
+# Step 6 Correct columns that should be numbers
 
 gabarit.ls.4  <- correct_column_values_numeric(gabarit.ls.2)
 
 
+# Step 7  Correct well format -------------------------------------------------------
+
+gabarit.ls.4 <- correct_column_values_well(gabarit.ls.2)
+
+# Step 8 Check all other columns  ------------------------------------------
+
+gabarit.ls.4 <- correct_column_values_others(gabarit.ls.2)
 
 # Export the results ------------------------------------------------------
+
+# In csv version
 
 export_access_csv(data = gabarit.ls.2,
                   path = ".",
                   prefix = "Chlamys_test")
 
+# In xlsx version
 
 export_access_xlsx(data = gabarit.ls.2,
                    path = ".",
