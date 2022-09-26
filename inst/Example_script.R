@@ -9,7 +9,7 @@ library(tidyverse)
 
 # File to check -----------------------------------------------------------
 
-path.excel <- "inst/extdata/2021_CHLAMYS.xlsx"
+path.excel <- "2022_CHLAMYS.xlsx"
 path.excel
 
 file.exists(path.excel)
@@ -45,7 +45,7 @@ View(head(gabarit.ls$Extrait))
 
 gabarit.ls.2 <- correct_column_name(gabarit.ls)
 
-
+names(gabarit.ls.2)
 
 # Step 3 Check pre-defined column format ----------------------------------
 
@@ -65,16 +65,16 @@ gabarit.ls.4  <- correct_column_values_date(gabarit.ls.3)
 
 # Step 6 Correct columns that should be numbers
 
-gabarit.ls.4  <- correct_column_values_numeric(gabarit.ls.2)
+gabarit.ls.5  <- correct_column_values_numeric(gabarit.ls.4)
 
 
 # Step 7  Correct well format -------------------------------------------------------
 
-gabarit.ls.4 <- correct_column_values_well(gabarit.ls.2)
+gabarit.ls.6 <- correct_column_values_well(gabarit.ls.5)
 
 # Step 8 Check all other columns  ------------------------------------------
 
-gabarit.ls.4 <- correct_column_values_others(gabarit.ls.2)
+gabarit.ls.7 <- correct_column_values_others(gabarit.ls.6)
 
 # Export the results ------------------------------------------------------
 
@@ -88,7 +88,7 @@ export_access_csv(data = gabarit.ls.2,
 
 export_access_xlsx(data = gabarit.ls.2,
                    path = ".",
-                   prefix = "Chlamys_test")
+                   prefix = "Chlamys_v1_20220926")
 
 
 
