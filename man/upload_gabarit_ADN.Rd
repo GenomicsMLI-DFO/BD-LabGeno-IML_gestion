@@ -7,10 +7,10 @@
 upload_gabarit_ADN(
   path,
   skip = 1,
-  specimen = "Specimen",
-  groupe = "Groupe",
-  tissu = "Tissu",
-  extraitADN = "ExtraitADN_ARN",
+  specimen = "Specimens",
+  groupe = "Groupes",
+  tissu = "Tissus",
+  extraitADN = "Extraits_ADN_ARN",
   analyse_ext = "Analyse_Externe",
   sexage = "Sexage",
   dloop = "DLoop"

@@ -54,35 +54,11 @@ upload_gabarit_ADN <- function(path,
 
   excel.ls <- list()
 
-  # Load specimen
-
-  if(!is.null(specimen)){
-
-    cat("\nLoading SPECIMEN\n")
-
-     temp.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip,col_types = "text", .name_repair = "minimal")
-
-     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
-
-    if(nrow(temp.df)>0){
-      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
-      if(length(dup.prob > 0)){
-
-        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
-
-      }
-
-       excel.ls[["Specimens"]] <- temp.df
-
-    }
-
-  }
-
   # Load groupe
 
   if(!is.null(groupe)){
 
-    cat("\nLoading GROUPE\n")
+    cat("\nLoading", crayon::cyan("Groupes"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = groupe, skip = skip,col_types = "text", .name_repair = "minimal")
 
@@ -102,11 +78,36 @@ upload_gabarit_ADN <- function(path,
 
   }
 
+  # Load specimen
+
+  if(!is.null(specimen)){
+
+    cat("\nLoading", crayon::cyan("Specimens"),"\n")
+
+     temp.df <-  readxl::read_excel(path = path, sheet = specimen, skip = skip,col_types = "text", .name_repair = "minimal")
+
+     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+       excel.ls[["Specimens"]] <- temp.df
+
+    }
+
+  }
+
+
   # Load tissu
 
   if(!is.null(tissu)){
 
-    cat("\nLoading TISSU\n")
+    cat("\nLoading", crayon::cyan("Tissus"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = tissu, skip = skip, col_types = "text",.name_repair = "minimal")
 
@@ -133,7 +134,7 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(extraitADN)){
 
-    cat("\nLoading EXTRAIT_ADN\n")
+    cat("\nLoading", crayon::cyan("Extraits_ADN_ARN"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = extraitADN, skip = skip, col_types = "text",.name_repair = "minimal")
 
@@ -157,7 +158,7 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(analyse_ext)){
 
-    cat("\nLoading ANALYSE_EXT\n")
+    cat("\nLoading", crayon::cyan("Analyse_Externe"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = analyse_ext, skip = skip, col_types = "text",.name_repair = "minimal")
 
@@ -182,7 +183,7 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(sexage)){
 
-    cat("\nLoading SEXAGE\n")
+    cat("\nLoading", crayon::cyan("Sexage"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = sexage, skip = skip, col_types = "text",.name_repair = "minimal")
 
@@ -207,7 +208,7 @@ upload_gabarit_ADN <- function(path,
 
   if(!is.null(dloop)){
 
-    cat("\nLoading DLOOP\n")
+    cat("\nLoading", crayon::cyan("Dloop"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = dloop, skip = skip, col_types = "text", .name_repair = "minimal")
 
@@ -231,7 +232,7 @@ upload_gabarit_ADN <- function(path,
 
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
 
-  cat(crayon::green("The sheets", paste(names(excel.ls), collapse = ", "), "have been uploaded", emojifont::emoji("unicorn")  ,"\n\n"))
+  cat(crayon::green("\nThe sheets", paste(names(excel.ls), collapse = ", "), "have been uploaded", emojifont::emoji("unicorn")  ,"\n\n"))
 
   return(excel.ls)
 

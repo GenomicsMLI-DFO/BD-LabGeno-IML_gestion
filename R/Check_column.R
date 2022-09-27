@@ -20,14 +20,13 @@
 
 correct_column_name  <- function(data
                                ){
-
   model <-   suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Ordre"))
 
   new.list <- list()
 
   for(x in names(data)){
 
-  cat("\nChecking column names for", crayon::bgMagenta(x), "\n")
+  cat("\nChecking column names for", crayon::cyan(x), "\n")
 
   model.int <- model %>% dplyr::filter(Table == x) %>% dplyr::select(-Table)
 
@@ -65,7 +64,7 @@ correct_column_name  <- function(data
 
    } else {
 
-     answer <- menu(title = paste("\nWas the column", crayon::inverse(model.vec[[i]]), "called another name or it's a new column?" ),
+     answer <- menu(title = paste("\nWas the column", crayon::cyan(model.vec[[i]]), "called another name or it's a new column?" ),
                  graphics = F,
                  choice = c(crayon::green("ADD as a new column"), names(tab.int) )
      )
@@ -73,7 +72,9 @@ correct_column_name  <- function(data
      #
      if(answer == 1) {
 
-    tab.new[model.vec[[i]]]  <- NA #  rep(NA, nrow(tab.int))
+     tab.new[model.vec[[i]]]  <- NA #  rep(NA, nrow(tab.int))
+
+     cat("\nA new column", model.vec[[i]], "was created.\n\n" )
 
      }
 
@@ -83,6 +84,10 @@ correct_column_name  <- function(data
     tab.new <- dplyr::bind_cols(tab.new, new.row)
 
     names(tab.new)[ncol(tab.new)] <- model.vec[[i]]
+
+    cat("\nThe columns",  names(tab.int)[answer-1], "was renamed", model.vec[[i]], ".\n\n" )
+
+
     }
 
    }
@@ -93,7 +98,7 @@ correct_column_name  <- function(data
    #
    if(all(names(tab.new) == model.vec[,] )) {
 
-     cat(crayon::green("\nThe table", x, "has now the right column names and order\n"))
+     cat(crayon::green("\nThe table", x, "now have the right column names and order\n"))
 
      new.list[[x]] <- tab.new
 
@@ -110,7 +115,8 @@ correct_column_name  <- function(data
 
   }
 
-  cat(crayon::green("The sheets", paste(names(new.list), collapse = ", "), "now have the right columns", emojifont::emoji("champagne")  ,"\n\n"))
+  cat(crayon::green("\nThe sheets", paste(names(new.list), collapse = ", "), "now have the right columns", emojifont::emoji("champagne")  ,"\n\n"))
+
   return(new.list)
 
   }
@@ -146,7 +152,7 @@ check_column_values_ID  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking column values for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -171,21 +177,15 @@ check_column_values_ID  <- function(data){
       } else cat(crayon::red("Missing values observed, "))
 
 
-      ## Check duplicated
-      #if( all(!duplicated(tab.int[,col.int])) == T){
-      #  cat("no duplicated values observed, ")
-      #} else cat(crayon::yellow("duplicated values observed (", paste(unique(dplyr::pull(tab.int[ duplicated(tab.int[,col.int]),  col.int])), collapse = ", ")))
-      #
-      #
-      #} # End of model check
-
+      unique.vec <- unique(dplyr::pull(tab.int[ ,  col.int]))
+      unique.vec <- unique.vec[!is.na(unique.vec)]
 
       # Loop over each valuesb
 
-      if(all(!is.na( unique(dplyr::pull(tab.int[ ,  col.int])))))  {  # only if there are values
+      if(length(unique.vec > 0))  {  # only if there are values
 
         bad.j <- vector()
-        for(j in  unique(dplyr::pull(tab.int[ ,  col.int]))){
+        for(j in  unique.vec){
 
           model.ID.int %>% dplyr::filter(Col == col.int) %>% dplyr::pull(Prefixe)
 
@@ -205,7 +205,7 @@ check_column_values_ID  <- function(data){
         } # loop over each values
 
         if(length(bad.j)>0){
-          cat(crayon::red("some values are problematics ", paste(bad.j, collapse = ", "), " )\n"))
+          cat(crayon::red("some values are problematics :", paste(bad.j, collapse = ", "), " \n\n"))
 
         } else cat("all in the good format\n")
       } else { cat(crayon::red("no data within this column\n"))}
@@ -217,7 +217,11 @@ check_column_values_ID  <- function(data){
 #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
 #  return(new.list)
 
-  }   # END of the loop over table
+}   # END of the loop over table
+
+    cat(crayon::green("\nEnd of the verification, please check potential problems carefully", emojifont::emoji("four_leaf_clover")  ,"\n\n"))
+  #  return(new.list)
+
 
 } # END of the function
 
@@ -251,7 +255,7 @@ correct_column_values_factor  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking column values for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -261,10 +265,10 @@ correct_column_values_factor  <- function(data){
 
     for(i in 1:nrow(model.list.int)){ # Loop over each column
 
-
       col.int <-   model.list.int[[i,"Col"]]# %>% as.vector()
 
-      factor.vec <-  model.list.int[i,as.vector(!is.na(model.list.int[i,]))] %>% dplyr::select(-"Col")# %>% as.vector()
+      factor.vec <-  model.list.int[i,as.vector(!is.na(model.list.int[i,]))] %>% dplyr::select(-"Col") %>% as.data.frame()
+      factor.vec <- suppressWarnings(factor.vec[1,order(factor.vec[1,])])
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
 
@@ -272,8 +276,23 @@ correct_column_values_factor  <- function(data){
 
       observed.vec <-  observed.vec[!is.na( observed.vec )]
 
+      # Test si c'est numérique
+
+      observed.vec.num <- suppressWarnings(as.numeric(observed.vec))
+
+      # If not numeric
+      if(all(!is.na(observed.vec.num ))){
+
+      cat("\n", col.int, ": Numeric value observed, converted as round charecter.\n")
+
+      observed.vec <- as.character(round(observed.vec.num,0))
+
+      tab.int[ , col.int]  <- suppressWarnings(as.character(round(as.numeric( tab.int %>% pull(col.int)))))
+
+       }
+
       cat("\n", col.int, ": predefined values are", crayon::green(paste(factor.vec, collapse = ", ")),
-          "\n Observed values are", crayon::inverse(paste(observed.vec, collapse = ", ")), "\n")
+          "\n Observed values are", crayon::cyan(paste(observed.vec, collapse = ", ")), "\n")
 
       if(length(observed.vec) > 0)  {  # only if there are values
 
@@ -283,7 +302,7 @@ correct_column_values_factor  <- function(data){
          if((j %in% factor.vec) == F){
 
           answer <- NULL
-          answer <- menu(title = paste("\nWhat value should", crayon::inverse(j), "be ? (0 to cancel corrections)" ),
+          answer <- menu(title = paste("\nWhat value should", crayon::cyan(j), "be ? (0 to cancel corrections)" ),
                           graphics = F,
                           choice = c(crayon::red("Missing value"), factor.vec )
           )
@@ -372,7 +391,7 @@ correct_column_values_date  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking column values for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking column values for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -400,9 +419,9 @@ correct_column_values_date  <- function(data){
         if(is.na(test.num)){
 
             answer <- NULL
-            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not numeric, which value should it be? Values between", date.range[1], "and", date.range[2], "are expected. "  )))
+            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::cyan(j), "is not numeric, which value should it be? Values between", date.range[1], "and", date.range[2], "are expected. "  )))
 
-            answer <- as.numeric(answer)
+            #answer <- as.numeric(answer)
 
 
             if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
@@ -425,7 +444,7 @@ correct_column_values_date  <- function(data){
           answer <- NULL
           answer <- readline(paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). WHat value should it be? "  )))
 
-          answer <- as.numeric(answer)
+          #answer <- as.numeric(answer)
 
 
           if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
@@ -435,6 +454,10 @@ correct_column_values_date  <- function(data){
             cat(j, "was replaced with", answer, "\n")
 
           } else { cat ("Something went wrong")}
+
+          } else{ # Do a round
+
+            tab.int[which(tab.int[, col.int] == j) , col.int] <- as.character(round(test.num, 0))
 
           }
 
@@ -498,7 +521,7 @@ correct_column_values_numeric  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking numeric columns for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking numeric columns for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -506,10 +529,10 @@ correct_column_values_numeric  <- function(data){
 
     for(i in 1:nrow(model.num.int)){ # Loop over each column
 
-
       col.int <-   model.num.int[[i,"Col"]]# %>% as.vector()
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim()
+      tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
 
       observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]
@@ -523,13 +546,25 @@ correct_column_values_numeric  <- function(data){
       # Loop over values observed
       for(j in observed.vec){
 
-        test.num <- as.numeric(j)
+        test.num <- suppressWarnings(as.numeric(j))
 
         # If not numeric
         if(is.na(test.num)){
 
+          # Try to change automatically "," to "."
+
+          test.num.corrected <- suppressWarnings(as.numeric(j %>% stringr::str_replace(",", ".") ))
+
+          if(!is.na(test.num.corrected)){
+
+          tab.int[which(tab.int[, col.int] == j) , col.int]  <- as.character(test.num.corrected) #  rep(NA, nrow(tab.int))
+          cat(j, "was replaced with",  test.num.corrected, "automatically.\n")
+
+          }
+
+          if(is.na(test.num.corrected)){
           answer <- NULL
-          answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not numeric, which value should it be? "  )))
+          answer <- readline(prompt = paste(crayon::white("The observed value", crayon::red(j), "is not numeric, which value should it be? "  )))
 
           answer #<- as.numeric(answer)
 
@@ -541,8 +576,8 @@ correct_column_values_numeric  <- function(data){
             cat(j, "was replaced with", answer, "\n")
 
           } else { cat ("Something went wrong")}
+         }
         }
-
       }   # END of loop over unique value observed
       # Convert as numeric
 
@@ -553,7 +588,7 @@ correct_column_values_numeric  <- function(data){
 
       } else { # if there is not data
 
-        cat(crayon::bgRed("no data within this column"), ", ")
+        cat(crayon::red("no data within this column"), ", ")
 
       tab.int[, col.int] <- suppressWarnings(as.numeric(as.character( tab.int %>% dplyr::pull(col.int))))
 
@@ -563,7 +598,7 @@ correct_column_values_numeric  <- function(data){
       ##
       # Check missing values
 
-      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+      cat(crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
 
            nrow(tab.int), "values)\n")
 
@@ -628,6 +663,7 @@ correct_column_values_well  <- function(data){
       col.int <-   model.well.int[[i,"Col"]]# %>% as.vector()
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim()
+      tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
 
       observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]
@@ -645,13 +681,15 @@ correct_column_values_well  <- function(data){
 
           Col.well   <- suppressWarnings( j %>% stringr::str_remove(Range.well) %>% as.numeric() )
 
-          New.well <- paste0(stringr::str_to_upper(Range.well), Col.well)
+          Col.well.double <- ifelse(Col.well < 10, paste0(0, Col.well), Col.well)
+
+          New.well <- paste0(stringr::str_to_upper(Range.well), Col.well.double)
 
           # If not numeric
           if(is.na(Col.well)){
 
             answer <- NULL
-            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::inverse(j), "doesn't fit the right format (i.e., A1 to H12),which value should it be? "  )))
+            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::red(j), "doesn't fit the right format (i.e., A1 to H12),which value should it be? "  )))
 
 
             if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
@@ -675,7 +713,7 @@ correct_column_values_well  <- function(data){
 
       } else { # if there is not data
 
-        cat(crayon::bgRed("no data within this column"), ", ")
+        cat(crayon::red("no data within this column"), ", ")
 
       }
 
@@ -683,7 +721,7 @@ correct_column_values_well  <- function(data){
       ##
       # Check missing values
 
-      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+      cat(crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
 
           nrow(tab.int), "values)\n")
 
@@ -746,6 +784,7 @@ correct_column_values_others  <- function(data){
       col.int <- i
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim() %>% as.factor()
+      tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
 
       observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]

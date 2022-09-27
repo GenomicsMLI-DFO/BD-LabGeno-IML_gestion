@@ -30,14 +30,14 @@ export_access_csv <- function(data,
     tab.int <- data[[x]]
     new.file <- file.path(path, paste0(prefix, "_", x, ".csv"))
 
-    cat("\nExporting", crayon::bgMagenta(x), "to", new.file, "\n")
+    cat("\nExporting", crayon::cyan(x), "to", new.file, "\n")
 
     readr::write_csv(tab.int, file = new.file, na = "")
 
 
     }
 
-  cat("\nExportation is OVER!!\n")
+  cat(crayon::green("\nExportation is OVER!!"),  emojifont::emoji("tropical_drink")  ,"\n\n")
 
 }
 
@@ -74,7 +74,7 @@ export_access_xlsx <- function(data,
     tab.int <- data[[x.id]] %>% as.data.frame()
 
 
-    cat("\nExporting", crayon::bgMagenta(x.id), "to", new.file, "\n")
+    cat("\nExporting", crayon::cyan(x.id), "to", new.file, "\n")
 
     if(x == 1) {
 
@@ -93,6 +93,6 @@ export_access_xlsx <- function(data,
 
   }
 
-  cat("\nExportation is OVER!!",  emojifont::emoji("tropical_drink")  ,"\n")
+  cat(crayon::green("\nExportation is OVER!!"),  emojifont::emoji("tropical_drink")  ,"\n\n")
 
 }

@@ -23,6 +23,7 @@ gabarit.ls <- upload_gabarit_ADN(path = path.excel)
 # Change the names of the sheet following what aws observed
 
 gabarit.ls <- upload_gabarit_ADN(path = path.excel,
+                                 groupe = "Groupe",
                                  specimen = "Specimens",
                                  tissu = "Tissus",
                                  extraitADN = "Extraits_ADN_ARN",
@@ -38,6 +39,8 @@ names(gabarit.ls)
 
 View(head(gabarit.ls$Extrait))
 
+data <- gabarit.ls.2
+
 
 # Step 2 Correct column names and order ------------------------------------------
 
@@ -46,6 +49,16 @@ View(head(gabarit.ls$Extrait))
 gabarit.ls.2 <- correct_column_name(gabarit.ls)
 
 names(gabarit.ls.2)
+
+export_access_xlsx(data = gabarit.ls.2,
+                   path = ".",
+                   prefix = "Chlamys_v1_20220926")
+
+
+gabarit.ls.2 <- upload_gabarit_ADN(path = "Chlamys_v1_20220926.xlsx",
+                                   sexage = NULL,
+                                   dloop = NULL,
+                                   skip = 0)
 
 # Step 3 Check pre-defined column format ----------------------------------
 
