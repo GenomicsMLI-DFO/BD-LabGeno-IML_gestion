@@ -89,6 +89,12 @@ gabarit.ls.6 <- correct_column_values_well(gabarit.ls.5)
 
 gabarit.ls.7 <- correct_column_values_others(gabarit.ls.6)
 
+
+
+
+check_relation(gabarit.ls.2)
+
+
 # Export the results ------------------------------------------------------
 
 # In csv version
