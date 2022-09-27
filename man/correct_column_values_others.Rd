@@ -2,7 +2,7 @@
 % Please edit documentation in R/Check_column.R
 \name{correct_column_values_others}
 \alias{correct_column_values_others}
-\title{Check and correct all other columns}
+\title{Check and correct all the remaining columns}
 \usage{
 correct_column_values_others(data)
 }

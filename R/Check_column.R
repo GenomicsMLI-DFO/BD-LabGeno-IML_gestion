@@ -741,7 +741,7 @@ correct_column_values_well  <- function(data){
 
 
 
-#' @title Check and correct all other columns
+#' @title Check and correct all the remaining columns
 #'
 #' @description
 #' Function to check that column name and order follow the predefined template
@@ -774,22 +774,58 @@ correct_column_values_others  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking other columns for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking other columns for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
     model.other <-  names(tab.int)[!(names(tab.int) %in% col.not.other) ]
 
     for(i in model.other){ # Loop over each column
+
       col.int <- i
 
-      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim() %>% as.factor()
+      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim() #%>% as.factor()
       tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
 
       observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]
 
       cat("\n", col.int, ":\n")
+
+      # REMOVE ALL SPECIAL CARACTERS
+
+      if(length(observed.vec) > 1){
+
+        cat("\n Looking for special characters\n\n")
+
+        for(j in observed.vec){
+         new.value <- NULL
+         test.num <-  suppressWarnings(as.numeric(j))
+
+         if(!is.na(test.num)){
+         new.value <- as.character(test.num)
+         }
+
+         if(is.na(test.num)){
+           new.value <- remove_all_special(j)
+         }
+
+         #
+         if(new.value != j){
+
+         tab.int[which(tab.int[, col.int] == j), col.int] <- new.value
+
+         cat(" ", j, "was replaced by", new.value, "\n")
+         }
+
+
+        } # End of loop over unique values
+
+      } # END of special character correction
+
+      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+      observed.vec <-  observed.vec[!is.na( observed.vec )]
+
 
       # do something only if there are values
 
@@ -798,10 +834,12 @@ correct_column_values_others  <- function(data){
         N.max <- tab.int[, col.int] %>% table() %>% max()
         N.min <- tab.int[, col.int] %>% table() %>% min()
 
-        N.unique <- tab.int[, col.int] %>% unique() %>% nrow()
+        N.unique <- tab.int[which(!is.na(tab.int[, col.int])), col.int] %>% unique() %>% nrow()
 
-        N.na <- nrow(tab.int[which(is.na(tab.int[, col.int])), col.int])
-        cat(length(observed.vec), "values observed, repeated betwen", N.min, "and", N.max,
+        #N.na <- nrow(tab.int[which(is.na(tab.int[, col.int])), col.int])
+
+
+        cat("\n", length(observed.vec), "values observed, repeated betwen", N.min, "and", N.max,
             "times, with", N.unique, "unique values.\n")
 
         answer <- NULL
@@ -816,37 +854,52 @@ correct_column_values_others  <- function(data){
 
         # Ask a new question <-
 
-          answer2 <- NULL
-          answer2 <- menu(title = paste("\nIs there some correction needed?" ),
+          answer2 <- 1
+
+          while(answer2 == 1) {
+           answer2 <- menu(title = paste("\nDo you want to modify one value?" ),
                          graphics = F,
-                         choice = c("Yes, change space to _ ",
-                                    "Yes, ask one by one",
-                                    "No")
-          )
+                         choice = c("Yes, ask one by one",
+                                    "No, everything looks fine"))
+           # Then ask one by one
+           if(answer2 == 1){
+              answer3 <- NULL
+              answer3 <- menu(title = paste("\nWhich one you want to modify? (0 to exit this menu)" ),
+                              graphics = F,
+                              choice = c(as.character(observed.vec)))
 
-          if(answer2 == 1){
+              if(answer3 != 0){
 
-            tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.factor()
+                new.value <- NULL
+                new.value <- readline(prompt = paste("Which value",as.character(observed.vec)[answer3], "should be? "  ))
 
-            cat("Change done\n")
+                tab.int[which(tab.int[, col.int] == as.character(observed.vec)[answer3]), col.int] <- new.value
+                cat("\n", as.character(observed.vec)[answer3], "was changed to", new.value, "\n\n")
 
-            print(tab.int %>% dplyr::pull(col.int) %>% unique() %>%  as.character())
+                # Update the vector
 
-          }
-          if(answer2 == 2){
+                observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+                observed.vec <-  observed.vec[!is.na( observed.vec )]
 
-            cat("This part is not yet coded\n")
+                # Print the updated values
 
+                print(as.character(observed.vec))
+              } # END of the BIG loop of correction
 
-          }
+            }
+           if(answer2 == 2){
 
-        } # End of first answer
+             cat("\n Correction mode is over\n")
+           }
+           }
+
+         } # End of first answer
       }
       # END of if values observed
       ##
       # Check missing values
 
-      cat(crayon::bgRed(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+      cat(crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
 
           nrow(tab.int), "values)\n")
 
@@ -860,7 +913,7 @@ correct_column_values_others  <- function(data){
   }   # END of the loop over table
 
 
-  cat(crayon::green("\n\nColumns with other format were corrected", emojifont::emoji("beer")  ,"\n\n"))
+  cat(crayon::green("\n\nRemaining Columns were corrected", emojifont::emoji("beer")  ,"\n\n"))
   return(data)
 
 } # END of the function
