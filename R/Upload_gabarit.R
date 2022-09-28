@@ -20,7 +20,7 @@
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso List relevant other functions [littleforecast()].
+#' @seealso
 #'
 #` @references
 #' List references
@@ -33,7 +33,7 @@ upload_gabarit_ADN <- function(path,
                                extraitADN = "Extraits_ADN_ARN",
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
-                               seuqnecage = "Sequencage"
+                               sequencage = "Sequencage"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
