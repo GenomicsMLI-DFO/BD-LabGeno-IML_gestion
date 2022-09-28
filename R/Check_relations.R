@@ -229,22 +229,22 @@ check_relation  <- function(data){
 
 
 
-  # Dloop : 2 checks
+  # Sequencage : 2 checks
 
-  if(c("Dloop") %in%  names(data)  ){
-    cat("\nImporting", crayon::cyan("Dloop"), "table KEY:\n")
+  if(c("Sequencage") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Sequencage"), "table KEY:\n")
 
     # Check with specimens
 
     if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Dloop$Numero_unique_specimen %in% Numero_unique_specimen)){
+      if(all(data$Sequencage$Numero_unique_specimen %in% Numero_unique_specimen)){
         cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table.\n"))
 
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Dloop$Numero_unique_specimen[!data$Dloop$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Sequencage$Numero_unique_specimen[!data$Sequencage$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
                         , "\nare missing\n"))
       }
 
@@ -257,13 +257,13 @@ check_relation  <- function(data){
 
     if(!is.null(Numero_unique_extrait)){
 
-      if(all(data$Dloop$Numero_unique_extrait %in% Numero_unique_extrait)){
+      if(all(data$Sequencage$Numero_unique_extrait %in% Numero_unique_extrait)){
         cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table.\n"))
 
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table.\n",
-                        paste(unique(data$Dloop$Numero_unique_extrait[!data$Dloop$Numero_unique_extrait %in% Numero_unique_extrait]), sep = ", ")
+                        paste(unique(data$Sequencage$Numero_unique_extrait[!data$Sequencage$Numero_unique_extrait %in% Numero_unique_extrait]), sep = ", ")
                         , "\nare missing\n"))
       }
 

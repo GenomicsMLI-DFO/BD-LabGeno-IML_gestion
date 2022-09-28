@@ -118,14 +118,16 @@ export_access_xlsx(data = gabarit.ls.2,
 
 
 
-sink(file = "console_output.txt", append = TRUE)
-
-gabarit.ls.4  <- correct_column_values_well(gabarit.ls.2)
-
-sink(file = NULL)
+#sink(file = "console_output.txt", append = TRUE)
 
 
-xlsx::write.xlsx()
+#sink(file = NULL)
 
-data <- gabarit.ls.2
+
+
+# Combined multiples corrected gabarit ------------------------------------
+
+multiple.ls <- combine_multiple_gabarit(path = ".")
+
+
 

@@ -14,7 +14,7 @@
 #' @param extrait Name of the sheet in the Excel file containing the DNA/RNA extract data
 #' @param analyse_ext Name of the sheet in the Excel file containing external analysis info
 #' @param sexage of the sheet in the Excel file containing the sex determining method
-#' @param dloop Name of the sheet in the Excel file containing the dloop info
+#' @param sequencage Name of the sheet in the Excel file containing the sequencage info
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -33,7 +33,7 @@ upload_gabarit_ADN <- function(path,
                                extraitADN = "Extraits_ADN_ARN",
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
-                               dloop = "DLoop"
+                               seuqnecage = "Sequencage"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
@@ -43,7 +43,7 @@ upload_gabarit_ADN <- function(path,
 
   cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
 
-  sheet.to.load <- c(specimen, groupe, tissu, extraitADN, analyse_ext, sexage, dloop)
+  sheet.to.load <- c(specimen, groupe, tissu, extraitADN, analyse_ext, sexage, sequencage)
 
   if( !all(sheet.to.load %in% sheet.observed)){
          stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file."))
@@ -204,13 +204,13 @@ upload_gabarit_ADN <- function(path,
   }
 
 
-  # Load dloop
+  # Load sequencage
 
-  if(!is.null(dloop)){
+  if(!is.null(sequencage)){
 
-    cat("\nLoading", crayon::cyan("Dloop"),"\n")
+    cat("\nLoading", crayon::cyan("Sequencage"),"\n")
 
-    temp.df <-  readxl::read_excel(path = path, sheet = dloop, skip = skip, col_types = "text", .name_repair = "minimal")
+    temp.df <-  readxl::read_excel(path = path, sheet = sequencage, skip = skip, col_types = "text", .name_repair = "minimal")
 
     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
 
@@ -222,7 +222,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["Dloop"]] <- temp.df
+      excel.ls[["Sequencage"]] <- temp.df
 
     }
 
@@ -237,3 +237,82 @@ upload_gabarit_ADN <- function(path,
   return(excel.ls)
 
 }
+
+
+#' @title Upload and combine multiple corrected tables
+#'
+#' @description
+#' Function to upload and combined corrected Excel files
+#'
+#' @details
+#'
+#' @param path Path to the folder were the excel files are
+#' @param table.access List of sheets that will be read (only if they exist)
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#' @seealso [upload_gabarit_ADN()].
+#'
+#` @references
+#' List references
+#' @export
+
+combine_multiple_gabarit <- function(path,
+                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage")
+                                     ){
+
+excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
+
+cat("\n", length(excel.files), "files are detected:", paste(excel.files, collapse = ", "))
+
+combine.ls <- list(Groupes = data.frame(),
+                   Specimens = data.frame(),
+                   Tissus = data.frame(),
+                   Extraits_ADN_ARN = data.frame(),
+                   Analyse_Externe = data.frame(),
+                   Sexage = data.frame(),
+                   Sequencage = data.frame()
+                   )
+
+n.test <- 0
+
+for(x in excel.files){
+
+  table.names <- readxl::excel_sheets(file.path(path, x))
+
+  int.ls <- list()
+
+  cat("\nLooking for", crayon::cyan(x), "\n")
+
+  for(i in table.names){
+
+  if(i %in% table.access ){
+
+  cat("\n", crayon::cyan(i), "was detected and will be uploaded: ")
+
+
+  df.int <- readxl::read_excel(file.path(path, x), sheet = i, col_types = "text", .name_repair = "minimal")
+
+  cat("", ncol(temp.df), "columns and", nrow(temp.df), "rows were uploaded\n")
+
+  int.ls[[i]] <-  df.int
+
+  combine.ls[[i]]  <- dplyr::bind_rows(combine.ls[[i]] , df.int )
+
+  n.test <- n.test + 1
+    } #
+
+  } #END of loop over table name
+
+
+}
+
+cat(crayon::green("\n",n.test, "tables have been combined", emojifont::emoji("bomb")  ,"\n\n"))
+
+return(combine.ls)
+
+
+}
+
+

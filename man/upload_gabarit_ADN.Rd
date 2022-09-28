@@ -13,7 +13,7 @@ upload_gabarit_ADN(
   extraitADN = "Extraits_ADN_ARN",
   analyse_ext = "Analyse_Externe",
   sexage = "Sexage",
-  dloop = "DLoop"
+  seuqnecage = "Sequencage"
 )
 }
 \arguments{
@@ -29,11 +29,11 @@ upload_gabarit_ADN(
 
 \item{sexage}{of the sheet in the Excel file containing the sex determining method}
 
-\item{dloop}{Name of the sheet in the Excel file containing the dloop info}
-
 \item{group}{Name of the sheet in the Excel file containing group data}
 
 \item{extrait}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
+
+\item{sequencage}{Name of the sheet in the Excel file containing the sequencage info}
 }
 \description{
 Function to upload an Excel file based on the predefined template
