@@ -7,8 +7,7 @@
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
 #' @param data List containing important tables.
-#' @param path Path to an excel spreadsheet with the list of Projet name.
-#' '
+#'
 #' @examples
 #' # provide some examples of how to use your function
 #'
@@ -19,12 +18,12 @@
 #' List references
 #' @export
 
-correct_project  <- function(data, model.path = "inst/LISTE_PROJETS.xlsx"){
+correct_project  <- function(data){
 
   col.int <-   "Nom_projet"
 
   #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  Projet <-  suppressMessages(readxl::read_excel(model.path)) %>% pull(col.int)
+  Projet <-  model.projet  %>% pull(col.int)
   Projet <- Projet[order(Projet)]
   #new.list <- list()
   cat("\nChecking for columns called", crayon::cyan( col.int), "\n")

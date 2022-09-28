@@ -4,13 +4,10 @@
 \alias{correct_project}
 \title{Check the Projet column specificallyr}
 \usage{
-correct_project(data, model.path = "inst/LISTE_PROJETS.xlsx")
+correct_project(data)
 }
 \arguments{
 \item{data}{List containing important tables.}
-
-\item{path}{Path to an excel spreadsheet with the list of Projet name.
-'}
 }
 \description{
 Function to check that column name and order follow the predefined template

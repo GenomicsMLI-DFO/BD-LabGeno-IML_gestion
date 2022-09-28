@@ -20,7 +20,7 @@
 
 correct_column_name  <- function(data
                                ){
-  model <-   suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Ordre"))
+  model.ordre
 
   new.list <- list()
 
@@ -28,7 +28,7 @@ correct_column_name  <- function(data
 
   cat("\nChecking column names for", crayon::cyan(x), "\n")
 
-  model.int <- model %>% dplyr::filter(Table == x) %>% dplyr::select(-Table)
+  model.int <- model.ordre %>% dplyr::filter(Table == x) %>% dplyr::select(-Table)
 
   tab.int <- data[[x]]
 
@@ -145,11 +145,6 @@ correct_column_name  <- function(data
 
 check_column_values_ID  <- function(data){
 
-  model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  #model.list <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs"))
-
-  #new.list <- list()
-
   for(x in names(data)){
 
     cat("\nChecking column values for", crayon::cyan(x), "\n")
@@ -247,11 +242,6 @@ check_column_values_ID  <- function(data){
 #' @export
 
 correct_column_values_factor  <- function(data){
-
-  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  model.list <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs"))
-
-  #new.list <- list()
 
   for(x in names(data)){
 
@@ -384,11 +374,6 @@ correct_column_values_factor  <- function(data){
 
 correct_column_values_date  <- function(data){
 
-  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  model.date <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Date"))
-
-  #new.list <- list()
-
   for(x in names(data)){
 
     cat("\nChecking column values for", crayon::cyan(x), "\n")
@@ -514,7 +499,7 @@ correct_column_values_date  <- function(data){
 correct_column_values_numeric  <- function(data){
 
   #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  model.num <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>%
+  model.num <-  model.other %>%
                 dplyr::filter(Type == "numeric")
 
   #new.list <- list()
@@ -642,7 +627,7 @@ correct_column_values_numeric  <- function(data){
 correct_column_values_well  <- function(data){
 
   #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  model.well <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>%
+  model.well <- model.other %>%
     dplyr::filter(Type == "puit")
 
   #new.list <- list()
@@ -763,12 +748,7 @@ correct_column_values_well  <- function(data){
 
 correct_column_values_others  <- function(data){
 
-  model.valeur   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Valeurs")) %>%  dplyr::pull(Col)
-  model.ID       <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID")) %>%  dplyr::pull(Col)
-  model.date     <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Date")) %>%  dplyr::pull(Col)
-  model.type <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "Others")) %>% dplyr::pull(Col)
-
-  col.not.other <- c(model.valeur, model.ID, model.date, model.type)
+  col.not.other <- c(model.valeur, model.ID, model.date, model.other)
 
   #new.list <- list()
 
