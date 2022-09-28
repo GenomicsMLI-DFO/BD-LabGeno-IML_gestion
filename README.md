@@ -1,12 +1,19 @@
 # BD-LabGeno-IML_gestion
-Outils pour la gestion de la base de données en génomique
+Package pour faciliter la gestion de la base de données en génomique
 
+__Main author:__  Audrey Bourret  
+__Affiliation:__  Fisheries and Oceans Canada (DFO)   
+__Group:__        Laboratory of genomics   
+__Location:__     Maurice Lamontagne Institute  
+__Affiliated publication:__  
+__Contact:__      e-mail: audrey.bourret@dfo-mpo.gc.ca
 
+- [Installation du package](#installation-du-package)
+- [Comment utiliser le package](#comment-utiliser-le-package)
 
+## Installation du package
 
-## Comment installer le package associé
-
-Lorsque le répertoire sera publique, il sera possible de le télécharger directement ainsi :
+Il n'est pas nécessaire de cloner ce répertoire pour utiliser le package, il est possible de l'installer directement à partir de R ainsi :
 
 ```{r}
 library(remotes)
@@ -25,71 +32,3 @@ En attentant, il faut cloner le répertoire, puis, dans R studio, sous l'onglet 
 ## Comment utiliser le package 
 
 Voir [Example_script.R](/inst/Example_script.R) pour un exemple.
-
-__Main author:__  Audrey Bourret  
-__Affiliation:__  Fisheries and Oceans Canada (DFO)   
-__Group:__        Laboratory of genomics   
-__Location:__     Maurice Lamontagne Institute  
-__Affiliated publication:__  
-__Contact:__      e-mail: audrey.bourret@dfo-mpo.gc.ca
-
-
-- [Objective](#objective)
-- [Summary](#summary)
-- [Status](#status)
-- [Contents](#contents)
-  + [Subsections within contents](#subsections-within-contents)
-- [Methods](#methods)
-  + [Subsections within methods](#subsections-within-methods)
-- [Main Results](#main-results)
-- [Requirements](#requirements)
-- [Caveats](#caveats)
-- [Uncertainty](#uncertainty)
-- [Acknowledgements](#acknowledgements)
-- [References](#references)
-
-
-## Objective
-The main goal/purpose of the project.
-
-
-## Summary
-Description of the project, provide some background and context. What are the inputs and outputs?
-
-
-## Status
-Is the project finished or being developed? Choose from: "Completed", "Ongoing-improvements", "In-development"
-
-
-## Contents
-Describe the contents of the repository. Are there multiple scripts or directories? What are there purpose and how do they relate to each other?
-### Subsections within contents
-Use subsections to describe the purpose of each script if warranted.
-
-
-## Methods
-What methods were used to achieve the purpose? This should be detailed as possible.
-### Subsections within methods
-Often useful to organise the methods under multiple subheadings.
-
-## Main Results
-*Optional section.* Links to important figures.
-
-## Requirements
-*Optional section.* List the input data requirements or software requirements to successfully execute the code.
-
-
-## Caveats
-Anything other users should be aware of including gaps in the input or output data and warnings about appropriate use.
-
-
-## Uncertainty
-*Optional section.* Is there some uncertainty associated with the output? Assumptions that were made?
-
-
-## Acknowledgements
-*Optional section.* List any contributors and acknowledge relevant people or institutions
-
-
-## References
-*Optional section.*
