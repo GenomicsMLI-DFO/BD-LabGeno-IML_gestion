@@ -1,4 +1,4 @@
-# BD-LabGeno-IML_gestion
+# BDLG.gestion
 Package pour faciliter la gestion de la base de données en génomique
 
 __Main author:__  Audrey Bourret  
@@ -31,4 +31,4 @@ En attentant, il faut cloner le répertoire, puis, dans R studio, sous l'onglet 
 
 ## Comment utiliser le package 
 
-Voir [Example_script.R](/inst/Example_script.R) pour un exemple.
+Voir le dossier [BD-LabGeno-IML_correction_template](https://github.com/GenomicsMLI-DFO/BD-LabGeno-IML_correction_template) pour un exemple.
