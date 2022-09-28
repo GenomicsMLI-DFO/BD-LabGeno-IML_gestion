@@ -91,6 +91,13 @@ gabarit.ls.7 <- correct_column_values_others(gabarit.ls.6)
 
 
 
+# Step 9 Check Project name -----------------------------------------------
+
+gabarit.ls.8 <- correct_project(gabarit.ls.7, "inst/LISTE_PROJETS.xlsx")
+
+
+
+# Step 10 Check Relation between tables -----------------------------------
 
 check_relation(gabarit.ls.2)
 
