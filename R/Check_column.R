@@ -12,7 +12,7 @@
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [upload_gabarit_ADN()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -137,7 +137,7 @@ correct_column_name  <- function(data
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -235,7 +235,7 @@ check_column_values_ID  <- function(data){
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -366,7 +366,7 @@ correct_column_values_factor  <- function(data){
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -490,7 +490,7 @@ correct_column_values_date  <- function(data){
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -618,7 +618,7 @@ correct_column_values_numeric  <- function(data){
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -740,7 +740,7 @@ correct_column_values_well  <- function(data){
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references

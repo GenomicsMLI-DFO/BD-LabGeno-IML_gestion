@@ -25,7 +25,7 @@ NULL if you doesn't want a specif sheet to be uploaded. No other check than shee
 
 }
 \seealso{
-List relevant other functions \code{\link[=littleforecast]{littleforecast()}}.
+\code{\link[=upload_gabarit_ADN]{upload_gabarit_ADN()}}
 
 List references
 }

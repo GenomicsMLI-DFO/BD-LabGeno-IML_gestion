@@ -21,7 +21,7 @@ NULL if you doesn't want a specif sheet to be uploaded. No other check than shee
 
 }
 \seealso{
-\code{\link[=check_column_name]{check_column_name()}} to create the list of tables.
+\code{\link[=correct_column_name]{correct_column_name()}} to create the list of tables.
 
 List references
 }

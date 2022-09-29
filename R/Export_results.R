@@ -14,7 +14,7 @@
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso List relevant other functions [littleforecast()].
+#' @seealso [export_access_csv()]
 #'
 #` @references
 #' List references
@@ -57,7 +57,7 @@ export_access_csv <- function(data,
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso List relevant other functions [littleforecast()].
+#' @seealso [upload_gabarit_ADN()]
 #'
 #` @references
 #' List references

@@ -12,7 +12,7 @@
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [check_column_name()] to create the list of tables.
+#' @seealso [correct_column_name()] to create the list of tables.
 #'
 #` @references
 #' List references
