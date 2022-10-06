@@ -145,7 +145,7 @@ check_relation  <- function(data){
     if(!is.null(Numero_unique_specimen)){
 
       if(all(data$Extraits_ADN_ARN$Numero_unique_specimen %in% Numero_unique_specimen)){
-        cat(crayon::green("\nAll the Numero_unique_speciemen observed exist in the Specimen table.\n"))
+        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table.\n"))
 
       } else {
 
