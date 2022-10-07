@@ -319,6 +319,29 @@ check_relation  <- function(data){
 
   }
 
+  # Hormone : 1 check
 
+  if(c("Hormones") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Hormones"), "table KEY:\n")
+
+    # Check with specimens
+
+    if(!is.null(Numero_unique_specimen)){
+
+      if(all(data$Hormones$Numero_unique_specimen %in% Numero_unique_specimen)){
+        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
+                        paste(unique(data$Hormones$Numero_unique_specimen[!data$Hormones$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    }
+
+    }
 
 } # END of the function

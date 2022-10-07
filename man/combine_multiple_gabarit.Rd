@@ -7,7 +7,7 @@
 combine_multiple_gabarit(
   path,
   table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN",
-    "Analyse_Externe", "Sexage", "Sequencage")
+    "Analyse_Externe", "Sexage", "Sequencage", "Hormones")
 )
 }
 \arguments{

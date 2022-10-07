@@ -13,7 +13,8 @@ upload_gabarit_ADN(
   extraitADN = "Extraits_ADN_ARN",
   analyse_ext = "Analyse_Externe",
   sexage = "Sexage",
-  sequencage = "Sequencage"
+  sequencage = "Sequencage",
+  hormone = "Hormones"
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ upload_gabarit_ADN(
 \item{sexage}{of the sheet in the Excel file containing the sex determining method}
 
 \item{sequencage}{Name of the sheet in the Excel file containing the sequencage info}
+
+\item{hormone}{Name of the sheet in the Excel file containing the hormone info}
 
 \item{group}{Name of the sheet in the Excel file containing group data}
 

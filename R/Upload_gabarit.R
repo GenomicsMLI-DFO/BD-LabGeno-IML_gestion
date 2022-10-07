@@ -15,6 +15,8 @@
 #' @param analyse_ext Name of the sheet in the Excel file containing external analysis info
 #' @param sexage of the sheet in the Excel file containing the sex determining method
 #' @param sequencage Name of the sheet in the Excel file containing the sequencage info
+#' @param hormone Name of the sheet in the Excel file containing the hormone info
+
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -33,7 +35,8 @@ upload_gabarit_ADN <- function(path,
                                extraitADN = "Extraits_ADN_ARN",
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
-                               sequencage = "Sequencage"
+                               sequencage = "Sequencage",
+                               hormone = "Hormones"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
@@ -43,10 +46,10 @@ upload_gabarit_ADN <- function(path,
 
   cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
 
-  sheet.to.load <- c(specimen, groupe, tissu, extraitADN, analyse_ext, sexage, sequencage)
+  sheet.to.load <- c(specimen, groupe, tissu, extraitADN, analyse_ext, sexage, sequencage, hormone)
 
   if( !all(sheet.to.load %in% sheet.observed)){
-         stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file."))
+         stop(paste("\nThe sheet to be uploaded (",  paste(sheet.to.load, collapse = ", "),") doesn't fit the one detected. You can modified their names as an argument within this function or directly within the Excel file. NULL can be added as an argument if a sheet is totally absent."))
   }
 
   # Etape 2 - loader chacune des pages, et les mettre dans une liste
@@ -228,6 +231,30 @@ upload_gabarit_ADN <- function(path,
 
   }
 
+  # Load sexage
+
+  if(!is.null(hormone)){
+
+    cat("\nLoading", crayon::cyan("Hormones"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = hormone, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Hormones"]] <- temp.df
+
+    }
+
+  }
+
 
 
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
@@ -259,7 +286,7 @@ upload_gabarit_ADN <- function(path,
 #' @export
 
 combine_multiple_gabarit <- function(path,
-                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage")
+                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones")
                                      ){
 
 excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
