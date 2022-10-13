@@ -382,10 +382,14 @@ correct_column_values_date  <- function(data){
 
     model.date.int <- model.date %>% dplyr::filter(Col %in% names(tab.int))
 
+
+
+    if(nrow(model.date.int)>0){ # Add the exception to do it only if dates exist
+
     for(i in 1:nrow(model.date.int)){ # Loop over each column
 
-
       col.int <-   model.date.int[[i,"Col"]]# %>% as.vector()
+      tab.int[which(tab.int[, col.int] %in% c("NA", "ND")), col.int] <- NA
 
       date.range <-  model.date.int[i,]%>% dplyr::select(-"Col")# %>% as.vector()
 
@@ -463,6 +467,8 @@ correct_column_values_date  <- function(data){
     #  return(new.list)
 
     data[[x]] <-  tab.int
+
+    } # END the exception to do it only if dates exist
 
   }   # END of the loop over table
 
