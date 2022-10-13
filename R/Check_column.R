@@ -308,7 +308,7 @@ correct_column_values_factor  <- function(data){
           if(answer == 2) { # Change to a new value
 
             answer2 <- NULL
-            answer2 <- readline(prompt = paste(crayon::white("\nWhich value should it be? Please add this value to the list of expected values.  "  )))
+            answer2 <- readline(prompt = paste(crayon::white("Which value should it be? Please add this value to the list of expected values.  "  )))
 
             #answer <- as.numeric(answer)
 
@@ -698,7 +698,7 @@ correct_column_values_well  <- function(data){
           if(is.na(Col.well)){
 
             answer <- NULL
-            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::red(j), "doesn't fit the right format (i.e., A1 to H12),which value should it be? "  )))
+            answer <- readline(prompt = paste(crayon::white("The observed value", crayon::red(j), "doesn't fit the right format (i.e., A1 to H12),which value should it be? "  )))
 
 
             if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
