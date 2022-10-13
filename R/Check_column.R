@@ -292,9 +292,9 @@ correct_column_values_factor  <- function(data){
          if((j %in% factor.vec) == F){
 
           answer <- NULL
-          answer <- menu(title = paste("\nWhat value should", crayon::cyan(j), "be ? (0 to cancel corrections)" ),
+          answer <- menu(title = paste("\nWhat value should", crayon::cyan(j), "be ? (0 to cancel corrections and keep current value)" ),
                           graphics = F,
-                          choice = c(crayon::red("Missing value"), factor.vec )
+                          choice = c(crayon::red("Missing value"), crayon::green("New value"), factor.vec )
           )
 
           if(answer == 1) { # Change to a real missing value
@@ -305,9 +305,27 @@ correct_column_values_factor  <- function(data){
 
           }
 
-          if(answer %in% 2:(length( factor.vec)+1)){
+          if(answer == 2) { # Change to a new value
 
-           new.value <- factor.vec[[answer-1]]
+            answer2 <- NULL
+            answer2 <- readline(prompt = paste(crayon::white("\nWhich value should it be? Please add this value to the list of expected values.  "  )))
+
+            #answer <- as.numeric(answer)
+
+            if(!is.na(answer2) && !is.null(answer2)) { # Change to a real missing value
+
+              tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer2 #  rep(NA, nrow(tab.int))
+
+              cat(j, "was replaced with", answer2, "\n")
+
+            } else { cat ("Something went wrong")}
+          }
+
+
+
+          if(answer %in% 3:(length( factor.vec)+2)){
+
+           new.value <- factor.vec[[answer-2]]
 
            tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
 
