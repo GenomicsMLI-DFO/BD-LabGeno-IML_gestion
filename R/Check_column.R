@@ -407,7 +407,8 @@ correct_column_values_date  <- function(data){
     for(i in 1:nrow(model.date.int)){ # Loop over each column
 
       col.int <-   model.date.int[[i,"Col"]]# %>% as.vector()
-      tab.int[which(tab.int[, col.int] %in% c("NA", "ND")), col.int] <- NA
+      tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
+      tab.int[which(tab.int[, col.int] == "ND"), col.int] <- NA
 
       date.range <-  model.date.int[i,]%>% dplyr::select(-"Col")# %>% as.vector()
 
@@ -449,7 +450,7 @@ correct_column_values_date  <- function(data){
           if( (test.num %in%  date.range[[1]]:date.range[[2]]) == F){
 
           answer <- NULL
-          answer <- readline(paste(crayon::white("\nThe observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). WHat value should it be? "  )))
+          answer <- readline(paste(crayon::white("The observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). WHat value should it be? "  )))
 
           #answer <- as.numeric(answer)
 
