@@ -9,7 +9,8 @@ library(tidyverse)
 
 # File to check -----------------------------------------------------------
 
-path.excel <- "2022_CHLAMYS.xlsx"
+path.excel <- "./inst/extdata/20220901_MOBELS.xlsx"
+#path.excel <- "2022_CHLAMYS.xlsx"
 path.excel
 
 file.exists(path.excel)
@@ -21,6 +22,18 @@ file.exists(path.excel)
 gabarit.ls <- upload_gabarit_ADN(path = path.excel)
 
 # Change the names of the sheet following what aws observed
+gabarit.ls <- upload_gabarit_ADN(path = path.excel,
+                                 groupe = NULL,#"Groupe",
+                                 specimen = NULL,
+                                 tissu =NULL,
+                                 extraitADN = NULL,
+                                 analyse_ext = NULL,#"Analyses_externes",
+                                 sexage = "05_qPCR",#NULL,
+                                 sequencage = NULL,
+                                 hormone = NULL,
+                                 skip = 0)
+
+
 
 gabarit.ls <- upload_gabarit_ADN(path = path.excel,
                                  groupe = "Groupe",
@@ -72,9 +85,12 @@ check_column_values_ID(gabarit.ls.2)
 gabarit.ls.3 <- correct_column_values_factor(gabarit.ls.2)
 
 
+
 # Step 5 Correct dates ----------------------------------------------------
 
-gabarit.ls.4  <- correct_column_values_date(gabarit.ls.3)
+gabarit.ls.4  <- correct_column_values_date(gabarit.ls)
+
+data <- gabarit.ls
 
 # Step 6 Correct columns that should be numbers
 

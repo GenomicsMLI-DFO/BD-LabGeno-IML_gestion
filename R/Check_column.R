@@ -427,7 +427,7 @@ correct_column_values_date  <- function(data){
         if(is.na(test.num)){
 
             answer <- NULL
-            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::cyan(j), "is not numeric, which value should it be? Values between", date.range[1], "and", date.range[2], "are expected. "  )))
+            answer <- readline(prompt = paste(crayon::white("\nThe observed value", crayon::cyan(j), "is not numeric, which value should it be? Values between", date.range[1], "and", date.range[2], "are expected. NA values are accepted."  )))
 
             #answer <- as.numeric(answer)
 
@@ -438,7 +438,7 @@ correct_column_values_date  <- function(data){
 
               cat(j, "was replaced with", answer, "\n")
 
-            } else { cat ("Something went wrong")}
+            } else { cat ("The observed value was not replaced.")}
             }
 
 
@@ -450,18 +450,24 @@ correct_column_values_date  <- function(data){
           if( (test.num %in%  date.range[[1]]:date.range[[2]]) == F){
 
           answer <- NULL
-          answer <- readline(paste(crayon::white("The observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). WHat value should it be? "  )))
+          answer <- readline(paste(crayon::white("The observed value", crayon::inverse(j), "is not in the expected range (between", date.range[1], "and", date.range[2], "). What value should it be? NA values are accepted. "  )))
 
           #answer <- as.numeric(answer)
 
+          if(answer == "NA"){
 
-          if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
+          tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+
+          cat(j, "was replaced with NA\n")
+
+
+          } else if(!is.na(answer) && !is.null(answer)) { # Change to a real missing value
 
             tab.int[which(tab.int[, col.int] == j) , col.int]  <- answer #  rep(NA, nrow(tab.int))
 
             cat(j, "was replaced with", answer, "\n")
 
-          } else { cat ("Something went wrong")}
+          } else { cat ("The observed value was not replaced.")}
 
           } else{ # Do a round
 
@@ -536,6 +542,8 @@ correct_column_values_numeric  <- function(data){
     tab.int <- data[[x]]
 
     model.num.int <- model.num %>% dplyr::filter(Col %in% names(tab.int))
+
+    if(nrow(model.num.int)>0){ # Add the exception to do it only if dates exist
 
     for(i in 1:nrow(model.num.int)){ # Loop over each column
 
@@ -618,6 +626,8 @@ correct_column_values_numeric  <- function(data){
     #  return(new.list)
 
     data[[x]] <-  tab.int
+
+    } # END the exception to do it only if num columns exist
 
   }   # END of the loop over table
 
@@ -740,6 +750,8 @@ correct_column_values_well  <- function(data){
     data[[x]] <-  tab.int
 
     }  else { cat("\nNo column with well format in this sheet\n")} # Do something only if you need too
+
+
 
   }  # END of the loop over table
 
