@@ -291,7 +291,7 @@ combine_multiple_gabarit <- function(path,
 
 excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
 
-cat("\n", length(excel.files), "files are detected:", paste(excel.files, collapse = ", "))
+cat("\n", "Looking for Excel spreadsheets in",  path, "\n",length(excel.files), "files are detected:", paste(excel.files, collapse = ", "), "\n")
 
 combine.ls <- list(Groupes = data.frame(),
                    Specimens = data.frame(),
@@ -321,7 +321,7 @@ for(x in excel.files){
 
   df.int <- readxl::read_excel(file.path(path, x), sheet = i, col_types = "text", .name_repair = "minimal")
 
-  cat("", ncol(temp.df), "columns and", nrow(temp.df), "rows were uploaded\n")
+  cat("", ncol(df.int), "columns and", nrow(df.int), "rows were uploaded\n")
 
   int.ls[[i]] <-  df.int
 
