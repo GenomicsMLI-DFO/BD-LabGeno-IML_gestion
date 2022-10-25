@@ -28,7 +28,7 @@
 #' List references
 #' @export
 upload_gabarit_ADN <- function(path,
-                               skip=1,
+                               skip=0,
                                specimen = "Specimens",
                                groupe = "Groupes",
                                tissu = "Tissus",
