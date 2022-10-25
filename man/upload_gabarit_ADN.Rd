@@ -6,7 +6,7 @@
 \usage{
 upload_gabarit_ADN(
   path,
-  skip = 1,
+  skip = 0,
   specimen = "Specimens",
   groupe = "Groupes",
   tissu = "Tissus",
