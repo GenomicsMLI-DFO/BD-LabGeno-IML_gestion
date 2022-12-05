@@ -69,7 +69,7 @@ check_relation  <- function(data){
         cat(crayon::red("\nNot all the Numero_unique_groupe observed exist in the Groupes table.\n",
 
 
-           paste(unique(data$Specimens$Numero_unique_groupe[!data$Specimens$Numero_unique_groupe %in% Numero_unique_groupe]), sep = ", ")
+           paste(unique(data$Specimens$Numero_unique_groupe[!data$Specimens$Numero_unique_groupe %in% Numero_unique_groupe]), collapse = ", ")
            , "\nare missing\n"))
           }
 
@@ -111,7 +111,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Tissus$Numero_unique_specimen[!data$Tissus$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Tissus$Numero_unique_specimen[!data$Tissus$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -150,7 +150,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_specimen[!data$Extraits_ADN_ARN$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_specimen[!data$Extraits_ADN_ARN$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -169,7 +169,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_tissu observed exist in the Specimen table.\n",
-                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_tissu[!data$Extraits_ADN_ARN$Numero_unique_tissu %in% Numero_unique_tissu]), sep = ", ")
+                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_tissu[!data$Extraits_ADN_ARN$Numero_unique_tissu %in% Numero_unique_tissu]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -198,7 +198,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Analyse_Externe$Numero_unique_specimen[!data$Analyse_Externe$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Analyse_Externe$Numero_unique_specimen[!data$Analyse_Externe$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -217,7 +217,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table.\n",
-                        paste(unique(data$Analyse_Externe$Numero_unique_extrait[!data$Analyse_Externe$Numero_unique_extrait %in% Numero_unique_extrait]), sep = ", ")
+                        paste(unique(data$Analyse_Externe$Numero_unique_extrait[!data$Analyse_Externe$Numero_unique_extrait %in% Numero_unique_extrait]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -244,7 +244,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Sequencage$Numero_unique_specimen[!data$Sequencage$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Sequencage$Numero_unique_specimen[!data$Sequencage$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -263,7 +263,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table.\n",
-                        paste(unique(data$Sequencage$Numero_unique_extrait[!data$Sequencage$Numero_unique_extrait %in% Numero_unique_extrait]), sep = ", ")
+                        paste(unique(data$Sequencage$Numero_unique_extrait[!data$Sequencage$Numero_unique_extrait %in% Numero_unique_extrait]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -290,7 +290,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Sexage$Numero_unique_specimen[!data$Sexage$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Sexage$Numero_unique_specimen[!data$Sexage$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -309,7 +309,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table.\n",
-                        paste(unique(data$Sexage$Numero_unique_extrait[!data$Sexage$Numero_unique_extrait %in% Numero_unique_extrait]), sep = ", ")
+                        paste(unique(data$Sexage$Numero_unique_extrait[!data$Sexage$Numero_unique_extrait %in% Numero_unique_extrait]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -334,7 +334,7 @@ check_relation  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table.\n",
-                        paste(unique(data$Hormones$Numero_unique_specimen[!data$Hormones$Numero_unique_specimen %in% Numero_unique_specimen]), sep = ", ")
+                        paste(unique(data$Hormones$Numero_unique_specimen[!data$Hormones$Numero_unique_specimen %in% Numero_unique_specimen]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
