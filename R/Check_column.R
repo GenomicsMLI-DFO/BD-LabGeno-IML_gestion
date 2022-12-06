@@ -165,6 +165,8 @@ check_column_values_ID  <- function(data){
 
       cat(col.int, ": ")
 
+      tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
+
       # Check missing values
       if( all(!is.na(tab.int[,col.int])) == T){
          cat("No missing values observed, ")
