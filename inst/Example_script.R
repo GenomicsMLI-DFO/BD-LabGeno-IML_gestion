@@ -27,7 +27,7 @@ gabarit.ls <- upload_gabarit_ADN(path = path.excel,
                                  specimen = NULL,
                                  tissu =NULL,
                                  extraitADN = NULL,
-                                 analyse_ext = NULL,#"Analyses_externes",
+                                 analyse_ext = "Analyses_externes",
                                  sexage = "05_qPCR",#NULL,
                                  sequencage = NULL,
                                  hormone = NULL,
@@ -109,8 +109,7 @@ gabarit.ls.7 <- correct_column_values_others(gabarit.ls.6)
 
 # Step 9 Check Project name -----------------------------------------------
 
-gabarit.ls.8 <- correct_project(gabarit.ls.7, "inst/LISTE_PROJETS.xlsx")
-
+gabarit.ls.8 <- correct_project(gabarit.ls.2)
 
 
 # Step 10 Check Relation between tables -----------------------------------

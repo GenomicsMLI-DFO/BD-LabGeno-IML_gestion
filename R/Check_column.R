@@ -553,6 +553,7 @@ correct_column_values_numeric  <- function(data){
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_trim()
       tab.int[which(tab.int[, col.int] == "NA"), col.int] <- NA
+      tab.int[which(tab.int[, col.int] == "ND"), col.int] <- NA
 
       observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
       observed.vec <-  observed.vec[!is.na( observed.vec )]

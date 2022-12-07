@@ -39,6 +39,41 @@ correct_project  <- function(data){
      tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
      tab.int[which( tab.int[, col.int] == "NA") , col.int] <- NA
 
+     # Check pour les NA
+
+     n.NA <- nrow(tab.int[which( is.na(tab.int[, col.int])) , col.int])
+
+     if(n.NA > 0){
+
+       answer <- NULL
+       answer <- menu(title = paste("\n", n.NA, "missing values were observed. What should the project be ? (0 to cancel corrections)" ),
+                      graphics = F,
+                      choice = Projet
+                      #choice = c(crayon::red("Missing value"), Projet)
+       )
+
+       #  if(answer == 1) { # Change to a real missing value
+       #              tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+       #              cat(j, "was replaced with NA's\n")
+       #            }
+
+       if(answer %in% 1:(length(Projet))){
+
+         new.value <- Projet[[answer]]
+
+         tab.int[which( is.na(tab.int[, col.int])) , col.int] <- new.value
+
+         cat("NA was replaced with", new.value, "\n")
+
+       }
+
+       if(answer == 0){
+         cat("No replacement done. Please change NA manually as no missing value should remained. \n")
+
+       }
+
+     }
+
      observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
      observed.vec <-  observed.vec[!is.na( observed.vec )]
 
@@ -55,20 +90,18 @@ correct_project  <- function(data){
             answer <- NULL
             answer <- menu(title = paste("\nWhat value should", crayon::cyan(j), "be ? (0 to cancel corrections)" ),
                            graphics = F,
-                           choice = c(crayon::red("Missing value"), Projet)
+                           choice = Projet
+                           #choice = c(crayon::red("Missing value"), Projet)
             )
 
-            if(answer == 1) { # Change to a real missing value
+          #  if(answer == 1) { # Change to a real missing value
+#              tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+#              cat(j, "was replaced with NA's\n")
+#            }
 
-              tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+            if(answer %in% 1:(length(Projet))){
 
-              cat(j, "was replaced with NA's\n")
-
-            }
-
-            if(answer %in% 2:(length(Projet)+1)){
-
-              new.value <- Projet[[answer-1]]
+              new.value <- Projet[[answer]]
 
               tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
 
