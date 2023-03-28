@@ -18,9 +18,6 @@ combine_multiple_gabarit(
 \description{
 Function to upload and combined corrected Excel files
 }
-\details{
-
-}
 \examples{
 # provide some examples of how to use your function
 

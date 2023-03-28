@@ -271,7 +271,6 @@ upload_gabarit_ADN <- function(path,
 #' @description
 #' Function to upload and combined corrected Excel files
 #'
-#' @details
 #'
 #' @param path Path to the folder were the excel files are
 #' @param table.access List of sheets that will be read (only if they exist)
