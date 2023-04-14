@@ -7,6 +7,7 @@
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
 #' @param data List containing important tables.
+#' @param DB Name of the ODBC connection
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -32,6 +33,8 @@ check_key <- function(data, DB = "LabGeno"){
 
   res <- sapply(stringr::str_split(attr(con, "connection.string"), ";"), `[`,2) |> stringr::str_remove("DBQ=")
   cat(paste("\nConnected to", res, "\n"))
+
+  RODBC::odbcClose(con)
 
   # GROUPE
   if(c("Groupes") %in%  names(data)  ){
