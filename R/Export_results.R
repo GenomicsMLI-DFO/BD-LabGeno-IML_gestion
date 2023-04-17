@@ -49,9 +49,10 @@ export_access_csv <- function(data,
 #' @details
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
-#' @param data Path to the excel spreadsheet
+#' @param data The Rlist object containing the table to be exported
 #' @param path Path to the excel spreadsheet
 #' @param prefix Prefi of the new file name
+#' @param showNA If you want NA values to be exported as "NA" (if TRUE) or as blank (if FALSE)
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -65,7 +66,8 @@ export_access_csv <- function(data,
 
 export_access_xlsx <- function(data,
                               path = ".",
-                              prefix = "Export"){
+                              prefix = "Export",
+                              showNA = F){
 
   new.file <- file.path(path, paste0(prefix, ".xlsx"))
   for(x in 1:length(names(data))){
@@ -79,14 +81,14 @@ export_access_xlsx <- function(data,
     if(x == 1) {
 
     xlsx::write.xlsx(tab.int, file = new.file, col.names = TRUE, row.names = FALSE,
-                      sheetName = x.id, append = F, showNA = F)
+                      sheetName = x.id, append = F, showNA =  showNA)
 
     }
 
     if(x > 1) {
 
       xlsx::write.xlsx(tab.int, file = new.file, col.names = TRUE, row.names = FALSE,
-                       sheetName = x.id, append = T, showNA = F)
+                       sheetName = x.id, append = T, showNA = showNA)
 
     }
 

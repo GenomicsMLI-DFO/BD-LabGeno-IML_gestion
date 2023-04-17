@@ -4,14 +4,16 @@
 \alias{export_access_xlsx}
 \title{Upload Excel template}
 \usage{
-export_access_xlsx(data, path = ".", prefix = "Export")
+export_access_xlsx(data, path = ".", prefix = "Export", showNA = F)
 }
 \arguments{
-\item{data}{Path to the excel spreadsheet}
+\item{data}{The Rlist object containing the table to be exported}
 
 \item{path}{Path to the excel spreadsheet}
 
 \item{prefix}{Prefi of the new file name}
+
+\item{showNA}{If you want NA values to be exported as "NA" (if TRUE) or as blank (if FALSE)}
 }
 \description{
 Function to export the list into a csv
