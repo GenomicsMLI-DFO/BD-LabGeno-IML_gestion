@@ -18,12 +18,14 @@
 #' List references
 #' @export
 
-correct_project  <- function(data){
+correct_project  <- function(data, DB = "LabGeno"){
 
   col.int <-   "Nom_projet"
 
+  model.projet <-   load_DB(DB = DB)
+
   #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
-  Projet <-  model.projet  %>% pull(col.int)
+  Projet <-  model.projet  %>% dplyr::pull(col.int)
   Projet <- Projet[order(Projet)]
   #new.list <- list()
   cat("\nChecking for columns called", crayon::cyan( col.int), "\n")
@@ -133,7 +135,6 @@ correct_project  <- function(data){
 
     #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
     #  return(new.list)
-
     data[[x]] <-  tab.int
 
   }   # END of the loop over table

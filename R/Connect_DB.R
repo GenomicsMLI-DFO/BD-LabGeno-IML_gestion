@@ -65,7 +65,7 @@ load_DB <- function(table = "00_Liste_projets", DB = "LabGeno"){
     res <- sapply(stringr::str_split(attr(con, "connection.string"), ";"), `[`,2) |> stringr::str_remove("DBQ=")
     cat(paste("\nConnected to", res))
 
-    export.df <-  sqlFetch(con, table)
+    export.df <-  RODBC::sqlFetch(con, table)
 
     cat(paste("\nThe table", table, "was uploaded and contained", nrow(export.df), "entries.\n"))
 

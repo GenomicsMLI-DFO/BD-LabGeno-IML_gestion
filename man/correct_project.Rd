@@ -4,7 +4,7 @@
 \alias{correct_project}
 \title{Check the Projet column specificallyr}
 \usage{
-correct_project(data)
+correct_project(data, DB = "LabGeno")
 }
 \arguments{
 \item{data}{List containing important tables.}
