@@ -135,3 +135,59 @@ load_columns_DB <- function(columns, table, DB = "LabGeno", verbose = TRUE){
 }
 
 
+#' @title List table and request contained in the database.
+#'
+#' @description
+#' Function to ;ist possible main table and request contained in the database.
+#'
+#' @details
+#'
+#'
+#' @param DB Name of the OBDC database, as set in your computer.
+#'
+#' @examples
+#' list_DB()
+#'
+#' @seealso
+#'
+#` @references
+#' List references
+#' @export
+
+list_DB <- function(DB = "LabGeno"){
+
+  con <- RODBC::odbcConnect(DB)
+
+  if(is.null(attr(con, "connection.string"))){
+    print("Something went wrong with the connection ...")
+  } else {
+    res <- sapply(stringr::str_split(attr(con, "connection.string"), ";"), `[`,2) |> stringr::str_remove("DBQ=")
+    cat(paste("\nConnected to", res))
+
+    res <- RODBC::sqlTables(con) |> dplyr::filter(TABLE_TYPE %in% c("TABLE", "SYNONYM", "VIEW")) |>
+           dplyr::select(TABLE_NAME, TABLE_TYPE)
+
+    table.int <- res |> dplyr::filter(TABLE_TYPE %in% c("TABLE", "SYNONYM")) |> dplyr::pull(TABLE_NAME)
+    request.int <- res |> dplyr::filter(TABLE_TYPE %in% c("TABLE", "VIEW")) |> dplyr::pull(TABLE_NAME)
+
+    if(length(table.int) > 0){
+      cat(paste("\n\nTables available are:",  paste(crayon::green(table.int), collapse = ", ")))
+    } else{
+      cat(crayon::red("\nNo table detected."))
+    }
+
+
+    if(length(request.int) > 0){
+      cat(paste("\n\nPre-defined requests available are:",  paste(crayon::green(request.int), collapse = ", ")))
+    } else{
+      cat(crayon::red("\nNo pre-defined requests detected."))
+    }
+
+  }
+
+  RODBC::odbcCloseAll()
+
+
+} # End of function
+
+
