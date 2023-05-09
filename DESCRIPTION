@@ -1,11 +1,11 @@
 Package: BDLG.gestion
 Title: Package 
-Version: 0.0.1
+Version: 0.1.1
 Authors@R: 
     person("Audrey", "Bourret", , "audrey.bourret@dfo-mpo.gc.ca", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Internal package to deal with conversion from excel spreadsheet to access database.
-Depends: R (>= 4.0.0), ggplot2
+Depends: R (>= 4.1.0)
 Imports: 
     dplyr,
     magrittr,

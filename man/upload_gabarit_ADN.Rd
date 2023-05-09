@@ -2,7 +2,7 @@
 % Please edit documentation in R/Upload_gabarit.R
 \name{upload_gabarit_ADN}
 \alias{upload_gabarit_ADN}
-\title{Upload Excel template}
+\title{Upload Excel DNA template}
 \usage{
 upload_gabarit_ADN(
   path,
