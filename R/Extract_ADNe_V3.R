@@ -24,10 +24,10 @@ extract_sequencing_ADNe  <- function(data){
 
    col.to.extract <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "qPCR_ADNe",
                                                            Table_NEW == "Sequencage_Sanger_ADNe") %>%
-                                             pull(Column_ORIGINAL)
+                                             dplyr::pull(Column_ORIGINAL)
    col.new.name <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "qPCR_ADNe",
                                                            Table_NEW == "Sequencage_Sanger_ADNe") %>%
-     pull(Column_NEW)
+     dplyr::pull(Column_NEW)
 
    # Stop if not qPCR_ADNe detected
    if(is.null(data[["qPCR_ADNe"]])){
@@ -96,7 +96,7 @@ extract_qpc_qnc_ADNe  <- function(data){
 
   col.to.extract <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "qPCR_ADNe",
                                                           Table_NEW == "QNC_QPC_ADNe") %>%
-                                                           pull(Column_ORIGINAL)
+                                            dplyr::pull(Column_ORIGINAL)
 
   # Stop if not qPCR_ADNe detected
   if(is.null(data[["qPCR_ADNe"]])){
@@ -108,25 +108,31 @@ extract_qpc_qnc_ADNe  <- function(data){
     stop("\nThe sheet QNC_QPC_ADNe is already present, columns cannot be extracted.")
   }
 
-  tab.int <- data[["qPCR_ADNe"]] %>% dplyr::select(dplyr::all_of(c(col.to.extract, paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")))) %>%
-              dplyr::filter(Type_echantillon_qPCR %in% c("QPC", "QNC"))
+  tab.int <- data[["qPCR_ADNe"]] %>% dplyr::select(dplyr::all_of(c(col.to.extract, "Type_echantillon_qPCR", "Numero_unique_extrait"#,
+                                                                  # paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")
+                                                                 ))) %>%
+    dplyr::filter(Type_echantillon_qPCR %in% c("QNC", "QPC"))
 
-  if(all(names(tab.int) !=  col.to.extract)){
+
+  if(all(names(tab.int) !=  c(col.to.extract, "Type_echantillon_qPCR", "Numero_unique_extrait", paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")))){
     stop(paste("\nThe column names in qPCR_ADNe doesn't perfectly fit the one expected. Changes should be done manually, sorry ..."))
   }
 
 
-  tab.long.int <- tab.int %>% dplyr::distinct(.keep_all = T) %>%
-                              tidyr::pivot_longer(cols = c( paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")),
-                                                  names_to = Type_Neg_Pos_ADNe,
-                                                  values_to = Numero_unique_extrait) %>%
-                              dplyr::mutate(Numero_repetition_QC_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 2),
-                                            Type_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 2),
+  tab.long.int <- tab.int %>% #dplyr::select(-c(Type_echantillon_qPCR, No_qPCR_ADNe, Numero_unique_extrait)) %>%
+                              #dplyr::distinct(.keep_all = T) %>%
+                              dplyr::group_by(Plate_ID, Type_echantillon_qPCR) %>%
+                              mutate(Numero_repetition_QC_Neg_Pos_ADNe = seq_along(Type_echantillon_qPCR)) %>%
+                            dplyr::rename("Type_Neg_Pos_ADNe" = "Type_echantillon_qPCR" ) %>%
+                            dplyr::mutate(#Numero_repetition_QC_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 2),
+                                          #  Type_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 1),
                                             Modifications_Neg_Pos_ADNe = NA,
                                             Notes_Neg_Pos_ADNe = "Automatically_created_with_extract_qpc_qnc_ADNe_R_function"
                               ) %>%
-                              dplyr::filter(!is.na(Numero_unique_extrait)) %>%
-                              dplyr::Select(-Numero_unique_extrait)
+                              #dplyr::filter(!is.na(Numero_unique_extrait)) %>%
+                             # dplyr::left_join(tab.int %>% dplyr::filter(Type_echantillon_qPCR %in% c("QNC", "QPC")) %>%
+                             #                   dplyr::select(c(Plate_ID, No_qPCR_ADNe, Numero_unique_extrait )) %>% )
+                               dplyr::select(-Numero_unique_extrait) %>% dplyr::ungroup()
 
   # Message if nothing left
 
