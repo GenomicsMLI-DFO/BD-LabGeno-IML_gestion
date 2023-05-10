@@ -1,10 +1,10 @@
 #' @title Extract old eDNA gabarit SANGER sequencing info
 #'
 #' @description
-#' Function to check that column name and order follow the predefined template
+#' Function to extract the Sanger sequencing info from the qPCR table, as encounter in the eDNA gabarit v3.
 #'
 #' @details
-#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#' The data object should include a "qPCR_ADNe" table, but not a "Sequencage_Sanger_ADNe"
 #'
 #' @param data List containing important tables.
 #'
@@ -12,7 +12,7 @@
 #' # provide some examples of how to use your function
 #'
 #'
-#' @seealso [correct_column_name()] to create the list of tables.
+#' @seealso [upload_gabarit_ADNe()] to create the list of tables.
 #'
 #` @references
 #' List references
@@ -46,7 +46,10 @@ extract_sequencing_ADNe  <- function(data){
      }
    names(tab.int) <- col.new.name
 
-   tab.int <- tab.int %>% dplyr::filter(!is.na(Sequence_qPCR_ADNe))
+   tab.int <- tab.int %>% dplyr::filter(!is.na(Sequence_qPCR_ADNe)) %>%
+                          dplyr::mutate(Notes_sequencage_ADNe = "Automatically_created_with_extract_sequencing_ADNe_R_function",
+                                        Modifications_sequencage_ADNe = NA)
+
 
    # Message if nothing left
 
@@ -67,6 +70,82 @@ extract_sequencing_ADNe  <- function(data){
 
    } # End of the function
 
+#' @title Extract old eDNA gabarit QNC QPC sequencing info
+#'
+#' @description
+#' Function to extract the QPC QNC info from the qPCR table, as encounter in the eDNA gabarit v3.
+#'
+#' @details
+#' The data object should include a "qPCR_ADNe" table, but not a "QNC_QPC_ADNe" table.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [upload_gabarit_ADNe()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+extract_qpc_qnc_ADNe  <- function(data){
+
+  # List the columns we are looking to
+
+  col.to.extract <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "qPCR_ADNe",
+                                                          Table_NEW == "QNC_QPC_ADNe") %>%
+                                                           pull(Column_ORIGINAL)
+
+  # Stop if not qPCR_ADNe detected
+  if(is.null(data[["qPCR_ADNe"]])){
+    stop("\nThe sheet qPCR_ADNe is not present in your data.frame, columns cannot be extracted.")
+  }
+
+  # Stop if Sequencage_Sanger_ADNe detected
+  if(!is.null(data[["QNC_QPC_ADNe"]])){
+    stop("\nThe sheet QNC_QPC_ADNe is already present, columns cannot be extracted.")
+  }
+
+  tab.int <- data[["qPCR_ADNe"]] %>% dplyr::select(dplyr::all_of(c(col.to.extract, paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")))) %>%
+              dplyr::filter(Type_echantillon_qPCR %in% c("QPC", "QNC"))
+
+  if(all(names(tab.int) !=  col.to.extract)){
+    stop(paste("\nThe column names in qPCR_ADNe doesn't perfectly fit the one expected. Changes should be done manually, sorry ..."))
+  }
+
+
+  tab.long.int <- tab.int %>% dplyr::distinct(.keep_all = T) %>%
+                              tidyr::pivot_longer(cols = c( paste("QNC", 1:6, sep = "_"), paste("QPC", 1:6, sep = "_")),
+                                                  names_to = Type_Neg_Pos_ADNe,
+                                                  values_to = Numero_unique_extrait) %>%
+                              dplyr::mutate(Numero_repetition_QC_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 2),
+                                            Type_Neg_Pos_ADNe = sapply(stringr::str_split(Type_Neg_Pos_ADNe, "_"), `[`, 2),
+                                            Modifications_Neg_Pos_ADNe = NA,
+                                            Notes_Neg_Pos_ADNe = "Automatically_created_with_extract_qpc_qnc_ADNe_R_function"
+                              ) %>%
+                              dplyr::filter(!is.na(Numero_unique_extrait)) %>%
+                              dplyr::Select(-Numero_unique_extrait)
+
+  # Message if nothing left
+
+  if( nrow(tab.long.int) == 0){
+
+    cat(crayon::red("\nThe sheet QNC_QPC_ADNe was created but was empty (no QNC QPC). No changes were made.\n\n"))
+
+  } else{
+
+    data[["QNC_QPC_ADNe"]] <- tab.long.int
+
+    cat(crayon::green("\nThe sheet QNC_QPC_ADNe was created as a data frame of", ncol(tab.int), "columns and", nrow(tab.int), "row. PLEASE CHECK THIS NEW TABLE TO CONFIRM EVERYTHING IS OK.", emojifont::emoji("bomb")  ,"\n\n"))
+
+  }
+
+  return(data)
+
+
+} # End of the function
 
 
 
@@ -98,7 +177,7 @@ precorrect_ADNe_V3_column_name <- function(data
 
   for(x in names(data)){
 
-    cat("\nPre-correcting column names for", crayon::cyan(x), "when possible\n")
+    cat("\nPre-correcting column names for", crayon::cyan(x), "whenever possible\n")
 
     model.int <- model.eDNA_convert %>% dplyr::filter(Table_NEW == x)
 
@@ -115,7 +194,7 @@ precorrect_ADNe_V3_column_name <- function(data
       model.vec.ORI <-  model.int$Column_ORIGINAL
       model.vec.NEW <-  model.int$Column_NEW
 
-      cat(ncol(tab.int), "columns were uploaded (", length(model.vec.ORI), "could potentially be automatically renamed)\nNow looking column by column to see if something magic can happen ... \n\n")
+      cat(ncol(tab.int), "columns were uploaded (", length(model.vec.ORI), "could potentially be automatically renamed)\nNow looking column by column to see if some changes can be done automatically... \n")
 
       # Check column names one by one
 
@@ -127,20 +206,20 @@ precorrect_ADNe_V3_column_name <- function(data
           # Change the name
           names(tab.int)[names(tab.int) ==model.vec.ORI[i]] <- model.vec.NEW[i]
 
-        cat("\nThe columns", model.vec.ORI[[i]], "was renamed", model.vec.NEW[[i]] )
+        cat("\nThe column", model.vec.ORI[[i]], "was renamed", model.vec.NEW[[i]] )
 
         }
       }# END of the LOOP over column names
 
       data[[x]] <-   tab.int
-       cat(crayon::green("\nThe table", x, "is now corrected\n"))
+       cat(crayon::green("\nThe table", x, "is done!\n"))
 
 
     } # END of the loop over one table
 
   }
 
-  cat(crayon::green("\nIt's done", emojifont::emoji("chicken")  ,"\n\n"))
+  cat(crayon::green("\nIt's ALL done", emojifont::emoji("chicken")  ,"\n\n"))
 
   return(data)
 

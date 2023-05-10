@@ -509,15 +509,13 @@ upload_gabarit_ADNe <- function(path,
 
   }
 
-
-
   # Load extrait
 
   if(!is.null(extrait)){
 
     cat("\nLoading", crayon::cyan("Extraits_ADNe"),"\n")
 
-    temp.df <-  readxl::read_excel(path = path, sheet = filtre, skip = skip,col_types = "text", .name_repair = "minimal")
+    temp.df <-  readxl::read_excel(path = path, sheet = extrait, skip = skip,col_types = "text", .name_repair = "minimal")
 
     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
 
