@@ -15,4 +15,5 @@ usethis::use_data(model.ordre,
                   model.list,
                   model.date,
                   model.other,
+                  model.eDNA_convert,
                   overwrite = T)

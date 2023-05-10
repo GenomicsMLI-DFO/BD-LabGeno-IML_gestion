@@ -20,7 +20,7 @@
 
 correct_column_name  <- function(data
                                ){
-  model.ordre
+  #model.ordre
 
   new.list <- list()
 
