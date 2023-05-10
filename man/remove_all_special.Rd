@@ -2,7 +2,7 @@
 % Please edit documentation in R/Internal_functions.R
 \name{remove_all_special}
 \alias{remove_all_special}
-\title{Remove all special caracterd}
+\title{Remove all special characters}
 \usage{
 remove_all_special(x)
 }
@@ -17,5 +17,4 @@ NULL if you doesn't want a specif sheet to be uploaded. No other check than shee
 }
 \examples{
 # provide some examples of how to use your function
-
 }

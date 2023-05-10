@@ -1,4 +1,4 @@
-#' @title Remove all special caracterd
+#' @title Remove all special characters
 #'
 #' @description
 #' Function to check that column name and order follow the predefined template
@@ -10,7 +10,8 @@
 #'
 #' @examples
 #' # provide some examples of how to use your function
-#'
+#' @export
+
 remove_all_special <- function(x) {
 
   ## Mot ingérable dans ACCESS

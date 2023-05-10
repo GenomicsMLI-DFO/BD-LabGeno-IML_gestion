@@ -930,7 +930,7 @@ correct_column_values_well  <- function(data){
 
 correct_column_values_others  <- function(data){
 
-  col.not.other <- c(model.list, model.ID, model.date, model.other)
+  col.not.other <- c(model.list$Col, model.ID$Col, model.date$Col, model.other$Col)
 
   #new.list <- list()
 
