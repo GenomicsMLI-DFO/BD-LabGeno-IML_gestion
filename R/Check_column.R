@@ -572,7 +572,7 @@ correct_column_values_hour  <- function(data){
           # Loop over values observed
           for(j in observed.vec){
 
-            hour.num <- as.numeric(j)
+            hour.num <- suppressWarnings(as.numeric(j))
 
             # If  numeric and between 0 and 1
             if(!is.na(hour.num) & dplyr::between(hour.num, 0, 1)){
@@ -814,7 +814,7 @@ correct_column_values_well  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking well columns for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking well columns for", crayon::Cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -936,7 +936,7 @@ correct_column_values_cq  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking cq columns for", crayon::bgMagenta(x), "\n")
+    cat("\nChecking cq columns for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 
@@ -963,7 +963,7 @@ correct_column_values_cq  <- function(data){
           # Loop over values observed
           for(j in observed.vec){
 
-            cq.num <- as.numeric(j)
+            cq.num <- suppressWarnings(as.numeric(j))
             cq.factor <- j %>% stringr::str_replace_all(" ", "_")
 
             # If  numeric a
