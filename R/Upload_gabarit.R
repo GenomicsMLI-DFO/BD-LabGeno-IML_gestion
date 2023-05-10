@@ -358,8 +358,9 @@ return(combine.ls)
 #' @param echantillon Name of the sheet in the Excel file containing sample data
 #' @param filtre Name of the sheet in the Excel file containing the filter data
 #' @param extrait Name of the sheet in the Excel file containing extract data
-#' @param qPCR_inhibition of the sheet in the Excel file containing the qpcr inihibiton info
-#' @param qPCR Name of the sheet in the Excel file containing the qpcr results
+#' @param qpcr_inhibition of the sheet in the Excel file containing the qpcr inihibiton info
+#' @param qpcr Name of the sheet in the Excel file containing the qpcr results
+#' @param qnc_qpc Name of the sheet in the Excel file containing the qpcr control info
 #' @param sequencage Name of the sheet in the Excel file containing the Sanger sequencing info
 #' @param courbe Name of the sheet in the Excel file containing the standard curve info
 #' @param librairie Name of the sheet in the Excel file containing the librairy info
@@ -384,6 +385,7 @@ upload_gabarit_ADNe <- function(path,
                                 extrait = "Extraits_ADNe",
                                 qpcr_inhibition = "qPCR_inhibition_ADNe",
                                 qpcr = "qPCR_ADNe",
+                                qpc_qnc = "QNC_QPC_ADNe",
                                 sequencage = "Sequencage_Sanger_ADNe",
                                 courbe = "Courbe_etalonnage_ADNe",
                                 librairies = "Librairie_ADNe",
@@ -527,7 +529,7 @@ upload_gabarit_ADNe <- function(path,
 
       }
 
-      excel.ls[["Extrait_ADNe"]] <- temp.df
+      excel.ls[["Extraits_ADNe"]] <- temp.df
 
     }
 
@@ -580,6 +582,29 @@ upload_gabarit_ADNe <- function(path,
 
         }
 
+  # Load qpcr
+
+  if(!is.null(qpc_qnc)){
+
+    cat("\nLoading", crayon::cyan("QNC_QPC_ADNe"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = qpc_qnc, skip = skip,col_types = "text", .name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["QNC_QPC_ADNe"]] <- temp.df
+
+    }
+
+  }
 
   # Load sequencage
 

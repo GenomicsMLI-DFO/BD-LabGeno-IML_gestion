@@ -14,6 +14,7 @@ upload_gabarit_ADNe(
   extrait = "Extraits_ADNe",
   qpcr_inhibition = "qPCR_inhibition_ADNe",
   qpcr = "qPCR_ADNe",
+  qpc_qnc = "QNC_QPC_ADNe",
   sequencage = "Sequencage_Sanger_ADNe",
   courbe = "Courbe_etalonnage_ADNe",
   librairies = "Librairie_ADNe",
@@ -36,6 +37,10 @@ upload_gabarit_ADNe(
 
 \item{extrait}{Name of the sheet in the Excel file containing extract data}
 
+\item{qpcr_inhibition}{of the sheet in the Excel file containing the qpcr inihibiton info}
+
+\item{qpcr}{Name of the sheet in the Excel file containing the qpcr results}
+
 \item{sequencage}{Name of the sheet in the Excel file containing the Sanger sequencing info}
 
 \item{courbe}{Name of the sheet in the Excel file containing the standard curve info}
@@ -44,9 +49,7 @@ upload_gabarit_ADNe(
 
 \item{analyses_ext_lib}{Name of the sheet in the Excel file containing the librairy sequencing info}
 
-\item{qPCR_inhibition}{of the sheet in the Excel file containing the qpcr inihibiton info}
-
-\item{qPCR}{Name of the sheet in the Excel file containing the qpcr results}
+\item{qnc_qpc}{Name of the sheet in the Excel file containing the qpcr control info}
 
 \item{librairie}{Name of the sheet in the Excel file containing the librairy info}
 }
