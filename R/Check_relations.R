@@ -1,7 +1,7 @@
 #' @title Check relations between tables
 #'
 #' @description
-#' Function to check that column name and order follow the predefined template
+#' Function to check that relationship between table are respected
 #'
 #' @details
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
@@ -715,3 +715,440 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
   }
 
 } # END of the function
+
+
+#' @title Check relations between tables for the eDNA gabarit
+#'
+#' @description
+#' Function to check that relationship between table are respected
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [upload_gabarit_ADN()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+check_relation_ADNe  <- function(data){
+
+  # Sites_ADNe - only importation
+  if(c("Sites_ADNe") %in%  names(data)  ){
+
+    cat("\nImporting", crayon::cyan("Sites_ADNe"), "table KEY:\n")
+
+    Numero_unique_site   <- data$Sites_ADNe$Numero_unique_site_ADNe
+
+    dup <- Numero_unique_site[duplicated(Numero_unique_site)]
+
+    cat("\n", length(Numero_unique_site), "Numero_unique_site detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+  } else{
+    cat(crayon::red("\nNo Sites_ADNe table detected\n"))
+    Numero_unique_site   <- NULL
+  }
+
+  # Station : 1 check
+
+  if(c("Stations_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Stations_ADNe"), "table KEY:\n")
+
+    Numero_unique_station   <- data$Stations_ADNe$Numero_unique_station_ADNe
+
+    dup <- Numero_unique_station[duplicated(Numero_unique_station)]
+
+    cat("\n", length(Numero_unique_station), "Numero_unique_station detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+    # Check with site
+
+    if(!is.null(Numero_unique_site)){
+
+      if(all(data$Stations_ADNe$Numero_unique_site_ADNe %in% Numero_unique_site)){
+        cat(crayon::green("\nAll the Numero_unique_site_ADNe observed exist in the Sites_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_site_ADNe observed exist in the Sites_ADNe table.\n",
+
+
+                        paste(unique(data$Stations_ADNe$Numero_unique_site_ADNe[!data$Stations_ADNe$Numero_unique_site_ADNe %in% Numero_unique_site]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo Specimens table detected\n"))
+    Numero_unique_station   <- NULL
+  }
+
+
+  # ECHANTILLON : 2 checks
+
+  if(c("Echantillons_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Echantillons_ADNe"), "table KEY:\n")
+
+    Numero_unique_echantillon <- data$Echantillons_ADNe$Numero_unique_echantillon_ADNe
+
+    dup <- Numero_unique_echantillon[duplicated(Numero_unique_echantillon)]
+
+    cat("\n", length(Numero_unique_echantillon), "Numero_unique_echantillon_ADNe detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+    # Check with sites
+
+    if(!is.null(Numero_unique_site)){
+
+      if(all(data$Echantillons_ADNe$Numero_unique_site_ADNe %in% Numero_unique_site)){
+        cat(crayon::green("\nAll the Numero_unique_site_ADNe observed exist in the Sites_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_site_ADNe observed exist in the Sites_ADNe table.\n",
+
+
+                        paste(unique(data$Echantillon_ADNe$Numero_unique_site_ADNe[!data$Echantillon_ADNe$Numero_unique_site_ADNe %in% Numero_unique_site]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
+
+    }
+
+    # Check with stations
+
+    if(!is.null(Numero_unique_station)){
+
+      if(all(data$Echantillons_ADNe$Numero_unique_station_ADNe %in% Numero_unique_station)){
+        cat(crayon::green("\nAll the Numero_unique_station_ADNe observed exist in the Stations_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_station_ADNe observed exist in the Stations_ADNe table.\n",
+
+
+                        paste(unique(data$Echantillon_ADNe$Numero_unique_station_ADNe[!data$Echantillon_ADNe$Numero_unique_station_ADNe %in% Numero_unique_station]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_station_ADNe could not be checked in this table\n"))
+
+    }
+
+
+  } else{
+    cat(crayon::red("\nNo Echantillons_ADNe table detected\n"))
+    Numero_unique_echantillon   <- NULL
+  }
+
+  # FILTRE : 1 check
+
+  if(c("Filtres_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Filtres_ADNe"), "table KEY:\n")
+
+    Numero_unique_filtre <- data$Filtres_ADNe$Numero_unique_filtre_ADNe
+
+    dup <- Numero_unique_filtre[duplicated(Numero_unique_filtre)]
+
+    cat("\n", length(Numero_unique_filtre), "Numero_unique_filtre_ADNe detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+    # Check with Echantillons
+
+    if(!is.null(Numero_unique_echantillon)){
+
+      if(all(data$Filtres_ADNe$Numero_unique_echantillon_ADNe %in% Numero_unique_echantillon)){
+        cat(crayon::green("\nAll the Numero_unique_echantillon_ADNe observed exist in the Echantillon_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_echantillon_ADNe observed exist in the Site_ADNe table.\n",
+
+
+                        paste(unique(data$Filtres_ADNe$Numero_unique_echantillon_ADNe[!data$Filtres_ADNe$Numero_unique_echantillon_ADNe %in% Numero_unique_echantillon_ADNe]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_echantillon_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo Filtres_ADNe table detected\n"))
+    Numero_unique_filtre   <- NULL
+  }
+
+
+  # EXTRAIT : 1 checks
+
+  if(c("Extraits_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Extraits_ADNe"), "table KEY:\n")
+
+    Numero_unique_extrait <- data$Extraits_ADNe$Numero_unique_extrait_ADNe
+
+    dup <- Numero_unique_extrait[duplicated(Numero_unique_extrait)]
+
+    cat("\n", length(Numero_unique_extrait), "Numero_unique_extrait_ADNe detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+    # Check with filtre
+
+    if(!is.null(Numero_unique_filtre)){
+
+      if(all(data$Extraits_ADNe$Numero_unique_filtre_ADNe %in% Numero_unique_filtre)){
+        cat(crayon::green("\nAll the Numero_unique_filtre_ADNe observed exist in the Filtres_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_filtre_ADNe observed exist in the Filtre_ADNe table.\n",
+
+
+                        paste(unique(data$Extraits_ADNe$Numero_unique_filtre_ADNe[!data$Extrais_ADNe$Numero_unique_filtre_ADNe %in% Numero_unique_filtre_ADNe]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_filtre_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo Extraits_ADNe table detected\n"))
+    Numero_unique_extrai   <- NULL
+  }
+
+
+
+  # COURBE - only importation
+  if(c("Courbe_etalonnage_ADNe") %in%  names(data)  ){
+
+    cat("\nImporting", crayon::cyan("Courbe_etalonnage_ADNe"), "table KEY:\n")
+
+   Courbe_ID   <- data$Courbe_etalonnage_ADNe$Courbe_ID
+
+    dup <- Courbe_ID[duplicated(Courbe_ID)]
+
+    cat("\n", length(Courbe_ID), "Courbe_ID detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+  } else{
+    cat(crayon::red("\nNo Courbe_etalonnage_ADNe table detected\n"))
+    Courbe_ID  <- NULL
+  }
+
+
+
+
+  # QPCR inhibition : 1 checks
+
+  if(c("qPCR_inhibition_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("qPCR_inhibition_ADNe"), "table KEY:\n")
+
+    # Check with Extrait
+
+    if(!is.null(Numero_unique_extrait)){
+
+      if(all(data$qPCR_inhibition_ADNe$Numero_unique_extrait_ADNe %in% Numero_unique_extrait)){
+        cat(crayon::green("\nAll the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table.\n",
+
+
+                        paste(unique(data$qPCR_inhibition_ADNe$Numero_unique_extrait_ADNe[!data$qPCR_inhibition_ADNe$Numero_unique_extrait_ADNe %in% Numero_unique_extrait]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo qPCR_inhibition_ADNe table detected\n"))
+
+  }
+
+
+  # QPCR : 2 checks
+
+  if(c("qPCR_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("qPCR_ADNe"), "table KEY:\n")
+
+
+
+    qpcr_ID   <- data$qPCR_ADNe$ID_qPCR_ADNe
+
+    dup <- qpcr_ID[duplicated(qpcr_ID)]
+
+    cat("\n", length(qpcr_ID), "ID_qPCR_ADNe detected\n")
+
+    if(length(dup) > 0){
+      cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    }
+
+
+    # Check with Extrait
+
+    if(!is.null(Numero_unique_extrait)){
+
+      if(all(data$qPCR_ADNe$Numero_unique_extrait_ADNe %in% Numero_unique_extrait)){
+        cat(crayon::green("\nAll the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table.\n",
+
+
+                        paste(unique(data$qPCR_ADNe$Numero_unique_extrait_ADNe[!data$qPCR_ADNe$Numero_unique_extrait_ADNe %in% Numero_unique_extrait]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
+
+    }
+
+    # Check with Courbe
+
+    if(!is.null(Courbe_ID)){
+
+      if(all(data$qPCR_ADNe$Courbe_ID %in% Courbe_ID)){
+        cat(crayon::green("\nAll the Courbe_ID observed exist in the Courbe_etalonnage_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Courbe_ID observed exist in the Courbe_etalonnage_ADNe table.\n",
+
+
+                        paste(unique(data$qPCR_ADNe$Courbe_ID[!data$qPCR_ADNe$Courbe_ID %in% Courbe_ID]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nCourbe_ID could not be checked in this table\n"))
+      }
+
+  } else{
+    cat(crayon::red("\nNo qPCR_ADNe table detected\n"))
+
+    qpcr_ID  <- NULL
+
+  }
+
+  # qpc_qnc : 1 checks
+
+  if(c("QNC_QPC_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("QNC_QPC_ADNe"), "table KEY:\n")
+
+    # Check with qPCR
+
+    if(!is.null(qpcr_ID)){
+
+      if(all(data$QNC_QPC_ADNe$ID_qPCR_ADNe %in%  qpcr_ID)){
+        cat(crayon::green("\nAll the ID_qPCR_ADNe observed exist in the qPCR_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the ID_qPCR_ADNe observed exist in the qPCR_ADNe table.\n",
+
+
+                        paste(unique(data$QNC_QPC_ADNe$ID_qPCR_ADNe[!data$QNC_QPC_ADNe$ID_qPCR_ADNe %in% qpcr_ID]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo QNC_QPC_ADNe table detected\n"))
+
+  }
+
+
+  # Sequencage_Sanger_ADNe : 1 checks
+
+  if(c("Sequencage_Sanger_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Sequencage_Sanger_ADNe"), "table KEY:\n")
+
+    # Check with qPCR
+
+    if(!is.null(qpcr_ID)){
+
+      if(all(data$Sequencage_Sanger_ADNe$ID_qPCR_ADNe %in%  qpcr_ID)){
+        cat(crayon::green("\nAll the ID_qPCR_ADNe observed exist in the qPCR_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the ID_qPCR_ADNe observed exist in the qPCR_ADNe table.\n",
+
+
+                        paste(unique(data$Sequencage_Sanger_ADNe$ID_qPCR_ADNe[!data$Sequencage_Sanger_ADNe$ID_qPCR_ADNe %in% qpcr_ID]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
+
+    }
+
+  } else{
+    cat(crayon::red("\nNo Sequencage_Sanger_ADNe table detected\n"))
+
+  }
+
+
+
+
+
+
+
+} # END of the function
+
+
+
+
+

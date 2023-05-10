@@ -3,6 +3,7 @@
 export(check_column_values_ID)
 export(check_key)
 export(check_relation)
+export(check_relation_ADNe)
 export(check_relation_wDB)
 export(combine_multiple_gabarit)
 export(correct_column_name)
