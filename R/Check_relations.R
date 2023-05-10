@@ -1142,7 +1142,7 @@ check_relation_ADNe  <- function(data){
 
 
 
-
+  cat(crayon::red("\nLibrairie_ADN, Purification_librairies_ADNe, Analyses_externes_librairies_ADNe checks not yet implemented\n"))
 
 
 
