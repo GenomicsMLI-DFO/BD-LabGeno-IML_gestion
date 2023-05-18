@@ -24,7 +24,11 @@ upload_gabarit_ADN(
 
 \item{specimen}{Name of the sheet in the Excel file containing specimen data}
 
+\item{groupe}{Name of the sheet in the Excel file containing group data}
+
 \item{tissu}{Name of the sheet in the Excel file containing tissue data}
+
+\item{extraitADN}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
 
 \item{analyse_ext}{Name of the sheet in the Excel file containing external analysis info}
 
@@ -33,10 +37,6 @@ upload_gabarit_ADN(
 \item{sequencage}{Name of the sheet in the Excel file containing the sequencage info}
 
 \item{hormone}{Name of the sheet in the Excel file containing the hormone info}
-
-\item{group}{Name of the sheet in the Excel file containing group data}
-
-\item{extrait}{Name of the sheet in the Excel file containing the DNA/RNA extract data}
 }
 \description{
 Function to upload an Excel file based on the predefined template

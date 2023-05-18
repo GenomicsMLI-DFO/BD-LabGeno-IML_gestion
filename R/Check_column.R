@@ -814,7 +814,7 @@ correct_column_values_well  <- function(data){
 
   for(x in names(data)){
 
-    cat("\nChecking well columns for", crayon::Cyan(x), "\n")
+    cat("\nChecking well columns for", crayon::cyan(x), "\n")
 
     tab.int <- data[[x]]
 

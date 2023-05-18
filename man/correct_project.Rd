@@ -8,6 +8,8 @@ correct_project(data, DB = "LabGeno")
 }
 \arguments{
 \item{data}{List containing important tables.}
+
+\item{DB}{Name of the DB in the ODBC.}
 }
 \description{
 Function to check that column name and order follow the predefined template

@@ -9,9 +9,9 @@
 #' @param path Path to the excel spreadsheet
 #' @param skip N row to skip. Default value is 1 as there's a warning in the original file
 #' @param specimen Name of the sheet in the Excel file containing specimen data
-#' @param group Name of the sheet in the Excel file containing group data
+#' @param groupe Name of the sheet in the Excel file containing group data
 #' @param tissu Name of the sheet in the Excel file containing tissue data
-#' @param extrait Name of the sheet in the Excel file containing the DNA/RNA extract data
+#' @param extraitADN Name of the sheet in the Excel file containing the DNA/RNA extract data
 #' @param analyse_ext Name of the sheet in the Excel file containing external analysis info
 #' @param sexage of the sheet in the Excel file containing the sex determining method
 #' @param sequencage Name of the sheet in the Excel file containing the sequencage info
@@ -363,7 +363,7 @@ return(combine.ls)
 #' @param qnc_qpc Name of the sheet in the Excel file containing the qpcr control info
 #' @param sequencage Name of the sheet in the Excel file containing the Sanger sequencing info
 #' @param courbe Name of the sheet in the Excel file containing the standard curve info
-#' @param librairie Name of the sheet in the Excel file containing the librairy info
+#' @param librairies Name of the sheet in the Excel file containing the librairy info
 #' @param purification Name of the sheet in the Excel file containing the librairy purification info
 #' @param analyses_ext_lib Name of the sheet in the Excel file containing the librairy sequencing info
 #'
@@ -385,10 +385,10 @@ upload_gabarit_ADNe <- function(path,
                                 extrait = "Extraits_ADNe",
                                 qpcr_inhibition = "qPCR_inhibition_ADNe",
                                 qpcr = "qPCR_ADNe",
-                                qpc_qnc = "QNC_QPC_ADNe",
+                                qnc_qpc = "QNC_QPC_ADNe",
                                 sequencage = "Sequencage_Sanger_ADNe",
                                 courbe = "Courbe_etalonnage_ADNe",
-                                librairies = "Librairie_ADNe",
+                                librairies = "Librairies_ADNe",
                                 purification = "Purification_librairies_ADNe",
                                 analyses_ext_lib = "Analyses_externes_librairies_ADNe"
 ){
@@ -582,11 +582,11 @@ upload_gabarit_ADNe <- function(path,
 
   # Load qpcr
 
-  if(!is.null(qpc_qnc)){
+  if(!is.null(qnc_qpc)){
 
     cat("\nLoading", crayon::cyan("QNC_QPC_ADNe"),"\n")
 
-    temp.df <-  readxl::read_excel(path = path, sheet = qpc_qnc, skip = skip,col_types = "text", .name_repair = "minimal")
+    temp.df <-  readxl::read_excel(path = path, sheet = qnc_qpc, skip = skip,col_types = "text", .name_repair = "minimal")
 
     cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
 
@@ -671,7 +671,7 @@ upload_gabarit_ADNe <- function(path,
 
       }
 
-      excel.ls[["Librairie_ADNe"]] <- temp.df
+      excel.ls[["Librairies_ADNe"]] <- temp.df
 
     }
 

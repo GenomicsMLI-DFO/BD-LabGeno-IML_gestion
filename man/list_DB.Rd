@@ -12,6 +12,9 @@ list_DB(DB = "LabGeno")
 \description{
 Function to ;ist possible main table and request contained in the database.
 }
+\details{
+The connection and deconnection to the DB is automatic
+}
 \examples{
 list_DB()
 

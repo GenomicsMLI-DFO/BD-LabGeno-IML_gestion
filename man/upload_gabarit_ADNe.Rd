@@ -14,10 +14,10 @@ upload_gabarit_ADNe(
   extrait = "Extraits_ADNe",
   qpcr_inhibition = "qPCR_inhibition_ADNe",
   qpcr = "qPCR_ADNe",
-  qpc_qnc = "QNC_QPC_ADNe",
+  qnc_qpc = "QNC_QPC_ADNe",
   sequencage = "Sequencage_Sanger_ADNe",
   courbe = "Courbe_etalonnage_ADNe",
-  librairies = "Librairie_ADNe",
+  librairies = "Librairies_ADNe",
   purification = "Purification_librairies_ADNe",
   analyses_ext_lib = "Analyses_externes_librairies_ADNe"
 )
@@ -41,17 +41,17 @@ upload_gabarit_ADNe(
 
 \item{qpcr}{Name of the sheet in the Excel file containing the qpcr results}
 
+\item{qnc_qpc}{Name of the sheet in the Excel file containing the qpcr control info}
+
 \item{sequencage}{Name of the sheet in the Excel file containing the Sanger sequencing info}
 
 \item{courbe}{Name of the sheet in the Excel file containing the standard curve info}
 
+\item{librairies}{Name of the sheet in the Excel file containing the librairy info}
+
 \item{purification}{Name of the sheet in the Excel file containing the librairy purification info}
 
 \item{analyses_ext_lib}{Name of the sheet in the Excel file containing the librairy sequencing info}
-
-\item{qnc_qpc}{Name of the sheet in the Excel file containing the qpcr control info}
-
-\item{librairie}{Name of the sheet in the Excel file containing the librairy info}
 }
 \description{
 Function to upload an Excel file based on the predefined eDNA template

@@ -140,7 +140,7 @@ load_columns_DB <- function(columns, table, DB = "LabGeno", verbose = TRUE){
 #' @description
 #' Function to ;ist possible main table and request contained in the database.
 #'
-#' @details
+#' @details The connection and deconnection to the DB is automatic
 #'
 #'
 #' @param DB Name of the OBDC database, as set in your computer.

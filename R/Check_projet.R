@@ -7,6 +7,7 @@
 #' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
 #'
 #' @param data List containing important tables.
+#' @param DB Name of the DB in the ODBC.
 #'
 #' @examples
 #' # provide some examples of how to use your function
