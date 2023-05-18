@@ -8,7 +8,7 @@
 A tibble with 30 rows and 8 variables
 }
 \usage{
-data(model.list)
+data(model.other)
 }
 \description{
 test
