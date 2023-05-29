@@ -128,15 +128,15 @@ extract_libraries_ADNe  <- function(data){
 
   # Purification
 
-  det.var.1 <- stringr::str_detect(col.to.extract.1, paste(names(data[["Librairies_ADNe"]]) , collapse = "|"))
+  det.var.1 <- col.to.extract.1 %in% names(data[["Librairies_ADNe"]])
 
   tab.int.1 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.1[det.var.1]))
 
   if(!all( det.var.1)){
-    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
+    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ...\n"))
 
-    cat(paste("\nThe one expected and detected are:", paste(col.to.extract.1[det.var.1], collapse = ", ") ))
-    cat(paste("\nThe one expected BUT MISSING are:", paste(crayon::red(col.to.extract.1[det.var.1==F]), collapse = ", ") ))
+    cat(paste("\nThe one expected and detected are:", paste(col.to.extract.1[det.var.1], collapse = ", ") , "\n" ))
+    cat(paste("\nThe one expected BUT MISSING are:", paste(crayon::red(col.to.extract.1[det.var.1==F]), collapse = ", ") , "\n" ))
 
 
       }
@@ -159,21 +159,21 @@ extract_libraries_ADNe  <- function(data){
 
     data[["Purification_librairies_ADNe"]] <- tab.int.1
 
-    cat(crayon::green("\nThe sheet Purification_librairies_ADNe was created as a data frame of", ncol(tab.int.1), "columns and", nrow(tab.int.1), "row.", emojifont::emoji("rainbow")  ,"\n\n"))
+    cat(crayon::green("\nThe sheet Purification_librairies_ADNe was created as a data frame of", ncol(tab.int.1), "columns and", nrow(tab.int.1), "row.", emojifont::emoji("icecream")  ,"\n\n"))
 
   }
 
   # Analyse externe
 
-  det.var.2 <- stringr::str_detect(col.to.extract.2, paste(names(data[["Librairies_ADNe"]]) , collapse = "|"))
+  det.var.2 <- col.to.extract.2 %in% names(data[["Librairies_ADNe"]])
 
   tab.int.2 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.2[det.var.2]))
 
   if(!all( det.var.2)){
-    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
+    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ...\n"))
 
-    cat(paste("\nThe one expected and detected are:", paste(col.to.extract.2[det.var.2], collapse = ", ") ))
-    cat(paste("\nThe one expected BUT MISSING are:", paste(crayon::red(col.to.extract.2[det.var.2==F]), collapse = ", ") ))
+    cat(paste("\nThe one expected and detected are:", paste(col.to.extract.2[det.var.2], collapse = ", "), "\n"  ))
+    cat(paste("\nThe one expected BUT MISSING are:", paste(crayon::red(col.to.extract.2[det.var.2==F]), collapse = ", "), "\n"  ))
 
   }
 
@@ -195,7 +195,7 @@ extract_libraries_ADNe  <- function(data){
 
     data[["Analyses_externes_librairies_ADNe"]] <- tab.int.2
 
-    cat(crayon::green("\nThe sheet Analyses_externes_librairies_ADNe was created as a data frame of", ncol(tab.int.2), "columns and", nrow(tab.int.2), "row.", emojifont::emoji("rainbow")  ,"\n\n"))
+    cat(crayon::green("\nThe sheet Analyses_externes_librairies_ADNe was created as a data frame of", ncol(tab.int.2), "columns and", nrow(tab.int.2), "row.", emojifont::emoji("cake")  ,"\n\n"))
 
   }
 
