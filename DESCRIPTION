@@ -12,7 +12,6 @@ Imports:
     readr,
     tidyr,
     readxl,
-    xlsx,
     stringr,
     stringi,
     tibble,
