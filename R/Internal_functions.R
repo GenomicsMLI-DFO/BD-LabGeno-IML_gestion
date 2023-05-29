@@ -40,3 +40,55 @@ remove_all_special <- function(x) {
   return(x)
 
 }
+
+
+
+#' @title Correct lat - long
+#'
+#' @description
+#' Function to correct some weird format of latitude and longitude
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param x a string
+#'
+#' @examples
+#' # In the Tel format
+#' x <- 4753.1
+#' correct_latlon(x, format = "NGSL")
+#'
+#' # In the dms format
+#' x <- "47° 22' 38,121 N"
+#' correct_latlon(x, format = "dms")
+#'
+#' @export
+
+correct_latlon <- function(x, format = c("NGSL", "dms")){
+
+ if(format == "NGSL") {
+
+  x.int.1 <- as.numeric(stringr::str_sub(x, 1,2))
+  x.int.2 <- as.numeric(stringr::str_sub(x, 3)) / 60
+
+  x.corrected <- x.int.1 + x.int.2
+
+  return(x.corrected)
+ }
+
+ if(format == "dms"){
+
+  x.int.1  <- sapply(stringr::str_split(x, pattern = "°|'|\""), `[`, 1) %>% stringr::str_trim() %>% stringr::str_replace("[.]", ",")  %>% as.numeric()
+  x.int.2  <- sapply(stringr::str_split(x, pattern = "°|'|\""), `[`, 2) %>% stringr::str_trim() %>% stringr::str_replace("[.]", ",")  %>% as.numeric()
+  x.int.3  <- sapply(stringr::str_split(x, pattern = "°|'|\""), `[`, 3) %>% stringr::str_remove("N|S|E|W|O") %>%  stringr::str_trim() %>% stringr::str_replace(",", ".")  %>% as.numeric()
+
+  x.corrected <- x.int.1 + x.int.2/60 + x.int.3/3600
+
+  return(x.corrected)
+ }
+
+}
+
+
+
+
