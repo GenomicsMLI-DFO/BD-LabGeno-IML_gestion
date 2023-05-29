@@ -70,6 +70,133 @@ extract_sequencing_ADNe  <- function(data){
 
    } # End of the function
 
+
+#' @title Extract old eDNA gabarit Purification_librairies_ADNe et Analyses_externes_librairies_ADNe info
+#'
+#' @description
+#' Function to extract the Purification_librairies_ADNe and Analyses_externes_librairies_ADNe info from the qPCR table, as encounter in the eDNA gabarit v3.
+#'
+#' @details
+#' The data object should include a "Librairie_ADNe" table, but not a "Purification_librairies_ADNe" and "Analyses_externes_librairies_ADNe"
+#'
+#' @param data List containing important tables.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [upload_gabarit_ADNe()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+extract_libraries_ADNe  <- function(data){
+
+  # List the columns we are looking to
+
+  col.to.extract.1 <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "Librairies_ADNe",
+                                                          Table_NEW == "Purification_librairies_ADNe") %>%
+                                                          dplyr::pull(Column_ORIGINAL)
+
+  col.new.name.1 <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "Librairies_ADNe",
+                                                          Table_NEW == "Purification_librairies_ADNe") %>%
+                                                          dplyr::pull(Column_NEW)
+
+  col.to.extract.2 <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "Librairies_ADNe",
+                                                            Table_NEW == "Analyses_externes_librairies_ADNe") %>%
+                                                            dplyr::pull(Column_ORIGINAL)
+
+  col.new.name.2 <-  model.eDNA_convert %>% dplyr::filter(Table_ORIGINAL == "Librairies_ADNe",
+                                                          Table_NEW == "Analyses_externes_librairies_ADNe") %>%
+                                                            dplyr::pull(Column_NEW)
+
+    # Stop if not Librairies_ADNe detected
+  if(is.null(data[["Librairies_ADNe"]])){
+    stop("\nThe sheet Librairie_ADNe is not present in your data.frame, columns cannot be extracted.")
+  }
+
+  # Stop if Purification_librairies_ADNe detected
+  if(!is.null(data[["Purification_librairies_ADNe"]])){
+    stop("\nThe sheet Purification_librairies_ADNe is already present, columns cannot be extracted.")
+  }
+
+  # Stop if Analyses_externes_librairies_ADNe detected
+  if(!is.null(data[["Analyses_externes_librairies_ADNe"]])){
+   stop("\nThe sheet Analyses_externes_librairies_ADNe is already present, columns cannot be extracted.")
+  }
+
+  # Purification
+
+  tab.int.1 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.1))
+
+  if(all(names(tab.int.1) !=  col.to.extract.1)){
+    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
+  }
+
+  names(tab.int.1) <- col.new.name.1
+
+  tab.int.1 <- tab.int.1 %>% dplyr::filter(!is.na(Numero_unique_librairie_ADNe)) %>%
+    dplyr::mutate(Notes_purification_librairies_ADNe = "Automatically_created_with_extract_libraries_ADNe_R_function"
+                  ) |>
+    dplyr::distinct(.keep_all = T)
+
+
+  # Message if nothing left
+
+  if( nrow(tab.int.1) == 0){
+
+    cat(crayon::red("\nThe sheet Purification_librairies_ADNe was created but was empty (no data available). No changes were made.\n\n"))
+
+  } else{
+
+    data[["Purification_librairies_ADNe"]] <- tab.int.1
+
+    cat(crayon::green("\nThe sheet Purification_librairies_ADNe was created as a data frame of", ncol(tab.int.1), "columns and", nrow(tab.int.1), "row.", emojifont::emoji("rainbow")  ,"\n\n"))
+
+  }
+
+  # Analyse externe
+
+  tab.int.2 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.2))
+
+  if(all(names(tab.int.2) !=  col.to.extract.2)){
+    cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
+  }
+
+  names(tab.int.2) <- col.new.name.2
+
+  tab.int.2 <- tab.int.2 %>% dplyr::filter(!is.na(Numero_unique_librairie_SeqReady_ADNe)) %>%
+    dplyr::mutate(Notes_librairies_SeqReady_ADNe = "Automatically_created_with_extract_libraries_ADNe_R_function"
+    ) |>
+    dplyr::distinct(.keep_all = T)
+
+
+  # Message if nothing left
+
+  if( nrow(tab.int.2) == 0){
+
+    cat(crayon::red("\nThe sheet Analyses_externes_librairies_ADNe was created but was empty (no data available). No changes were made.\n\n"))
+
+  } else{
+
+    data[["Analyses_externes_librairies_ADNe"]] <- tab.int.2
+
+    cat(crayon::green("\nThe sheet Analyses_externes_librairies_ADNe was created as a data frame of", ncol(tab.int.1), "columns and", nrow(tab.int.1), "row.", emojifont::emoji("rainbow")  ,"\n\n"))
+
+  }
+
+
+
+  return(data)
+
+
+} # End of the function
+
+
+
+
+
 #' @title Extract old eDNA gabarit QNC QPC sequencing info
 #'
 #' @description

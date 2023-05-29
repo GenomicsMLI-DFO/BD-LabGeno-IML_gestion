@@ -251,6 +251,8 @@ check_column_values_ID  <- function(data){
 
 correct_column_values_factor  <- function(data){
 
+  is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+
   for(x in names(data)){
 
     cat("\nChecking column values for", crayon::cyan(x), "\n")
@@ -285,13 +287,18 @@ correct_column_values_factor  <- function(data){
       # If not numeric
       if(all(!is.na(observed.vec.num ))){
 
-      cat("\n", col.int, ": Numeric value observed, converted as round charecter.\n")
+      cat("\n", col.int, ": Numeric value observed, converted as character.\n")
 
-      observed.vec <- as.character(round(observed.vec.num,0))
+
+      if(is.wholenumber(col.int)){
+        observed.vec <- as.character(round(observed.vec.num,0))
+      } else {
+        observed.vec <- as.character(observed.vec.num)
+      } # is TRUE
 
       tab.int[ , col.int]  <- suppressWarnings(as.character(round(as.numeric( tab.int %>% pull(col.int)))))
 
-       }
+      }
 
       cat("\n", col.int, ": predefined values are", crayon::green(paste(factor.vec, collapse = ", ")),
           "\n Observed values are", crayon::cyan(paste(observed.vec, collapse = ", ")), "\n")
