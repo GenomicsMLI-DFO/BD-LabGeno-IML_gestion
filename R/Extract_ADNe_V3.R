@@ -128,13 +128,15 @@ extract_libraries_ADNe  <- function(data){
 
   # Purification
 
-  tab.int.1 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.1))
+  det.var.1 <- stringr::str_detect(col.to.extract.1, paste(names(data[["Librairies_ADNe"]]) , collapse = "|"))
 
-  if(all(names(tab.int.1) !=  col.to.extract.1)){
+  tab.int.1 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.1[det.var.1]))
+
+  if(!all( det.var.1)){
     cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
   }
 
-  names(tab.int.1) <- col.new.name.1
+  names(tab.int.1) <- col.new.name.1[det.var.1]
 
   tab.int.1 <- tab.int.1 %>% dplyr::filter(!is.na(Numero_unique_librairie_ADNe)) %>%
     dplyr::mutate(Notes_purification_librairies_ADNe = "Automatically_created_with_extract_libraries_ADNe_R_function"
@@ -158,13 +160,15 @@ extract_libraries_ADNe  <- function(data){
 
   # Analyse externe
 
-  tab.int.2 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.2))
+  det.var.2 <- stringr::str_detect(col.to.extract.2, paste(names(data[["Librairies_ADNe"]]) , collapse = "|"))
 
-  if(all(names(tab.int.2) !=  col.to.extract.2)){
+  tab.int.2 <- data[["Librairies_ADNe"]] %>% dplyr::select(dplyr::all_of(col.to.extract.2[det.var.2]))
+
+  if(!all( det.var.2)){
     cat(paste("\nThe column names in Librairies_ADNe doesn't perfectly fit the one expected. Check changes carefully ..."))
   }
 
-  names(tab.int.2) <- col.new.name.2
+  names(tab.int.2) <- col.new.name.2[det.var.2]
 
   tab.int.2 <- tab.int.2 %>% dplyr::filter(!is.na(Numero_unique_librairie_SeqReady_ADNe)) %>%
     dplyr::mutate(Notes_librairies_SeqReady_ADNe = "Automatically_created_with_extract_libraries_ADNe_R_function"
