@@ -285,7 +285,7 @@ correct_column_values_factor  <- function(data){
       observed.vec.num <- suppressWarnings(as.numeric(observed.vec))
 
       # If not numeric
-      if(all(!is.na(observed.vec.num ))){
+      if(all(!is.na(observed.vec.num)) & length(observed.vec)>0){
 
       cat("\n", col.int, ": Numeric value observed, converted as character.\n")
 
