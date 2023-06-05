@@ -280,25 +280,24 @@ correct_column_values_factor  <- function(data){
 
       observed.vec <-  observed.vec[!is.na( observed.vec )]
 
-      # Test si c'est numérique
-
-      observed.vec.num <- suppressWarnings(as.numeric(observed.vec))
-
-      # If not numeric
-      if(all(!is.na(observed.vec.num)) & length(observed.vec)>0){
-
-      cat("\n", col.int, ": Numeric value observed, converted as character.\n")
-
-
-      if(is.wholenumber(col.int)){
-        observed.vec <- as.character(round(observed.vec.num,0))
-      } else {
-        observed.vec <- as.character(observed.vec.num)
-      } # is TRUE
-
-      tab.int[ , col.int]  <- suppressWarnings(as.character(round(as.numeric( tab.int %>% pull(col.int)))))
-
-      }
+      # # Test si c'est numérique
+      #
+      # observed.vec.num <- suppressWarnings(as.numeric(observed.vec))
+      #
+      # # If not numeric
+      # if(all(!is.na(observed.vec.num)) & length(observed.vec)>0){
+      #
+      # cat("\n", col.int, ": Numeric value observed, converted as character.\n")
+      #
+      # if(is.wholenumber(col.int)){
+      #   observed.vec <- as.character(round(observed.vec.num,0))
+      # } else {
+      #   observed.vec <- as.character(observed.vec.num)
+      # } # is TRUE
+      #
+      # tab.int[ , col.int]  <- suppressWarnings(as.character(round(as.numeric( tab.int %>% pull(col.int)))))
+      #
+      # }
 
       cat("\n", col.int, ": predefined values are", crayon::green(paste(factor.vec, collapse = ", ")),
           "\n Observed values are", crayon::cyan(paste(observed.vec, collapse = ", ")), "\n")
