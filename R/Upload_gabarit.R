@@ -288,7 +288,7 @@ upload_gabarit_ADN <- function(path,
 combine_multiple_gabarit <- function(path,
                                      table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones",
                                                       "Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe",
-                                                      "QNC_QPC_ADNe", "Libraries_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
+                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
                                      ){
 
 excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
@@ -311,7 +311,7 @@ combine.ls <- list(Groupes = data.frame(),
                    qPCR_inhibition_ADNe = data.frame(),
                    QNC_QPC_ADNe = data.frame(),
                    Sequencage_Sanger_ADNe = data.frame(),
-                   Libraries_ADNe = data.frame(),
+                   Librairies_ADNe = data.frame(),
                    Purification_librairies_ADNe = data.frame(),
                    Analyses_externes_librairies_AD =data.frame(),
                    Courbe_etalonnage_ADNe = data.frame()
@@ -355,6 +355,92 @@ for(x in excel.files){
 cat(crayon::green("\n",n.test, "tables have been combined", emojifont::emoji("bomb")  ,"\n\n"))
 
 return(combine.ls)
+
+
+}
+
+#' @title Upload and combine multiple corrected tables
+#'
+#' @description
+#' Function to upload and combined corrected Excel files
+#'
+#'
+#' @param path Path to the folder were the excel files are
+#' @param table.access List of sheets that will be read (only if they exist)
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#' @seealso [upload_gabarit_ADN()].
+#'
+#` @references
+#' List references
+#' @export
+
+combine_multiple_gabarit_ADNe <- function(path,
+                                          table.access = c(
+                                                      "Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe",
+                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
+){
+
+  excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
+
+  cat("\n", "Looking for Excel spreadsheets in",  path, "\n",length(excel.files), "files are detected:", paste(excel.files, collapse = ", "), "\n")
+
+  combine.ls <- list(
+                     Sites_ADNe = data.frame(),
+                     Stations_ADNe = data.frame(),
+                     Echantillons_ADNe = data.frame(),
+                     Filtres_ADNe = data.frame(),
+                     Extraits_ADNe = data.frame(),
+                     qPCR_ADNe = data.frame(),
+                     qPCR_inhibition_ADNe = data.frame(),
+                     QNC_QPC_ADNe = data.frame(),
+                     Sequencage_Sanger_ADNe = data.frame(),
+                     Librairies_ADNe = data.frame(),
+                     Purification_librairies_ADNe = data.frame(),
+                     Analyses_externes_librairies_AD =data.frame(),
+                     Courbe_etalonnage_ADNe = data.frame()
+
+
+  )
+
+  n.test <- 0
+
+  for(x in excel.files){
+
+    table.names <- readxl::excel_sheets(file.path(path, x))
+
+    int.ls <- list()
+
+    cat("\nLooking for", crayon::cyan(x), "\n")
+
+    for(i in table.names){
+
+      if(i %in% table.access ){
+
+        cat("\n", crayon::cyan(i), "was detected and will be uploaded: ")
+
+
+        df.int <- readxl::read_excel(file.path(path, x), sheet = i, col_types = "text", .name_repair = "minimal")
+
+        cat("", ncol(df.int), "columns and", nrow(df.int), "rows were uploaded\n")
+
+        int.ls[[i]] <-  df.int
+
+        combine.ls[[i]]  <- dplyr::bind_rows(combine.ls[[i]] , df.int )
+
+        n.test <- n.test + 1
+      } #
+
+    } #END of loop over table name
+
+
+  }
+
+  cat(crayon::green("\n",n.test, "tables have been combined", emojifont::emoji("bomb")  ,"\n\n"))
+
+  return(combine.ls)
 
 
 }
