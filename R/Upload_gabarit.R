@@ -286,7 +286,9 @@ upload_gabarit_ADN <- function(path,
 #' @export
 
 combine_multiple_gabarit <- function(path,
-                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones")
+                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones",
+                                                      "Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe",
+                                                      "QNC_QPC_ADNe", "Libraries_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
                                      ){
 
 excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
@@ -299,7 +301,22 @@ combine.ls <- list(Groupes = data.frame(),
                    Extraits_ADN_ARN = data.frame(),
                    Analyse_Externe = data.frame(),
                    Sexage = data.frame(),
-                   Sequencage = data.frame()
+                   Sequencage = data.frame(),
+                   Sites_ADNe = data.frame(),
+                   Stations_ADNe = data.frame(),
+                   Echantillons_ADNe = data.frame(),
+                   Filtres_ADNe = data.frame(),
+                   Extraits_ADNe = data.frame(),
+                   qPCR_ADNe = data.frame(),
+                   qPCR_inhibition_ADNe = data.frame(),
+                   QNC_QPC_ADNe = data.frame(),
+                   Sequencage_Sanger_ADNe = data.frame(),
+                   Libraries_ADNe = data.frame(),
+                   Purification_librairies_ADNe = data.frame(),
+                   Analyses_externes_librairies_AD =data.frame(),
+                   Courbe_etalonnage_ADNe = data.frame()
+
+
                    )
 
 n.test <- 0
