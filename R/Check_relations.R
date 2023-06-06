@@ -936,9 +936,9 @@ check_relation_ADNe  <- function(data){
       } else {
 
         cat(crayon::red("\nNot all the Numero_unique_filtre_ADNe observed exist in the Filtre_ADNe table.\n",
+                        paste(unique(data$Extraits_ADNe$Numero_unique_filtre_ADNe[!Extraits_ADNe$Numero_unique_filtre_ADNe %in% Numero_unique_filtre]), collapse = ", "),
 
-
-                        , "\nare missing\n"))
+                        "\nare missing\n"))
       }
 
     } else {
