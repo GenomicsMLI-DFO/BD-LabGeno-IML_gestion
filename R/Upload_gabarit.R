@@ -16,7 +16,9 @@
 #' @param sexage of the sheet in the Excel file containing the sex determining method
 #' @param sequencage Name of the sheet in the Excel file containing the sequencage info
 #' @param hormone Name of the sheet in the Excel file containing the hormone info
-
+#' @param wgs Name of the sheet in the Excel file containing the WGS info
+#' @param wgs_pool Name of the sheet in the Excel file containing the WGS pool info
+#' @param analyse_ext_lib Name of the sheet in the Excel file containing the WGS pool info
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -36,7 +38,10 @@ upload_gabarit_ADN <- function(path,
                                analyse_ext = "Analyse_Externe",
                                sexage = "Sexage",
                                sequencage = "Sequencage",
-                               hormone = "Hormones"
+                               hormone = "Hormones",
+                               wgs = "WGS",
+                               wgs_pool = "WGS_Pool",
+                               analyse_ext_lib = "Analyses_externes_librairies_WGS"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
@@ -256,7 +261,77 @@ upload_gabarit_ADN <- function(path,
 
   }
 
+  # Load WGS
 
+  if(!is.null(wgs)){
+
+    cat("\nLoading", crayon::cyan("WGS"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = wgs, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["WGS"]] <- temp.df
+
+    }
+
+  }
+
+  # Load WGS_pool
+
+  if(!is.null(wgs_pool)){
+
+    cat("\nLoading", crayon::cyan("WGS_Pool"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = wgs_pool, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["WGS_Pool"]] <- temp.df
+
+    }
+
+  }
+
+  # Load Analyses_externes_librairies_WGS
+
+  if(!is.null(wgs_pool)){
+
+    cat("\nLoading", crayon::cyan("Analyses_externes_librairies_WGS"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = analyse_ext_lib, skip = skip, col_types = "text",.name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Analyses_externes_librairies_WGS"]] <- temp.df
+
+    }
+
+  }
 
   # Etape 3 - retourner la liste - c'est à partir d'elle qu'on va travailler
 
@@ -286,9 +361,9 @@ upload_gabarit_ADN <- function(path,
 #' @export
 
 combine_multiple_gabarit <- function(path,
-                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones",
+                                     table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN", "Analyse_Externe", "Sexage", "Sequencage", "Hormones", "WGS", "WGS_Pool", "Analyses_externes_librairies_WGS",
                                                       "Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe",
-                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
+                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_ADNe", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
                                      ){
 
 excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)

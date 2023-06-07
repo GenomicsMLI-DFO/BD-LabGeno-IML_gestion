@@ -14,7 +14,10 @@ upload_gabarit_ADN(
   analyse_ext = "Analyse_Externe",
   sexage = "Sexage",
   sequencage = "Sequencage",
-  hormone = "Hormones"
+  hormone = "Hormones",
+  wgs = "WGS",
+  wgs_pool = "WGS_Pool",
+  analyse_ext_lib = "Analyses_externes_librairies_WGS"
 )
 }
 \arguments{
@@ -37,6 +40,12 @@ upload_gabarit_ADN(
 \item{sequencage}{Name of the sheet in the Excel file containing the sequencage info}
 
 \item{hormone}{Name of the sheet in the Excel file containing the hormone info}
+
+\item{wgs}{Name of the sheet in the Excel file containing the WGS info}
+
+\item{wgs_pool}{Name of the sheet in the Excel file containing the WGS pool info}
+
+\item{analyse_ext_lib}{Name of the sheet in the Excel file containing the WGS pool info}
 }
 \description{
 Function to upload an Excel file based on the predefined template

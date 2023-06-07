@@ -7,10 +7,11 @@
 combine_multiple_gabarit(
   path,
   table.access = c("Groupes", "Specimens", "Tissus", "Extraits_ADN_ARN",
-    "Analyse_Externe", "Sexage", "Sequencage", "Hormones", "Sites_ADNe", "Stations_ADNe",
+    "Analyse_Externe", "Sexage", "Sequencage", "Hormones", "WGS", "WGS_Pool",
+    "Analyses_externes_librairies_WGS", "Sites_ADNe", "Stations_ADNe",
     "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe",
     "qPCR_inhibition_ADNe", "QNC_QPC_ADNe", "Librairies_ADNe",
-    "Purification_librairies_ADNe", "Analyses_externes_librairies_AD",
+    "Purification_librairies_ADNe", "Analyses_externes_librairies_ADNe",
     "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
 )
 }
