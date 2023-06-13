@@ -1098,7 +1098,7 @@ correct_column_values_others  <- function(data){
 
       # REMOVE ALL SPECIAL CARACTERS
 
-      if(length(observed.vec) > 1){
+      if(length(observed.vec) > 0){ # AVANT 1 pour je ne sais quelle raison
 
         cat("\n Looking for special characters\n\n")
 
