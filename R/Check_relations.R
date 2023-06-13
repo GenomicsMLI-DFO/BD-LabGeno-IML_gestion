@@ -346,10 +346,10 @@ check_relation  <- function(data){
 
   # Analyses_externes_librairies_WGS : upload only
 
-  if(c("Analyses_externes_librairies_WGS") %in%  names(data)  ){
-    cat("\nImporting", crayon::cyan("Analyses_externes_librairies_WGS"), "table KEY:\n")
+  if(c("Externe_librairies_WGS") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Externe_librairies_WGS"), "table KEY:\n")
 
-    Numero_unique_librairie   <- data$Analyses_externes_librairies_WGS$Numero_unique_librairie_WGS
+    Numero_unique_librairie   <- data$Externe_librairies_WGS$Numero_unique_librairie_WGS
 
     dup <-Numero_unique_librairie[duplicated(Numero_unique_librairie)]
 
@@ -366,11 +366,11 @@ check_relation  <- function(data){
   if(c("WGS_Pool") %in%  names(data)  ){
     cat("\nImporting", crayon::cyan("WGS_Pool"), "table KEY:\n")
 
-    Numero_unique_pool   <- data$WGS_Pool$Numero_unique_librairie_pool_WGS
+    Numero_unique_pool   <- data$WGS_Pool$No_unique_librairie_pool_WGS
 
     dup <-Numero_unique_pool[duplicated(Numero_unique_pool)]
 
-    cat("\n", length(Numero_unique_pool), "Numero_unique_librairie_pool_WGS detected\n")
+    cat("\n", length(Numero_unique_pool), "No_unique_librairie_pool_WGS detected\n")
 
     if(length(dup) > 0){
       cat(crayon::red("\nDuplicated keys were observed:", paste(dup, collapse = ", "),

@@ -17,7 +17,7 @@ upload_gabarit_ADN(
   hormone = "Hormones",
   wgs = "WGS",
   wgs_pool = "WGS_Pool",
-  analyse_ext_lib = "Analyses_externes_librairies_WGS"
+  analyse_ext_lib = "Externe_librairies_WGS"
 )
 }
 \arguments{

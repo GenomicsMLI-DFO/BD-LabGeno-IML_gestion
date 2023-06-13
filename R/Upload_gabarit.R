@@ -41,7 +41,7 @@ upload_gabarit_ADN <- function(path,
                                hormone = "Hormones",
                                wgs = "WGS",
                                wgs_pool = "WGS_Pool",
-                               analyse_ext_lib = "Analyses_externes_librairies_WGS"
+                               analyse_ext_lib = "Externe_librairies_WGS"
                                ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
@@ -311,9 +311,9 @@ upload_gabarit_ADN <- function(path,
 
   # Load Analyses_externes_librairies_WGS
 
-  if(!is.null(wgs_pool)){
+  if(!is.null(analyse_ext_lib)){
 
-    cat("\nLoading", crayon::cyan("Analyses_externes_librairies_WGS"),"\n")
+    cat("\nLoading", crayon::cyan("Externe_librairies_WGS"),"\n")
 
     temp.df <-  readxl::read_excel(path = path, sheet = analyse_ext_lib, skip = skip, col_types = "text",.name_repair = "minimal")
 
@@ -327,7 +327,7 @@ upload_gabarit_ADN <- function(path,
 
       }
 
-      excel.ls[["Analyses_externes_librairies_WGS"]] <- temp.df
+      excel.ls[["Externe_librairies_WGS"]] <- temp.df
 
     }
 
