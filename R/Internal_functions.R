@@ -91,4 +91,3 @@ correct_latlon <- function(x, format = c("NGSL", "dms")){
 
 
 
-

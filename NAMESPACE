@@ -2,6 +2,8 @@
 
 export(check_column_values_ID)
 export(check_key)
+export(check_key_ADNe)
+export(check_key_unique)
 export(check_relation)
 export(check_relation_ADNe)
 export(check_relation_wDB)

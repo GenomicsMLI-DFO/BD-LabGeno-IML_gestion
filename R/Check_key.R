@@ -21,7 +21,7 @@
 
 check_key <- function(data, DB = "LabGeno"){
 
-  cat(crayon::green("\nLooking that new data are not already within the DB!\n"))
+  cat(crayon::green("\nLooking that new data are not already within the DB, DNA version!\n"))
 
   # Establish the connection
   con <- RODBC::odbcConnect(DB)
@@ -125,3 +125,160 @@ check_key <- function(data, DB = "LabGeno"){
 
 
 } # END of the function
+
+
+#' @title Check that we are not trying to import data that should be already present
+#'
+#' @description
+#' Function to check that column name and order follow the predefined template
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data List containing important tables.
+#' @param DB Name of the ODBC connection
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [upload_gabarit_ADN()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+check_key_ADNe <- function(data, DB = "LabGeno"){
+
+  cat(crayon::green("\nLooking that new data are not already within the DB, eDNA version!\n"))
+
+  # Establish the connection
+  con <- RODBC::odbcConnect(DB)
+  # Stop if you cannot connect
+  if(is.null(attr(con, "connection.string"))){
+    stop("Something went wrong with the connection ...")
+    # Perform the function if you can connect
+  }
+
+  res <- sapply(stringr::str_split(attr(con, "connection.string"), ";"), `[`,2) |> stringr::str_remove("DBQ=")
+  cat(paste("\nConnected to", res, "\n"))
+
+  RODBC::odbcClose(con)
+
+  # SITES_ADNE
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Sites_ADNe",
+                   DB.table = "21_Sites_ADNe",
+                   key = "Numero_unique_site_ADNe")
+
+  # STATION_ADNE
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Stations_ADNe",
+                   DB.table = "22_Stations_ADNe",
+                   key = "Numero_unique_station_ADNe")
+
+
+  # ECHANTILLON_ADNE
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Echantillons_ADNe",
+                   DB.table = "23_Echantillons_ADNe",
+                   key = "Numero_unique_echantillon_ADNe")
+
+  # Filtre
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Filtres_ADNe",
+                   DB.table = "24_Filtres_ADNe",
+                   key = "Numero_unique_filtre_ADNe")
+
+  # Extrait
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Extraits_ADNe",
+                   DB.table = "25_Extraits_ADNe",
+                   key = "Numero_unique_extrait_ADNe")
+
+  # QPCR
+
+  check_key_unique(data = data, DB = DB,
+                   table = "qPCR_ADNe",
+                   DB.table = "26_qPCR_ADNe",
+                   key = "ID_qPCR_ADNe")
+
+  # COURBE
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Courbe_etalonnage_ADNe",
+                   DB.table = "32_Courbe_etalonnage_ADNe",
+                   key = "Courbe_ID")
+
+  # Purification_librairies_ADNe
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Purification_librairies_ADNe",
+                   DB.table = "30_Purification_librairies_ADNe",
+                   key = "Numero_unique_librairie_ADNe")
+
+  # Analyses_externes_librairies_ADNe
+
+  check_key_unique(data = data, DB = DB,
+                   table = "Analyses_externes_librairies_ADNe",
+                   DB.table = "31_Analyses_externes_librairies",
+                   key = "Numero_unique_librairie_SeqReady_ADNe")
+
+
+} # END of the function
+
+
+
+
+#' @title Internal function to correct key column by column
+#'
+#' @description
+#' Function to correct some weird format of latitude and longitude
+#'
+#' @details
+#' NULL if you doesn't want a specif sheet to be uploaded. No other check than sheet name.
+#'
+#' @param data a string
+#' @param DB a string
+#' @param table a string
+#' @param DB.table a string
+#' @param key a string
+#'
+#' @examples
+#'
+#' @export
+
+check_key_unique <- function(data, DB, table, DB.table, key){
+
+  # SITES_ADNE
+  if(c(table) %in% names(data)  ){
+
+    cat("\nImporting", crayon::cyan(table), "KEY:\n")
+
+    Numero_unique   <- data[[table]][[key]]
+
+    DB.key <- load_columns_DB(columns = key,
+                              table = DB.table, DB = DB, verbose = F)
+    DB.key <- DB.key[[key]]
+
+    commun <- NULL
+    commun <- base::intersect(Numero_unique, DB.key)
+
+    cat("\n", length(Numero_unique), "new", key, "detected\n")
+
+    if(length(commun) > 0){
+      cat(crayon::red("\n", length(commun), "keys are already present in the DB:", paste(commun, collapse = ", "),
+                      "\nThis will be problematic with the importation into ACCESS...\n"))
+    } else{
+      cat(crayon::green("\nNo new",key, "already present in the DB, it's perfect!\n"))
+    }
+  }
+
+}
+
+
