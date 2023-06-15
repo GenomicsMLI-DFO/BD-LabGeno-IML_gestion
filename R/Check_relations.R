@@ -349,7 +349,7 @@ check_relation  <- function(data){
   if(c("Externe_librairies_WGS") %in%  names(data)  ){
     cat("\nImporting", crayon::cyan("Externe_librairies_WGS"), "table KEY:\n")
 
-    Numero_unique_librairie   <- data$Externe_librairies_WGS$Numero_unique_librairie_WGS
+    Numero_unique_librairie   <- data$Externe_librairies_WGS$No_unique_librairie_pool_SeqReady_WGS
 
     dup <-Numero_unique_librairie[duplicated(Numero_unique_librairie)]
 
@@ -381,18 +381,18 @@ check_relation  <- function(data){
 
     if(!is.null(Numero_unique_librairie)){
 
-      if(all(data$WGS_Pool$Numero_unique_librairie_WGS %in% Numero_unique_librairie)){
-        cat(crayon::green("\nAll the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n"))
+      if(all(data$WGS_Pool$No_unique_librairie_pool_SeqReady_WGS %in% Numero_unique_librairie)){
+        cat(crayon::green("\nAll the No_unique_librairie_pool_SeqReady_WGS observed exist in the Analyses_externes_librairies_WGS table.\n"))
 
       } else {
 
-        cat(crayon::red("\nNot all the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n",
-                        paste(unique(data$WGS_Pool$Numero_unique_librairie_WGS[!data$WGS_Pool$Numero_unique_librairie_WGS %in% Numero_unique_librairie]), collapse = ", "),
+        cat(crayon::red("\nNot all the No_unique_librairie_pool_SeqReady_WGS observed exist in the Analyses_externes_librairies_WGS table.\n",
+                        paste(unique(data$WGS_Pool$No_unique_librairie_pool_SeqReady_WGS[!data$WGS_Pool$No_unique_librairie_pool_SeqReady_WGS %in% Numero_unique_librairie]), collapse = ", "),
                         "\nare missing\n"))
       }
 
     } else {
-      cat(crayon::red("\nNumero_unique_librairie_WGS could not be checked in this table\n"))
+      cat(crayon::red("\nNo_unique_librairie_pool_SeqReady_WGS could not be checked in this table\n"))
     }
    }
 
