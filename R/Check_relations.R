@@ -253,7 +253,7 @@ check_relation  <- function(data){
     }
 
 
-    # Check with extrai
+    # Check with extrait
 
     if(!is.null(Numero_unique_extrait)){
 
@@ -1451,10 +1451,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
   echantillon.key <- load_columns_DB(columns = "Numero_unique_echantillon_ADNe", table = "23_Echantillons_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_echantillon_ADNe)
   filtre.key <- load_columns_DB(columns = "Numero_unique_filtre_ADNe", table = "24_Filtres_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_filtre_ADNe)
   extrait.key <- load_columns_DB(columns = "Numero_unique_extrait_ADNe", table = "25_Extraits_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_extrait_ADNe)
-  qPCR.key <- load_columns_DB(columns = "ID_qPCR_ADNe", table = "26_qPCR_ADNe", DB = DB, verbose = F) |> dplyr::pull(ID_qPCR_ADNe)
-  courbe.key <- load_columns_DB(columns = "Courbe_ID", table = "32_Courbe_etalonnage_ADNe", DB = DB, verbose = F) |> dplyr::pull(Courbe_ID)
-  purif.key <- load_columns_DB(columns = "Numero_unique_librairie_ADNe", table = "30_Purification_librairies_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_librairie_ADNe)
-  lib.key <- load_columns_DB(columns = "Numero_unique_librairie_SeqReady_ADNe", table = "31_Analyses_externes_librairies", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_librairie_SeqReady_ADNe)
+  qPCR.key <- load_columns_DB(columns = "ID_qPCR_ADNe", table = "26c_qPCR_ADNe", DB = DB, verbose = F) |> dplyr::pull(ID_qPCR_ADNe)
+  courbe.key <- load_columns_DB(columns = "Courbe_ID", table = "26a_Courbe_etalonnage_ADNe", DB = DB, verbose = F) |> dplyr::pull(Courbe_ID)
+  purif.key <- load_columns_DB(columns = "Numero_unique_librairie_ADNe", table = "28a_Purification_librairies_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_librairie_ADNe)
+  lib.key <- load_columns_DB(columns = "Numero_unique_librairie_SeqReady_ADNe", table = "28b_Analyses_externes_librairies", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_librairie_SeqReady_ADNe)
 
   # Sites_ADNe - only importation
   if(c("Sites_ADNe") %in%  names(data)  ){

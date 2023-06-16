@@ -205,28 +205,28 @@ check_key_ADNe <- function(data, DB = "LabGeno"){
 
   check_key_unique(data = data, DB = DB,
                    table = "qPCR_ADNe",
-                   DB.table = "26_qPCR_ADNe",
+                   DB.table = "26c_qPCR_ADNe",
                    key = "ID_qPCR_ADNe")
 
   # COURBE
 
   check_key_unique(data = data, DB = DB,
                    table = "Courbe_etalonnage_ADNe",
-                   DB.table = "32_Courbe_etalonnage_ADNe",
+                   DB.table = "26a_Courbe_etalonnage_ADNe",
                    key = "Courbe_ID")
 
   # Purification_librairies_ADNe
 
   check_key_unique(data = data, DB = DB,
                    table = "Purification_librairies_ADNe",
-                   DB.table = "30_Purification_librairies_ADNe",
+                   DB.table = "28a_Purification_librairies_ADNe",
                    key = "Numero_unique_librairie_ADNe")
 
   # Analyses_externes_librairies_ADNe
 
   check_key_unique(data = data, DB = DB,
                    table = "Analyses_externes_librairies_ADNe",
-                   DB.table = "31_Analyses_externes_librairies",
+                   DB.table = "28b_Analyses_externes_librairies",
                    key = "Numero_unique_librairie_SeqReady_ADNe")
 
 
