@@ -32,7 +32,7 @@ export_access_csv <- function(data,
 
     cat("\nExporting", crayon::cyan(x), "to", new.file, "\n")
 
-    readr::write_csv(tab.int, file = new.file, na = "")
+    readr::write_tsv(tab.int, file = new.file, na = "")
 
 
     }
