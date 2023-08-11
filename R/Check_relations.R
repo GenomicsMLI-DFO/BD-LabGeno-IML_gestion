@@ -207,7 +207,7 @@ check_relation  <- function(data){
     }
 
 
-    # Check with extrai
+    # Check with extrait
 
     if(!is.null(Numero_unique_extrait)){
 
@@ -222,7 +222,7 @@ check_relation  <- function(data){
       }
 
     } else {
-      cat(crayon::red("\nNumero_unique_extra could not be checked in this table\n"))
+      cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
     }
 
   }
@@ -476,6 +476,7 @@ check_relation  <- function(data){
     }
   } # END of WGS
 
+  cat(crayon::green("\nIt's over!", emojifont::emoji("heart"), "\n"))
 
 } # END of the function
 
