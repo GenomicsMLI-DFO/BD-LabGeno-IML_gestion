@@ -272,7 +272,7 @@ correct_column_values_factor  <- function(data){
       col.int <-   model.list.int[[i,"Col"]]# %>% as.vector()
 
       factor.vec <-  model.list.int[i,as.vector(!is.na(model.list.int[i,]))] %>% dplyr::select(-"Col") %>% as.data.frame()
-      factor.vec <- suppressWarnings(factor.vec[1,order(factor.vec[1,])])
+      factor.vec <- suppressWarnings(factor.vec[1,order(unlist(as.vector(factor.vec[1,])))])
 
       tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_") %>% as.character()
 

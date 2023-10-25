@@ -1,4 +1,4 @@
-#' @title Check the Projet column specificallyr
+#' @title Check the Projet column specifically
 #'
 #' @description
 #' Function to check that column name and order follow the predefined template
