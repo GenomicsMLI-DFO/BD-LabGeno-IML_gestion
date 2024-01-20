@@ -442,13 +442,13 @@ check_relation  <- function(data){
 
     if(!is.null(Numero_unique_pool)){
 
-      if(all(data$WGS$Numero_unique_librairie_pool_WGS %in% Numero_unique_pool)){
-        cat(crayon::green("\nAll the Numero_unique_librairie_pool_WGS observed exist in the WGS_Pool table.\n"))
+      if(all(data$WGS$No_unique_librairie_pool_WGS %in% Numero_unique_pool)){
+        cat(crayon::green("\nAll the No_unique_librairie_pool_WGS observed exist in the WGS_Pool table.\n"))
 
       } else {
 
-        cat(crayon::red("\nNot all the Numero_unique_librairie_pool_WGS observed exist in the WGS_Pool table.\n",
-                        paste(unique(data$WGS$Numero_unique_librairie__pool_WGS[!data$WGS$Numero_unique_librairie_pool_WGS %in% Numero_unique_pool]), collapse = ", "),
+        cat(crayon::red("\nNot all the No_unique_librairie_pool_WGS observed exist in the WGS_Pool table.\n",
+                        paste(unique(data$WGS$No_unique_librairie_pool_WGS[!data$WGS$No_unique_librairie_pool_WGS %in% Numero_unique_pool]), collapse = ", "),
                         "\nare missing\n"))
       }
 
@@ -456,24 +456,23 @@ check_relation  <- function(data){
       cat(crayon::red("\nNumero_unique_librairie_pool_WGS could not be checked in this table\n"))
     }
 
-
-    # Check with Numero_unique_librairie_WGS
-
-    if(!is.null(Numero_unique_librairie)){
-
-      if(all(data$WGS$Numero_unique_librairie_WGS %in% Numero_unique_librairie)){
-        cat(crayon::green("\nAll the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n",
-                        paste(unique(data$WGS$Numero_unique_librairie_WGS[!data$WGS$Numero_unique_librairie_WGS %in% Numero_unique_librairie]), collapse = ", "),
-                        "\nare missing\n"))
-      }
-
-    } else {
-      cat(crayon::red("\nNumero_unique_librairie_WGS could not be checked in this table\n"))
-    }
+        # # Check with Numero_unique_librairie_WGS
+    #
+    # if(!is.null(Numero_unique_librairie)){
+    #
+    #   if(all(data$WGS$Numero_unique_librairie_WGS %in% Numero_unique_librairie)){
+    #     cat(crayon::green("\nAll the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n"))
+    #
+    #   } else {
+    #
+    #     cat(crayon::red("\nNot all the Numero_unique_librairie_WGS observed exist in the Analyses_externes_librairies_WGS table.\n",
+    #                     paste(unique(data$WGS$Numero_unique_librairie_WGS[!data$WGS$Numero_unique_librairie_WGS %in% Numero_unique_librairie]), collapse = ", "),
+    #                     "\nare missing\n"))
+    #   }
+    #
+    # } else {
+    #   cat(crayon::red("\nNumero_unique_librairie_WGS could not be checked in this table\n"))
+    # }
   } # END of WGS
 
   cat(crayon::green("\nIt's over!", emojifont::emoji("heart"), "\n"))
@@ -563,24 +562,24 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with group
 
-    if(!is.null(Numero_unique_groupe)){
+    #if(!is.null(Numero_unique_groupe)){
 
-      if(all(data$Specimens$Numero_unique_groupe %in% c(Numero_unique_groupe, groupes.key))){
-        cat(crayon::green("\nAll the Numero_unique_groupe observed exist in the Groupes table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_groupe observed exist in the Groupes table or the DB.\n",
-
-
-                        paste(unique(data$Specimens$Numero_unique_groupe[!data$Specimens$Numero_unique_groupe %in% c(Numero_unique_groupe, groupes.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Specimens$Numero_unique_groupe %in% c(Numero_unique_groupe, groupes.key))){
+      cat(crayon::green("\nAll the Numero_unique_groupe observed exist in the Groupes table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_groupe could not be checked in this table\n"))
 
+      cat(crayon::red("\nNot all the Numero_unique_groupe observed exist in the Groupes table or the DB.\n",
+
+
+                      paste(unique(data$Specimens$Numero_unique_groupe[!data$Specimens$Numero_unique_groupe %in% c(Numero_unique_groupe, groupes.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_groupe could not be checked in this table\n"))
+    #
+    #}
 
   } else{
     cat(crayon::red("\nNo Specimens table detected\n"))
@@ -607,21 +606,21 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Tissus$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Tissus$Numero_unique_specimen[!data$Tissus$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Tissus$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Tissus$Numero_unique_specimen[!data$Tissus$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
   } else{
     cat(crayon::red("\nNo Tissus table detected\n"))
@@ -646,40 +645,40 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Extraits_ADN_ARN$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_specimen[!data$Extraits_ADN_ARN$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Extraits_ADN_ARN$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Extraits_ADN_ARN$Numero_unique_specimen[!data$Extraits_ADN_ARN$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
 
     # Check with tissus
 
-    if(!is.null(Numero_unique_tissu)){
+    #if(!is.null(Numero_unique_tissu)){
 
-      if(all(data$Extraits_ADN_ARN$Numero_unique_tissu %in% c(Numero_unique_tissu, tissu.key))){
-        cat(crayon::green("\nAll the Numero_unique_tissu observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_tissu observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Extraits_ADN_ARN$Numero_unique_tissu[!data$Extraits_ADN_ARN$Numero_unique_tissu %in% c(Numero_unique_tissu, tissu.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Extraits_ADN_ARN$Numero_unique_tissu %in% c(Numero_unique_tissu, tissu.key))){
+      cat(crayon::green("\nAll the Numero_unique_tissu observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_tissu could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_tissu observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Extraits_ADN_ARN$Numero_unique_tissu[!data$Extraits_ADN_ARN$Numero_unique_tissu %in% c(Numero_unique_tissu, tissu.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_tissu could not be checked in this table\n"))
+    #}
 
   } else{
     cat(crayon::red("\nNo Extrait_ADN_ARN table detected\n"))
@@ -694,45 +693,42 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Analyse_Externe$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Analyse_Externe$Numero_unique_specimen[!data$Analyse_Externe$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Analyse_Externe$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Analyse_Externe$Numero_unique_specimen[!data$Analyse_Externe$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
 
     # Check with extrai
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
-      if(all(data$Analyse_Externe$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
-        cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
-                        paste(unique(data$Analyse_Externe$Numero_unique_extrait[!data$Analyse_Externe$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Analyse_Externe$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
+      cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_extra could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
+                      paste(unique(data$Analyse_Externe$Numero_unique_extrait[!data$Analyse_Externe$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
 
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_extra could not be checked in this table\n"))
+    #}
+
   }
-
-
-
   # Sequencage : 2 checks
 
   if(c("Sequencage") %in%  names(data)  ){
@@ -740,40 +736,43 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Sequencage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Sequencage$Numero_unique_specimen[!data$Sequencage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Sequencage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Sequencage$Numero_unique_specimen[!data$Sequencage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
 
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
     # Check with extrait
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
-      if(all(data$Sequencage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
-        cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
-                        paste(unique(data$Sequencage$Numero_unique_extrait[!data$Sequencage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Sequencage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
+      cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
+                      paste(unique(data$Sequencage$Numero_unique_extrait[!data$Sequencage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
+    #}
+
+
+
+
 
   }
 
@@ -786,40 +785,40 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Sexage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Sexage$Numero_unique_specimen[!data$Sexage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Sexage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Sexage$Numero_unique_specimen[!data$Sexage$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
 
     # Check with extrai
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
-      if(all(data$Sexage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
-        cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
-                        paste(unique(data$Sexage$Numero_unique_extrait[!data$Sexage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Sexage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key))){
+      cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extrait_ADN_ARN table or the DB.\n",
+                      paste(unique(data$Sexage$Numero_unique_extrait[!data$Sexage$Numero_unique_extrait %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
+    #}
 
   }
 
@@ -830,25 +829,26 @@ check_relation_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with specimens
 
-    if(!is.null(Numero_unique_specimen)){
+    #if(!is.null(Numero_unique_specimen)){
 
-      if(all(data$Hormones$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
-        cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
-
-      } else {
-
-        cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
-                        paste(unique(data$Hormones$Numero_unique_specimen[!data$Hormones$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
-                        , "\nare missing\n"))
-      }
+    if(all(data$Hormones$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key))){
+      cat(crayon::green("\nAll the Numero_unique_specimen observed exist in the Specimen table or the DB.\n"))
 
     } else {
-      cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+
+      cat(crayon::red("\nNot all the Numero_unique_specimen observed exist in the Specimen table or the DB.\n",
+                      paste(unique(data$Hormones$Numero_unique_specimen[!data$Hormones$Numero_unique_specimen %in% c(Numero_unique_specimen, specimen.key)]), collapse = ", ")
+                      , "\nare missing\n"))
     }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_specimen could not be checked in this table\n"))
+    #}
 
   }
 
-} # END of the function
+}
+# END of the function
 
 
 #' @title Check relations between tables for the eDNA gabarit
@@ -1496,7 +1496,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with site
 
-    if(!is.null(Numero_unique_site)){
+    #if(!is.null(Numero_unique_site)){
 
       if(all(data$Stations_ADNe$Numero_unique_site_ADNe %in% c(Numero_unique_site, site.key))){
         cat(crayon::green("\nAll the Numero_unique_site_ADNe observed exist in the Sites_ADNe table or DB.\n"))
@@ -1510,10 +1510,9 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
-
-    }
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
+    #}
 
   } else{
     cat(crayon::red("\nNo Specimens table detected\n"))
@@ -1539,7 +1538,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with sites
 
-    if(!is.null(Numero_unique_site)){
+    #if(!is.null(Numero_unique_site)){
 
       if(all(data$Echantillons_ADNe$Numero_unique_site_ADNe %in% c(Numero_unique_site, site.key) )){
         cat(crayon::green("\nAll the Numero_unique_site_ADNe observed exist in the Sites_ADNe table or DB.\n"))
@@ -1553,14 +1552,13 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
-
-    }
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_site_ADNe could not be checked in this table\n"))
+    #}
 
     # Check with stations
 
-    if(!is.null(Numero_unique_station)){
+    #if(!is.null(Numero_unique_station)){
 
       if(all(data$Echantillons_ADNe$Numero_unique_station_ADNe %in% c(Numero_unique_station, station.key))){
         cat(crayon::green("\nAll the Numero_unique_station_ADNe observed exist in the Stations_ADNe table or DB.\n"))
@@ -1574,10 +1572,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_station_ADNe could not be checked in this table\n"))
-
-    }
+    #} else {
+     # cat(crayon::red("\nNumero_unique_station_ADNe could not be checked in this table\n"))
+#
+ #   }
 
 
   } else{
@@ -1603,7 +1601,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with Echantillons
 
-    if(!is.null(Numero_unique_echantillon)){
+  #  if(!is.null(Numero_unique_echantillon)){
 
       if(all(data$Filtres_ADNe$Numero_unique_echantillon_ADNe %in% c(Numero_unique_echantillon, echantillon.key) )){
         cat(crayon::green("\nAll the Numero_unique_echantillon_ADNe observed exist in the Echantillon_ADNe table or DB.\n"))
@@ -1617,10 +1615,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_echantillon_ADNe could not be checked in this table\n"))
+   # } else {
+    #  cat(crayon::red("\nNumero_unique_echantillon_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
   } else{
     cat(crayon::red("\nNo Filtres_ADNe table detected\n"))
@@ -1646,7 +1644,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with filtre
 
-    if(!is.null(Numero_unique_filtre)){
+    #if(!is.null(Numero_unique_filtre)){
 
       if(all(data$Extraits_ADNe$Numero_unique_filtre_ADNe %in% c(Numero_unique_filtre, filtre.key) )){
         cat(crayon::green("\nAll the Numero_unique_filtre_ADNe observed exist in the Filtres_ADNe table or DB.\n"))
@@ -1659,10 +1657,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_filtre_ADNe could not be checked in this table\n"))
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_filtre_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
   } else{
     cat(crayon::red("\nNo Extraits_ADNe table detected\n"))
@@ -1702,7 +1700,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with Extrait
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
       if(all(data$qPCR_inhibition_ADNe$Numero_unique_extrait_ADNe %in% c(Numero_unique_extrait, extrait.key) )){
         cat(crayon::green("\nAll the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table or DB.\n"))
@@ -1716,10 +1714,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
+    #} else {
+     # cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
   } else{
     cat(crayon::red("\nNo qPCR_inhibition_ADNe table detected\n"))
@@ -1748,7 +1746,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with Extrait
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
       if(all(data$qPCR_ADNe$Numero_unique_extrait_ADNe %in%  c(Numero_unique_extrait, extrait.key))){
         cat(crayon::green("\nAll the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table or DB.\n"))
@@ -1762,14 +1760,14 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
     # Check with Courbe
 
-    if(!is.null(Courbe_ID)){
+    #if(!is.null(Courbe_ID)){
 
       if(all(data$qPCR_ADNe$Courbe_ID %in% c(Courbe_ID, courbe.key) )){
         cat(crayon::green("\nAll the Courbe_ID observed exist in the Courbe_etalonnage_ADNe table or DB.\n"))
@@ -1783,9 +1781,9 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nCourbe_ID could not be checked in this table\n"))
-    }
+    #} else {
+    #  cat(crayon::red("\nCourbe_ID could not be checked in this table\n"))
+    #}
 
   } else{
     cat(crayon::red("\nNo qPCR_ADNe table detected\n"))
@@ -1801,7 +1799,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with qPCR
 
-    if(!is.null(qpcr_ID)){
+    #if(!is.null(qpcr_ID)){
 
       if(all(data$QNC_QPC_ADNe$ID_qPCR_ADNe %in%  c(qpcr_ID, qPCR.key) )){
         cat(crayon::green("\nAll the ID_qPCR_ADNe observed exist in the qPCR_ADNe table or DB.\n"))
@@ -1815,10 +1813,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
+    #} else {
+    #  cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
   } else{
     cat(crayon::red("\nNo QNC_QPC_ADNe table detected\n"))
@@ -1836,7 +1834,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with qPCR
 
-    if(!is.null(qpcr_ID)){
+    #if(!is.null(qpcr_ID)){
 
       if(all(data$Sequencage_Sanger_ADNe$ID_qPCR_ADNe %in% c(qpcr_ID, qPCR.key))){
         cat(crayon::green("\nAll the ID_qPCR_ADNe observed exist in the qPCR_ADNe table or DB.\n"))
@@ -1850,10 +1848,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
+    #} else {
+     # cat(crayon::red("\nID_qPCR_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
   } else{
     cat(crayon::red("\nNo Sequencage_Sanger_ADNe table detected\n"))
@@ -1916,7 +1914,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
     # Check with Numero_unique_extrait_ADNe
 
-    if(!is.null(Numero_unique_extrait)){
+    #if(!is.null(Numero_unique_extrait)){
 
       if(all(data$Librairies_ADNe$Numero_unique_extrait_ADNe %in%  c(Numero_unique_extrait, extrait.key))){
         cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADNe table or DB.\n"))
@@ -1930,16 +1928,16 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
 
-    }
+    #}
 
 
 
     # Check with Numero_unique_extrait_ADNe
 
-    if(!is.null(Purif_ID)){
+    #if(!is.null(Purif_ID)){
 
       if(all(data$Librairies_ADNe$Numero_unique_librairie_ADNe %in% c(Purif_ID, purif.key))){
         cat(crayon::green("\nAll the Numero_unique_librairie_ADNe observed exist in the Purification_librairies_ADNe table or DB.\n"))
@@ -1953,10 +1951,10 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                         , "\nare missing\n"))
       }
 
-    } else {
-      cat(crayon::red("\nNumero_unique_librairie_ADNe could not be checked in this table\n"))
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_librairie_ADNe could not be checked in this table\n"))
 
-    }
+    #}
 
 
   } else{
@@ -1966,7 +1964,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
   # Check with Numero_unique_librairie_SeqReady_ADNe
 
-  if(!is.null(Ext_ID)){
+  #if(!is.null(Ext_ID)){
 
     if(all(data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% c(Ext_ID, lib.key)  )){
       cat(crayon::green("\nAll the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table or DB.\n"))
@@ -1980,16 +1978,12 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                       , "\nare missing\n"))
     }
 
-  } else {
-    cat(crayon::red("\nNumero_unique_librairie_SeqReady_ADNe could not be checked in this table\n"))
+#  } else {
+#    cat(crayon::red("\nNumero_unique_librairie_SeqReady_ADNe could not be checked in this table\n"))
 
-  }
-
-
+#  }
 
   cat(crayon::green("\nVerification done!", emojifont::emoji("ocean"), "\n"))
-
-
 
 } # END of the function
 
