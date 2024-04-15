@@ -455,7 +455,7 @@ return(combine.ls)
 combine_multiple_gabarit_ADNe <- function(path,
                                           table.access = c(
                                                       "Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe", "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe",
-                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
+                                                      "QNC_QPC_ADNe", "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD", "Librairies_SeqReady_ADNe", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
 ){
 
   excel.files <- list.files(path, pattern = "xlsx") %>% stringr::str_subset("\\$", negate = T)
@@ -474,10 +474,9 @@ combine_multiple_gabarit_ADNe <- function(path,
                      Sequencage_Sanger_ADNe = data.frame(),
                      Librairies_ADNe = data.frame(),
                      Purification_librairies_ADNe = data.frame(),
-                     Analyses_externes_librairies_AD =data.frame(),
+                     Analyses_externes_librairies_AD = data.frame(),
+                     Librairies_SeqReady_ADNe = data.frame(),
                      Courbe_etalonnage_ADNe = data.frame()
-
-
   )
 
   n.test <- 0
@@ -544,6 +543,7 @@ combine_multiple_gabarit_ADNe <- function(path,
 #' @param librairies Name of the sheet in the Excel file containing the librairy info
 #' @param purification Name of the sheet in the Excel file containing the librairy purification info
 #' @param analyses_ext_lib Name of the sheet in the Excel file containing the librairy sequencing info
+#' @param librairies_seq Name of the sheet in the Excel file containing the Librairie SeqReady ADNe info
 #'
 #' @examples
 #' # provide some examples of how to use your function
@@ -568,7 +568,8 @@ upload_gabarit_ADNe <- function(path,
                                 courbe = "Courbe_etalonnage_ADNe",
                                 librairies = "Librairies_ADNe",
                                 purification = "Purification_librairies_ADNe",
-                                analyses_ext_lib = "Analyses_externes_librairies_ADNe"
+                                analyses_ext_lib = "Analyses_externes_librairies_ADNe",
+                                librairies_seq = "Librairies_SeqReady_ADNe"
 ){
   # Etape 1 - verifier que les noms suivent le gabarit
 
@@ -578,7 +579,7 @@ upload_gabarit_ADNe <- function(path,
 
   cat("\nThe sheets detected are",  paste(sheet.observed, collapse = ", "), "\n")
 
-  sheet.to.load <- c(site, station, echantillon, filtre, extrait, qpcr_inhibition, qpcr, sequencage, courbe, librairies, purification, analyses_ext_lib)
+  sheet.to.load <- c(site, station, echantillon, filtre, extrait, qpcr_inhibition, qpcr, sequencage, courbe, librairies, purification, analyses_ext_lib, librairies_seq)
 
   if( !all(sheet.to.load %in% sheet.observed)){
     stop(paste("\nThe sheet to be uploaded doesn't fit the one detected.\n\nThese ones are problematics:", paste(setdiff(sheet.to.load, sheet.observed), collapse = ", "),
@@ -902,6 +903,31 @@ upload_gabarit_ADNe <- function(path,
     }
 
   }
+
+  # Load Analyses_externes_librairies_ADNe
+
+  if(!is.null(librairies_seq)){
+
+    cat("\nLoading", crayon::cyan("Librairies_SeqReady_ADNe"),"\n")
+
+    temp.df <-  readxl::read_excel(path = path, sheet = librairies_seq, skip = skip,col_types = "text", .name_repair = "minimal")
+
+    cat("A dataframe of", ncol(temp.df), "columns and", nrow(temp.df), "rows was uploaded\n")
+
+    if(nrow(temp.df)>0){
+      dup.prob <- names(temp.df)[duplicated(names(temp.df))]
+      if(length(dup.prob > 0)){
+
+        cat(crayon::red("WARNING: The column(s)", paste(dup.prob, collapse = ", "), "appeared more than one time, you should check this prior to the importation in R ...\n"))
+
+      }
+
+      excel.ls[["Librairies_SeqReady_ADNe"]] <- temp.df
+
+    }
+
+  }
+
 
 
 

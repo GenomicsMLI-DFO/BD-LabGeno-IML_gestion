@@ -1351,8 +1351,6 @@ check_relation_ADNe  <- function(data){
 
     }
 
-
-
     # Check with Numero_unique_extrait_ADNe
 
     if(!is.null(Purif_ID)){
@@ -1374,17 +1372,69 @@ check_relation_ADNe  <- function(data){
 
     }
 
+        # Check with Numero_unique_librairie_SeqReady_ADNe
+
+    if(!is.null(Ext_ID)){
+
+      if(all(data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe %in%  Ext_ID)){
+        cat(crayon::green("\nAll the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table.\n",
+
+
+                        paste(unique(data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe[!data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% Ext_ID]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_librairie_SeqReady_ADNe could not be checked in this table\n"))
+
+    }
+
 
   } else{
     cat(crayon::red("\nNo librairies_ADNe table detected\n"))
 
   }
 
+
+
+  # Librairie SeqReady :  2 checks
+
+  if(c("Librairies_SeqReady_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Librairies_SeqReady_ADNe"), "table KEY:\n")
+
+    # Check with Numero_unique_librairie_ADNe
+
+    if(!is.null(Purif_ID)){
+
+      if(all(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe %in%  Purif_ID)){
+        cat(crayon::green("\nAll the Numero_unique_librairie_ADNe observed exist in the Purification_librairies_ADNe table.\n"))
+
+      } else {
+
+        cat(crayon::red("\nNot all the Numero_unique_librairie_ADNe observed exist in the Purification_librairies_ADNe table.\n",
+
+
+                        paste(unique(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe[!data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe %in% Purif_ID]), collapse = ", ")
+                        , "\nare missing\n"))
+      }
+
+    } else {
+      cat(crayon::red("\nNumero_unique_librairie_ADNe could not be checked in this table\n"))
+
+    }
+
+
+
+
   # Check with Numero_unique_librairie_SeqReady_ADNe
 
   if(!is.null(Ext_ID)){
 
-    if(all(data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe %in%  Ext_ID)){
+    if(all(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe %in%  Ext_ID)){
       cat(crayon::green("\nAll the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table.\n"))
 
     } else {
@@ -1392,7 +1442,7 @@ check_relation_ADNe  <- function(data){
       cat(crayon::red("\nNot all the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table.\n",
 
 
-                      paste(unique(data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe[!data$Librairies_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% Ext_ID]), collapse = ", ")
+                      paste(unique(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe[!data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% Ext_ID]), collapse = ", ")
                       , "\nare missing\n"))
     }
 
@@ -1402,9 +1452,13 @@ check_relation_ADNe  <- function(data){
   }
 
 
+  } else{
+    cat(crayon::red("\nNo librairies_ADNe table detected\n"))
+
+  }
+
 
   cat(crayon::green("\nVerification done!", emojifont::emoji("ocean"), "\n"))
-
 
 
 } # END of the function
@@ -1823,10 +1877,6 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
   }
 
-
-
-
-
   # Sequencage : 1 checks
 
   if(c("Sequencage_Sanger_ADNe") %in%  names(data)  ){
@@ -1857,7 +1907,6 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
     cat(crayon::red("\nNo Sequencage_Sanger_ADNe table detected\n"))
 
   }
-
 
 
 
@@ -1906,7 +1955,6 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
   }
 
 
-
   # Librairie : 3 checks
 
   if(c("Librairies_ADNe") %in%  names(data)  ){
@@ -1932,9 +1980,6 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
     #  cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
 
     #}
-
-
-
     # Check with Numero_unique_extrait_ADNe
 
     #if(!is.null(Purif_ID)){
@@ -1957,11 +2002,6 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
     #}
 
 
-  } else{
-    cat(crayon::red("\nNo librairies_ADNe table detected\n"))
-
-  }
-
   # Check with Numero_unique_librairie_SeqReady_ADNe
 
   #if(!is.null(Ext_ID)){
@@ -1978,10 +2018,66 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
                       , "\nare missing\n"))
     }
 
+  }else{
+    cat(crayon::red("\nNo librairies_ADNe table detected\n"))
+
+  }
+
+
 #  } else {
 #    cat(crayon::red("\nNumero_unique_librairie_SeqReady_ADNe could not be checked in this table\n"))
 
 #  }
+
+
+  # Librairies_SeqReady_ADNe : 2 checks
+
+  if(c("Librairies_SeqReady_ADNe") %in%  names(data)  ){
+    cat("\nImporting", crayon::cyan("Librairies_SeqReady_ADNe"), "table KEY:\n")
+
+    # Check with Numero_unique_librairie_ADNe
+
+    #if(!is.null(Purif_ID)){
+
+    if(all(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe %in% c(Purif_ID, purif.key))){
+      cat(crayon::green("\nAll the Numero_unique_librairie_ADNe observed exist in the Purification_librairies_ADNe table or DB.\n"))
+
+    } else {
+
+      cat(crayon::red("\nNot all the Numero_unique_librairie_ADNe observed exist in the Purification_librairies_ADNe table or DB.\n",
+
+
+                      paste(unique(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe[!data$Librairies_SeqReady_ADNe$Numero_unique_librairie_ADNe %in% c(Purif_ID, purif.key)]), collapse = ", ")
+                      , "\nare missing\n"))
+    }
+
+    #} else {
+    #  cat(crayon::red("\nNumero_unique_librairie_ADNe could not be checked in this table\n"))
+
+    #}
+
+
+    # Check with Numero_unique_librairie_SeqReady_ADNe
+
+    #if(!is.null(Ext_ID)){
+
+    if(all(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% c(Ext_ID, lib.key)  )){
+      cat(crayon::green("\nAll the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table or DB.\n"))
+
+    } else {
+
+      cat(crayon::red("\nNot all the Numero_unique_librairie_SeqReady_ADNe observed exist in the Analyses_externes_librairies_ADNe table or DB.\n",
+
+
+                      paste(unique(data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe[!data$Librairies_SeqReady_ADNe$Numero_unique_librairie_SeqReady_ADNe %in% c(Ext_ID, lib.key)]), collapse = ", ")
+                      , "\nare missing\n"))
+    }
+
+  }else{
+    cat(crayon::red("\nNo librairies_ADNe table detected\n"))
+
+  }
+
 
   cat(crayon::green("\nVerification done!", emojifont::emoji("ocean"), "\n"))
 

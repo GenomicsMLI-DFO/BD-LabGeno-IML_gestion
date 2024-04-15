@@ -2,7 +2,7 @@
 % Please edit documentation in R/Check_projet.R
 \name{correct_project}
 \alias{correct_project}
-\title{Check the Projet column specificallyr}
+\title{Check the Projet column specifically}
 \usage{
 correct_project(data, DB = "LabGeno")
 }

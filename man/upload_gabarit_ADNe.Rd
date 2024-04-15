@@ -19,7 +19,8 @@ upload_gabarit_ADNe(
   courbe = "Courbe_etalonnage_ADNe",
   librairies = "Librairies_ADNe",
   purification = "Purification_librairies_ADNe",
-  analyses_ext_lib = "Analyses_externes_librairies_ADNe"
+  analyses_ext_lib = "Analyses_externes_librairies_ADNe",
+  librairies_seq = "Librairies_SeqReady_ADNe"
 )
 }
 \arguments{
@@ -52,6 +53,8 @@ upload_gabarit_ADNe(
 \item{purification}{Name of the sheet in the Excel file containing the librairy purification info}
 
 \item{analyses_ext_lib}{Name of the sheet in the Excel file containing the librairy sequencing info}
+
+\item{librairies_seq}{Name of the sheet in the Excel file containing the Librairie SeqReady ADNe info}
 }
 \description{
 Function to upload an Excel file based on the predefined eDNA template

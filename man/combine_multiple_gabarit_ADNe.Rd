@@ -9,7 +9,7 @@ combine_multiple_gabarit_ADNe(
   table.access = c("Sites_ADNe", "Stations_ADNe", "Echantillons_ADNe", "Filtres_ADNe",
     "Extraits_ADNe", "qPCR_ADNe", "qPCR_inhibition_ADNe", "QNC_QPC_ADNe",
     "Librairies_ADNe", "Purification_librairies_ADNe", "Analyses_externes_librairies_AD",
-    "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
+    "Librairies_SeqReady_ADNe", "Courbe_etalonnage_ADNe", "Sequencage_Sanger_ADNe")
 )
 }
 \arguments{
