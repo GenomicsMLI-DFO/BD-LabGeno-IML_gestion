@@ -554,6 +554,7 @@ combine_multiple_gabarit_ADNe <- function(path,
 #` @references
 #' List references
 #' @export
+
 upload_gabarit_ADNe <- function(path,
                                 skip=0,
                                 site = "Sites_ADNe",

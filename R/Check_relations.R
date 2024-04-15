@@ -986,7 +986,7 @@ check_relation_ADNe  <- function(data){
         cat(crayon::red("\nNot all the Numero_unique_station_ADNe observed exist in the Stations_ADNe table.\n",
 
 
-                        paste(unique(data$Echantillon_ADNe$Numero_unique_station_ADNe[!data$Echantillon_ADNe$Numero_unique_station_ADNe %in% Numero_unique_station]), collapse = ", ")
+                        paste(unique(data$Echantillons_ADNe$Numero_unique_station_ADNe[!data$Echantillons_ADNe$Numero_unique_station_ADNe %in% Numero_unique_station]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
@@ -1602,7 +1602,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
         cat(crayon::red("\nNot all the Numero_unique_site_ADNe observed exist in the Sites_ADNe table or DB.\n",
 
 
-                        paste(unique(data$Echantillon_ADNe$Numero_unique_site_ADNe[!data$Echantillon_ADNe$Numero_unique_site_ADNe %in% c(Numero_unique_site, site.key)]), collapse = ", ")
+                        paste(unique(data$Echantillons_ADNe$Numero_unique_site_ADNe[!data$Echantillons_ADNe$Numero_unique_site_ADNe %in% c(Numero_unique_site, site.key)]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
