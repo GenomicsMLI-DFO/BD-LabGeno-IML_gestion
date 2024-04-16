@@ -592,7 +592,6 @@ correct_index  <- function(data, DB = "LabGeno"){
 
   #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
   index <-  model.index  %>% dplyr::pull(col.int)
-  index <- model.index[order(model.index)]
 
   columns.index <- model.other %>%
     dplyr::filter(Type == "index")  %>% pull(Col)
@@ -600,7 +599,7 @@ correct_index  <- function(data, DB = "LabGeno"){
   #new.list <- list()
   cat("\nChecking for columns called", crayon::cyan( paste(columns.index, sep = ",")), "\n")
 
-  for( col.int in columns.F){
+  for( col.int in columns.index){
 
     for(x in names(data)){
 
@@ -659,7 +658,7 @@ correct_index  <- function(data, DB = "LabGeno"){
 
 
 
-    cat(crayon::green("\n\n", col.int , "columns were corrected", emojifont::emoji("key")  ,"\n\n"))
+    cat(crayon::green("\n\n", col.int , "columns were checked", emojifont::emoji("key")  ,"\n\n"))
 
   } # END of the loop over col.int
 
