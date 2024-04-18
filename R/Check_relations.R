@@ -1718,7 +1718,7 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
   } else{
     cat(crayon::red("\nNo Extraits_ADNe table detected\n"))
-    Numero_unique_extrai   <- NULL
+    Numero_unique_extrait   <- NULL
   }
 
 
