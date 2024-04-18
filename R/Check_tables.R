@@ -626,7 +626,7 @@ correct_index  <- function(data, DB = "LabGeno"){
 
           } else if((value.exp %in% index) & !(value.obs %in% index) ){
 
-            cat( "\nThe observed value", value.obs, "was replaced by", value.exp, "\n" )
+            cat( "\nThe observed value was replaced by", value.exp, "\n" )
 
             tab.int[i, col.int] <-  value.exp
 
