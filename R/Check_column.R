@@ -18,8 +18,7 @@
 #' List references
 #' @export
 
-correct_column_name  <- function(data
-                               ){
+correct_column_name  <- function(data){
   #model.ordre
 
   new.list <- list()
