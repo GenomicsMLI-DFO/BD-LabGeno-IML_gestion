@@ -232,7 +232,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
         if(answer %in% 1:(length(amorceF))){
 
-          new.value <- Projet[[answer]]
+          new.value <- amorceF[[answer]]
 
           tab.int[which( is.na(tab.int[, col.int])) , col.int] <- new.value
 
@@ -274,7 +274,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
             if(answer %in% 1:(length(amorceF))){
 
-              new.value <- Projet[[answer]]
+              new.value <- amorceF[[answer]]
 
               tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
 
@@ -353,7 +353,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
           if(answer %in% 1:(length(amorceR))){
 
-            new.value <- Projet[[answer]]
+            new.value <- amorceR[[answer]]
 
             tab.int[which( is.na(tab.int[, col.int])) , col.int] <- new.value
 
@@ -473,7 +473,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
           if(answer %in% 1:(length(amorceP))){
 
-            new.value <- Projet[[answer]]
+            new.value <- amorceP[[answer]]
 
             tab.int[which( is.na(tab.int[, col.int])) , col.int] <- new.value
 
@@ -515,7 +515,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
               if(answer %in% 1:(length(amorceP))){
 
-                new.value <- Projet[[answer]]
+                new.value <- amorceP[[answer]]
 
                 tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
 
@@ -666,6 +666,166 @@ correct_index  <- function(data, DB = "LabGeno"){
   return(data)
 
 } # END of the function
+
+
+#' @title Check the Numero de Soumissions GQ columns specifically
+#'
+#' @description
+#' Function to check that No_soumission_GQ are in the right format
+#'
+#' @details
+#'
+#' @param data List containing important tables.
+#' @param DB Name of the DB in the ODBC.
+#'
+#' @examples
+#' # provide some examples of how to use your function
+#'
+#'
+#' @seealso [correct_column_name()] to create the list of tables.
+#'
+#` @references
+#' List references
+#' @export
+
+correct_soumissionGQ  <- function(data, DB = "LabGeno"){
+
+  col.gq <-   "No_soumission_GQ"
+
+  model <- load_DB(table = "09_GQ", DB = DB)
+
+  #model.ID   <-  suppressMessages(readxl::read_excel("inst/BD_format.xlsx", sheet = "ID"))
+  gq <-  model  %>% dplyr::pull(col.gq)
+
+  columns.gq <- model.other %>%
+    dplyr::filter(Type == "soumissionGQ")  %>% pull(Col)
+
+  for( col.int in columns.gq){
+
+    for(x in names(data)){
+
+      tab.int <- data[[x]]
+
+      if(col.int %in% names(tab.int)){
+
+        cat("\nA column", col.int, "was observed in the table", crayon::cyan(x), "\n")
+
+        tab.int[, col.int] <- tab.int %>% dplyr::pull(col.int) %>% stringr::str_replace_all(" ", "_")  %>% stringr::str_replace_all("-", "_") %>%  as.character()
+        tab.int[which( tab.int[, col.int] == "NA") , col.int] <- NA
+
+        # Check pour les NA
+
+        n.NA <- nrow(tab.int[which( is.na(tab.int[, col.int])) , col.int])
+
+        if(n.NA > 0){
+
+          answer <- NULL
+          answer <- menu(title = paste("\n", n.NA, "missing values were observed. What should the No_soumission_GQ be ? (0 to cancel corrections)" ),
+                         graphics = F,
+                         choice = gq
+                         #choice = c(crayon::red("Missing value"), Projet)
+          )
+
+          #  if(answer == 1) { # Change to a real missing value
+          #              tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+          #              cat(j, "was replaced with NA's\n")
+          #            }
+
+          if(answer %in% 1:(length(gq))){
+
+            new.value <- gq[[answer]]
+
+            tab.int[which( is.na(tab.int[, col.int])) , col.int] <- new.value
+
+            cat("NA was replaced with", new.value, "\n")
+
+          }
+
+          if(answer == 0){
+            cat("No replacement done. Please change NA manually as no missing value should remained. \n")
+
+          }
+
+        }
+
+        observed.vec <- tab.int %>% dplyr::pull(col.int) %>% unique()
+        observed.vec <-  observed.vec[!is.na( observed.vec )]
+
+
+        cat("\n Observed values are", crayon::cyan(paste(observed.vec, collapse = ", ")), "\n")
+
+        if(length(observed.vec) > 0)  {  # only if there are values
+
+          # Loop over unique value observed
+          for(j in observed.vec){
+
+            if((j %in% gq) == F){
+
+              answer <- NULL
+              answer <- menu(title = paste("\nWhat value should", crayon::cyan(j), "be ? (0 to cancel corrections)" ),
+                             graphics = F,
+                             choice = gq
+                             #choice = c(crayon::red("Missing value"), Projet)
+              )
+
+              #  if(answer == 1) { # Change to a real missing value
+              #              tab.int[which(tab.int[, col.int] == j) , col.int]  <- NA #  rep(NA, nrow(tab.int))
+              #              cat(j, "was replaced with NA's\n")
+              #            }
+
+              if(answer %in% 1:(length(amorceF))){
+
+                new.value <- gq[[answer]]
+
+                tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
+
+                cat(j, "was replaced with", new.value, "\n")
+
+              }
+
+              if(answer == 0){
+                cat("No replacement done. Please add this values to the GQ table prior to the importation. \n")
+
+              }
+
+
+            } # END of loop went something wrong is observed
+
+
+          }   # END of loop over unique value observed
+
+        } #else { cat(crayon::red("no data within this column\n"))}
+        # END of if values observed
+        ##
+        # Check missing values
+
+        cat( "\n", crayon::red(nrow(tab.int[which(is.na(tab.int[,col.int])),col.int])) ,  "missing values observed (over",
+
+             nrow(tab.int), "values)\n")
+
+      }# END of loop over column name
+
+      #  cat(crayon::green("The values within the sheets", paste(names(new.list), collapse = ", "), "were checked", emojifont::emoji("smile")  ,"\n\n"))
+      #  return(new.list)
+      data[[x]] <-  tab.int
+
+    }   # END of the loop over table
+
+
+
+    cat(crayon::green("\n\n", col.int , "columns were corrected", emojifont::emoji("bell")  ,"\n\n"))
+
+  } # END of the loop over col.int
+
+
+
+
+  return(data)
+
+} # END of the function
+
+
+
 
 
 
