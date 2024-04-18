@@ -624,7 +624,7 @@ correct_index  <- function(data, DB = "LabGeno"){
 
             cat( "\nThe observed value", crayon::red(value.obs), "is not in the current index table, a key violation will be encoutered. Please also revise please revise the columns Kit, Set, Version and Puit.\n" )
 
-          } else if((value.exp %in% index) & !(value.observed %in% index) ){
+          } else if((value.exp %in% index) & !(value.obs %in% index) ){
 
             cat( "\nThe observed value", value.obs, "was replaced by", value.exp, "\n" )
 
