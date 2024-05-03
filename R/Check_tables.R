@@ -395,7 +395,7 @@ correct_primer  <- function(data, DB = "LabGeno"){
 
               if(answer %in% 1:(length(amorceR))){
 
-                new.value <- Projet[[answer]]
+                new.value <- amorceR[[answer]]
 
                 tab.int[which(tab.int[, col.int] == j) , col.int] <- new.value
 
