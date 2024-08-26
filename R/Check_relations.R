@@ -1505,7 +1505,11 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
   station.key <- load_columns_DB(columns = "Numero_unique_station_ADNe", table = "22_Stations_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_station_ADNe)
   echantillon.key <- load_columns_DB(columns = "Numero_unique_echantillon_ADNe", table = "23_Echantillons_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_echantillon_ADNe)
   filtre.key <- load_columns_DB(columns = "Numero_unique_filtre_ADNe", table = "24_Filtres_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_filtre_ADNe)
+
+  # Extrait ADNe et ADN
   extrait.key <- load_columns_DB(columns = "Numero_unique_extrait_ADNe", table = "25_Extraits_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_extrait_ADNe)
+  extrait2.key <- load_columns_DB(columns = "Numero_unique_extrait", table = "04_Extraits_ADN_ARN", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_extrait)
+
   qPCR.key <- load_columns_DB(columns = "ID_qPCR_ADNe", table = "26c_qPCR_ADNe", DB = DB, verbose = F) |> dplyr::pull(ID_qPCR_ADNe)
   courbe.key <- load_columns_DB(columns = "Courbe_ID", table = "26a_Courbe_etalonnage_ADNe", DB = DB, verbose = F) |> dplyr::pull(Courbe_ID)
   purif.key <- load_columns_DB(columns = "Numero_unique_librairie_ADNe", table = "28a_Purification_librairies_ADNe", DB = DB, verbose = F) |> dplyr::pull(Numero_unique_librairie_ADNe)
@@ -1807,17 +1811,27 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
 
       } else {
 
-        cat(crayon::red("\nNot all the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table oe DB.\n",
+        cat(crayon::red("\nNot all the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table or DB.\n",
 
 
                         paste(unique(data$qPCR_ADNe$Numero_unique_extrait_ADNe[!data$qPCR_ADNe$Numero_unique_extrait_ADNe %in%  c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
                         , "\nare missing\n"))
       }
 
-    #} else {
-    #  cat(crayon::red("\nNumero_unique_extrait_ADNe could not be checked in this table\n"))
+    # Special check for ADN
 
-    #}
+    if(all(data$qPCR_ADNe$Numero_unique_extrait %in%  c(extrait2.key))){
+      cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the DB.\n"))
+
+    } else {
+
+      cat(crayon::red("\nNot all the Numero_unique_extrait observed exist the DB.\n",
+
+
+                      paste(unique(data$qPCR_ADNe$Numero_unique_extrait[!data$qPCR_ADNe$Numero_unique_extrait %in%  c(extrait.key2)]), collapse = ", ")
+                      , "\nare missing\n"))
+    }
+
 
     # Check with Courbe
 
@@ -1965,16 +1979,30 @@ check_relation_ADNe_wDB  <- function(data, DB = "LabGeno"){
     #if(!is.null(Numero_unique_extrait)){
 
       if(all(data$Librairies_ADNe$Numero_unique_extrait_ADNe %in%  c(Numero_unique_extrait, extrait.key))){
-        cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the Extrait_ADNe table or DB.\n"))
+        cat(crayon::green("\nAll the Numero_unique_extrait_ADNe observed exist in the Extrait_ADNe table or DB.\n"))
 
       } else {
 
-        cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the Extraits_ADNe table or DB.\n",
+        cat(crayon::red("\nNot all the Numero_unique_extrait_ADNe observed exist in the Extraits_ADNe table or DB.\n",
 
 
                         paste(unique(data$Librairies_ADNe$Numero_unique_extrait_ADNe[!data$Librairies_ADNe$Numero_unique_extrait_ADNe %in% c(Numero_unique_extrait, extrait.key)]), collapse = ", ")
                         , "\nare missing\n"))
       }
+
+    # Special case for DNA libraries
+
+    if(all(data$Librairies_ADNe$Numero_unique_extrait %in%  c(extrait2.key))){
+      cat(crayon::green("\nAll the Numero_unique_extrait observed exist in the DB.\n"))
+
+    } else {
+
+      cat(crayon::red("\nNot all the Numero_unique_extrait observed exist in the DB.\n",
+
+
+                      paste(unique(data$Librairies_ADNe$Numero_unique_extrait[!data$Librairies_ADNe$Numero_unique_extrait %in% c(extrait2.key)]), collapse = ", ")
+                      , "\nare missing\n"))
+    }
 
     #} else {
     #  cat(crayon::red("\nNumero_unique_extrait could not be checked in this table\n"))
